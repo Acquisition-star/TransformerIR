@@ -1,0 +1,2 @@
+[2025-01-21 10:21:49 main] (main.py 5): INFO hello
+[2025-01-21 10:22:10 main] (main.py 5): INFO hello
