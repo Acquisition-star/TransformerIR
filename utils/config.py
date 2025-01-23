@@ -1,16 +1,26 @@
 from yacs.config import CfgNode
 
 
-def get_config(args):
-    def _check_args(name):
-        if hasattr(args, name) and eval(f'args.{name}'):
-            return True
-        return False
+def _check_args(args, name):
+    if hasattr(args, name) and eval(f'args.{name}'):
+        return True
+    return False
 
-    if not _check_args('cfg'):
+
+def update_config(args, config):
+    config.defrost()
+    if hasattr(args, 'dist'):
+        config.dist = args.dist
+    config.freeze()
+
+
+def get_config(args):
+    if not _check_args(args, 'cfg'):
         raise ValueError(f'`cfg` must be specified')
 
-    f = open(args.cfg)
-    cfg = CfgNode().load_cfg(f)
+    # 显式指定编码为 utf-8
+    with open(args.cfg, 'r', encoding='utf-8') as f:
+        cfg = CfgNode().load_cfg(f)
     cfg.freeze()
+    update_config(args, cfg)
     return cfg

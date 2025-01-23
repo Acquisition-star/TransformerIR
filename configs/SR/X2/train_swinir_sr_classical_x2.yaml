@@ -1,0 +1,62 @@
+task: 'swinir_sr_classical_patch48_x2'  # classical image sr for x2
+model: 'swinir'
+dist: True  # 是否使用分布式训练
+gpu_ids: [0, 1]
+seed: 0
+scale: 2  # 放大倍数
+n_channels: 3  # 输入图像通道数
+path:
+  pretrained_net: null
+datasets:
+  train:
+    name: 'train_dataset'
+    dataset_type: 'sr'
+    dataroot_H: 'E:\Data\DIV2K\DIV2K_train_HR'
+    dataroot_L: 'E:\Data\DIV2K\DIV2K_train_LR_unknown\X2'
+    H_size: 96
+    dataloader_num_workers: 16
+    dataloader_batch_size: 32
+  test:
+    name: 'test_dataset'
+    dataset_type: 'sr'
+    dataroot_H: 'E:\Data\Set14\original'
+    dataroot_L: 'E:\Data\Set14\LRbicx2'
+netG:
+  name: 'swinir'
+  upscale: 2
+  in_chans: 3
+  img_size: 48
+  window_size: 8
+  img_range: 1.0
+  depths: [6, 6, 6, 6, 6, 6]
+  embed_dim: 180
+  mlp_ratio: 2
+  upsampler: 'pixelshuffle'
+  resi_connection: '1conv'
+  init_type: 'default'
+train:
+  G_lossfn_type: 'l1'
+  G_lossfn_weight: 1.0
+  E_decay: 0.999
+  G_optimizer_type: 'adam'
+  G_optimizer_lr: 2.0e-4
+  G_optimizer_wd: 0
+  G_optimizer_clipgrad: null
+  G_optimizer_reuse: true
+  G_scheduler_type: 'MultiStepLR'
+  G_scheduler_milestones: [250000, 400000, 450000, 475000, 500000]
+  G_scheduler_gamma: 0.5
+  G_regularizer_orthstep: null
+  G_regularizer_clipstep: null
+  G_param_strict: true
+  E_param_strict: true
+  checkpoint_test: 5000
+  checkpoint_save: 5000
+  checkpoint_print: 200
+
+
+
+
+
+
+
