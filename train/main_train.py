@@ -19,5 +19,3 @@ def main(config, logger):
     logger.info(f"Number of params: {n_parameters}")
 
     model.cuda()
-
-    # optimizer = torch.optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
