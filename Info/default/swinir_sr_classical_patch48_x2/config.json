@@ -1,0 +1,76 @@
+datasets:
+  dataloader_batch_size: 32
+  dataloader_num_workers: 8
+  dataloader_shuffle: true
+  dataset_type: sr
+  train:
+    H_size: 96
+    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
+    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
+  val:
+    dataroot_H: E:\Data\Set14\original
+    dataroot_L: E:\Data\Set14\LRbicx2
+dist: false
+gpu_ids:
+- 0
+- 1
+model: swinir
+n_channels: 3
+net:
+  depths:
+  - 6
+  - 6
+  - 6
+  - 6
+  - 6
+  - 6
+  embed_dim: 180
+  img_range: 1.0
+  img_size: 48
+  in_chans: 3
+  init_type: default
+  mlp_ratio: 2
+  num_heads:
+  - 6
+  - 6
+  - 6
+  - 6
+  - 6
+  - 6
+  resi_connection: 1conv
+  type: swinir
+  upsampler: pixelshuffle
+  upscale: 2
+  window_size: 8
+path:
+  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
+  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
+  pretrained_net: null
+  root_path: Info\default\swinir_sr_classical_patch48_x2
+scale: 2
+seed: 0
+task: swinir_sr_classical_patch48_x2
+train:
+  E_decay: 0.999
+  E_param_strict: true
+  G_lossfn_type: l1
+  G_lossfn_weight: 1.0
+  G_optimizer_clipgrad: null
+  G_optimizer_lr: 0.0002
+  G_optimizer_reuse: true
+  G_optimizer_type: adam
+  G_optimizer_wd: 0
+  G_param_strict: true
+  G_regularizer_clipstep: null
+  G_regularizer_orthstep: null
+  G_scheduler_gamma: 0.5
+  G_scheduler_milestones:
+  - 250000
+  - 400000
+  - 450000
+  - 475000
+  - 500000
+  G_scheduler_type: MultiStepLR
+  checkpoint_print: 200
+  checkpoint_save: 5000
+  checkpoint_test: 5000

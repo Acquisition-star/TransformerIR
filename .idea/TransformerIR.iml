@@ -5,4 +5,12 @@
     <orderEntry type="jdk" jdkName="TransformerIR" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PyNamespacePackagesService">
+    <option name="namespacePackageFolders">
+      <list>
+        <option value="$MODULE_DIR$/data" />
+        <option value="$MODULE_DIR$/model" />
+      </list>
+    </option>
+  </component>
 </module>

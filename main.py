@@ -57,7 +57,7 @@ if __name__ == "__main__":
     logger.info(f"Full config saved to {config.path.config_path}")
 
     # 显示config信息
-    logger.info(config.dump())
-    logger.info(json.dumps(vars(args)))
+    # logger.info(config.dump())
+    # logger.info(json.dumps(vars(args)))
 
     main(config, logger)
