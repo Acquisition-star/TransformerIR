@@ -1,1956 +1,252 @@
-[2025-01-23 20:01:10 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-23 20:01:10 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  test:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-    dataset_type: sr
-    name: test_dataset
-  train:
-    H_size: 96
-    dataloader_batch_size: 32
-    dataloader_num_workers: 16
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-    dataset_type: sr
-    name: train_dataset
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-23 20:01:10 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-23 20:01:10 swinir_sr_classical_patch48_x2] (main_train.py 7): INFO hello
-[2025-01-25 00:08:02 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:08:02 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:08:02 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:08:36 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:08:36 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:08:36 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:14:28 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:14:28 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:14:28 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:14:58 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:14:58 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:14:58 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:15:45 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:15:45 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:15:45 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:16:00 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:16:00 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:16:00 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:16:42 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:16:42 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-netG:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  name: swinir
-  resi_connection: 1conv
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:16:42 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:51:31 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:51:31 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:51:31 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:51:39 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: {config.net.type} / {config.task}
-[2025-01-25 00:52:27 swinir_sr_classical_patch48_x2] (main_train.py 16): INFO SwinIR(
-  (conv_first): Conv2d(3, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-  (patch_embed): PatchEmbed(
-    (norm): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-  )
-  (patch_unembed): PatchUnEmbed()
-  (pos_drop): Dropout(p=0.0, inplace=False)
-  (layers): ModuleList(
-    (0): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): Identity()
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.003)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.006)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.009)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.011)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.014)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-    (1): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.017)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.020)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.023)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.026)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.029)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.031)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-    (2): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.034)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.037)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.040)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.043)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.046)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.049)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-    (3): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.051)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.054)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.057)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.060)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.063)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.066)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-    (4): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.069)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.071)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.074)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.077)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.080)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.083)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-    (5): RSTB(
-      (residual_group): BasicLayer(
-        dim=180, input_resolution=(48, 48), depth=6
-        (blocks): ModuleList(
-          (0): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.086)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (1): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.089)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (2): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.091)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (3): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.094)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (4): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=0, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.097)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-          (5): SwinTransformerBlock(
-            dim=180, input_resolution=(48, 48), num_heads=6, window_size=8, shift_size=4, mlp_ratio=2
-            (norm1): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (attn): WindowAttention(
-              dim=180, window_size=(8, 8), num_heads=6
-              (qkv): Linear(in_features=180, out_features=540, bias=True)
-              (attn_drop): Dropout(p=0.0, inplace=False)
-              (proj): Linear(in_features=180, out_features=180, bias=True)
-              (proj_drop): Dropout(p=0.0, inplace=False)
-              (softmax): Softmax(dim=-1)
-            )
-            (drop_path): DropPath(drop_prob=0.100)
-            (norm2): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-            (mlp): Mlp(
-              (fc1): Linear(in_features=180, out_features=360, bias=True)
-              (act): GELU(approximate='none')
-              (fc2): Linear(in_features=360, out_features=180, bias=True)
-              (drop): Dropout(p=0.0, inplace=False)
-            )
-          )
-        )
-      )
-      (conv): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-      (patch_embed): PatchEmbed()
-      (patch_unembed): PatchUnEmbed()
-    )
-  )
-  (norm): LayerNorm((180,), eps=1e-05, elementwise_affine=True)
-  (conv_after_body): Conv2d(180, 180, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-  (conv_before_upsample): Sequential(
-    (0): Conv2d(180, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (1): LeakyReLU(negative_slope=0.01, inplace=True)
-  )
-  (upsample): Upsample(
-    (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-    (1): PixelShuffle(upscale_factor=2)
-  )
-  (conv_last): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
-)
-[2025-01-25 00:53:07 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:53:07 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:53:07 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:53:07 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: {config.net.type} / {config.task}
-[2025-01-25 00:53:55 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:53:55 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:53:55 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:53:55 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: {config.net.type} / {config.task}
-[2025-01-25 00:54:15 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:54:15 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:54:15 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:54:15 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir / swinir_sr_classical_patch48_x2
-[2025-01-25 00:54:33 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:54:33 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:54:33 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:54:33 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 00:56:22 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:56:22 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:56:22 swinir_sr_classical_patch48_x2] (main.py 61): INFO {"cfg": "configs/SR/X2/train_swinir_sr_classical_x2.yaml", "output": "Info/", "env": "default", "dist": false}
-[2025-01-25 00:56:22 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 00:59:16 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:59:16 swinir_sr_classical_patch48_x2] (main.py 60): INFO datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
-  dataloader_shuffle: true
-  dataset_type: sr
-  train:
-    H_size: 96
-    dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
-    dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
-  val:
-    dataroot_H: E:\Data\Set14\original
-    dataroot_L: E:\Data\Set14\LRbicx2
-dist: false
-gpu_ids:
-- 0
-- 1
-model: swinir
-n_channels: 3
-net:
-  depths:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  embed_dim: 180
-  img_range: 1.0
-  img_size: 48
-  in_chans: 3
-  init_type: default
-  mlp_ratio: 2
-  num_heads:
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  - 6
-  resi_connection: 1conv
-  type: swinir
-  upsampler: pixelshuffle
-  upscale: 2
-  window_size: 8
-path:
-  checkpoint_path: Info\default\swinir_sr_classical_patch48_x2\checkpoints
-  config_path: Info\default\swinir_sr_classical_patch48_x2\config.json
-  pretrained_net: null
-  root_path: Info\default\swinir_sr_classical_patch48_x2
-scale: 2
-seed: 0
-task: swinir_sr_classical_patch48_x2
-train:
-  E_decay: 0.999
-  E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
-  G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
-  checkpoint_print: 200
-  checkpoint_save: 5000
-  checkpoint_test: 5000
-
-[2025-01-25 00:59:16 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 00:59:25 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 00:59:25 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:01:04 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 01:01:04 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:01:04 swinir_sr_classical_patch48_x2] (main_train.py 19): INFO number of params: 11752487
-[2025-01-25 01:01:16 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 01:01:16 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:01:16 swinir_sr_classical_patch48_x2] (main_train.py 19): INFO Number of params: 11752487
-[2025-01-25 01:01:46 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 01:01:46 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:01:47 swinir_sr_classical_patch48_x2] (main_train.py 19): INFO Number of params: 11752487
-[2025-01-25 01:02:16 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 01:02:16 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:02:16 swinir_sr_classical_patch48_x2] (main_train.py 19): INFO Number of params: 11752487
-[2025-01-25 01:05:00 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
-[2025-01-25 01:05:00 swinir_sr_classical_patch48_x2] (main_train.py 14): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
-[2025-01-25 01:05:00 swinir_sr_classical_patch48_x2] (main_train.py 19): INFO Number of params: 11752487
+[2025-02-08 21:09:48 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:09:48 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:09:49 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:09:49 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:09:49 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:10:16 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       0, lr:2.000e-04, loss:2.700e-01> 
+[2025-02-08 21:10:17 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       1, lr:2.000e-04, loss:2.060e-01> 
+[2025-02-08 21:10:17 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       2, lr:2.000e-04, loss:1.514e-01> 
+[2025-02-08 21:10:17 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       3, lr:2.000e-04, loss:1.425e-01> 
+[2025-02-08 21:10:17 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       4, lr:2.000e-04, loss:1.372e-01> 
+[2025-02-08 21:10:18 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       5, lr:2.000e-04, loss:1.155e-01> 
+[2025-02-08 21:10:18 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       6, lr:2.000e-04, loss:1.130e-01> 
+[2025-02-08 21:10:18 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       7, lr:2.000e-04, loss:9.271e-02> 
+[2025-02-08 21:10:21 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       8, lr:2.000e-04, loss:1.056e-01> 
+[2025-02-08 21:10:21 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:       9, lr:2.000e-04, loss:9.820e-02> 
+[2025-02-08 21:10:22 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      10, lr:2.000e-04, loss:8.466e-02> 
+[2025-02-08 21:10:22 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      11, lr:2.000e-04, loss:8.437e-02> 
+[2025-02-08 21:10:22 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      12, lr:2.000e-04, loss:1.082e-01> 
+[2025-02-08 21:10:22 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      13, lr:2.000e-04, loss:7.733e-02> 
+[2025-02-08 21:10:23 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      14, lr:2.000e-04, loss:9.158e-02> 
+[2025-02-08 21:10:23 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      15, lr:2.000e-04, loss:8.970e-02> 
+[2025-02-08 21:10:26 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      16, lr:2.000e-04, loss:8.013e-02> 
+[2025-02-08 21:10:27 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      17, lr:2.000e-04, loss:9.244e-02> 
+[2025-02-08 21:10:27 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      18, lr:2.000e-04, loss:8.193e-02> 
+[2025-02-08 21:10:27 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      19, lr:2.000e-04, loss:8.275e-02> 
+[2025-02-08 21:10:27 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      20, lr:2.000e-04, loss:8.638e-02> 
+[2025-02-08 21:10:28 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      21, lr:2.000e-04, loss:8.819e-02> 
+[2025-02-08 21:10:28 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      22, lr:2.000e-04, loss:8.796e-02> 
+[2025-02-08 21:10:28 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      23, lr:2.000e-04, loss:6.573e-02> 
+[2025-02-08 21:10:30 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      24, lr:2.000e-04, loss:7.126e-02> 
+[2025-02-08 21:10:30 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      25, lr:2.000e-04, loss:7.574e-02> 
+[2025-02-08 21:10:31 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      26, lr:2.000e-04, loss:8.541e-02> 
+[2025-02-08 21:10:31 swinir_sr_classical_patch48_x2] (main_train.py 76): INFO <epoch:  0, iter:      27, lr:2.000e-04, loss:7.312e-02> 
+[2025-02-08 21:13:59 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:13:59 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:13:59 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:14:00 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:14:00 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:14:27 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       0, lr:2.000e-04, loss:2.700e-01> 
+[2025-02-08 21:14:27 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       1, lr:2.000e-04, loss:2.060e-01> 
+[2025-02-08 21:14:27 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       2, lr:2.000e-04, loss:1.514e-01> 
+[2025-02-08 21:14:28 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       3, lr:2.000e-04, loss:1.425e-01> 
+[2025-02-08 21:14:28 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       4, lr:2.000e-04, loss:1.372e-01> 
+[2025-02-08 21:14:28 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       5, lr:2.000e-04, loss:1.156e-01> 
+[2025-02-08 21:14:29 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       6, lr:2.000e-04, loss:1.131e-01> 
+[2025-02-08 21:14:29 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       7, lr:2.000e-04, loss:9.268e-02> 
+[2025-02-08 21:14:31 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       8, lr:2.000e-04, loss:1.058e-01> 
+[2025-02-08 21:14:31 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       9, lr:2.000e-04, loss:9.808e-02> 
+[2025-02-08 21:14:31 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      10, lr:2.000e-04, loss:8.454e-02> 
+[2025-02-08 21:14:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      11, lr:2.000e-04, loss:8.447e-02> 
+[2025-02-08 21:14:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      12, lr:2.000e-04, loss:1.078e-01> 
+[2025-02-08 21:14:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      13, lr:2.000e-04, loss:7.737e-02> 
+[2025-02-08 21:14:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      14, lr:2.000e-04, loss:9.135e-02> 
+[2025-02-08 21:14:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      15, lr:2.000e-04, loss:8.976e-02> 
+[2025-02-08 21:14:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      16, lr:2.000e-04, loss:7.980e-02> 
+[2025-02-08 21:14:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      17, lr:2.000e-04, loss:9.095e-02> 
+[2025-02-08 21:14:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      18, lr:2.000e-04, loss:8.336e-02> 
+[2025-02-08 21:14:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      19, lr:2.000e-04, loss:8.271e-02> 
+[2025-02-08 21:14:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      20, lr:2.000e-04, loss:8.940e-02> 
+[2025-02-08 21:14:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      21, lr:2.000e-04, loss:8.835e-02> 
+[2025-02-08 21:14:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      22, lr:2.000e-04, loss:8.916e-02> 
+[2025-02-08 21:14:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      23, lr:2.000e-04, loss:6.717e-02> 
+[2025-02-08 21:14:41 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      24, lr:2.000e-04, loss:6.904e-02> 
+[2025-02-08 21:14:41 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      25, lr:2.000e-04, loss:7.563e-02> 
+[2025-02-08 21:14:41 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      26, lr:2.000e-04, loss:8.421e-02> 
+[2025-02-08 21:14:42 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      27, lr:2.000e-04, loss:7.215e-02> 
+[2025-02-08 21:16:11 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:16:11 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:16:11 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:16:12 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:16:12 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:20:08 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:20:08 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:20:09 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:20:09 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:20:09 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:21:36 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:21:36 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:21:37 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:21:37 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:21:37 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:22:40 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:22:40 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:22:40 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:22:40 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:22:40 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:23:32 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:23:32 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:23:32 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:23:32 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:23:32 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:24:55 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:24:55 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:24:56 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:24:56 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:24:56 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:25:10 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       0, lr:2.000e-04, loss:2.630e-01> 
+[2025-02-08 21:25:10 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       1, lr:2.000e-04, loss:2.005e-01> 
+[2025-02-08 21:25:10 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       2, lr:2.000e-04, loss:1.436e-01> 
+[2025-02-08 21:25:10 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       3, lr:2.000e-04, loss:1.538e-01> 
+[2025-02-08 21:25:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       4, lr:2.000e-04, loss:1.461e-01> 
+[2025-02-08 21:25:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       5, lr:2.000e-04, loss:1.570e-01> 
+[2025-02-08 21:25:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       6, lr:2.000e-04, loss:1.287e-01> 
+[2025-02-08 21:25:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       7, lr:2.000e-04, loss:1.177e-01> 
+[2025-02-08 21:25:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       8, lr:2.000e-04, loss:1.412e-01> 
+[2025-02-08 21:25:12 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       9, lr:2.000e-04, loss:1.094e-01> 
+[2025-02-08 21:25:12 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      10, lr:2.000e-04, loss:1.186e-01> 
+[2025-02-08 21:25:12 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      11, lr:2.000e-04, loss:1.319e-01> 
+[2025-02-08 21:25:13 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      12, lr:2.000e-04, loss:1.161e-01> 
+[2025-02-08 21:25:13 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      13, lr:2.000e-04, loss:1.063e-01> 
+[2025-02-08 21:25:13 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      14, lr:2.000e-04, loss:1.196e-01> 
+[2025-02-08 21:25:14 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      15, lr:2.000e-04, loss:8.511e-02> 
+[2025-02-08 21:25:14 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      16, lr:2.000e-04, loss:9.801e-02> 
+[2025-02-08 21:25:15 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      17, lr:2.000e-04, loss:6.414e-02> 
+[2025-02-08 21:25:15 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      18, lr:2.000e-04, loss:9.639e-02> 
+[2025-02-08 21:25:15 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      19, lr:2.000e-04, loss:8.397e-02> 
+[2025-02-08 21:25:16 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      20, lr:2.000e-04, loss:7.942e-02> 
+[2025-02-08 21:25:16 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      21, lr:2.000e-04, loss:9.503e-02> 
+[2025-02-08 21:25:17 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      22, lr:2.000e-04, loss:1.097e-01> 
+[2025-02-08 21:25:17 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      23, lr:2.000e-04, loss:9.755e-02> 
+[2025-02-08 21:25:18 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      24, lr:2.000e-04, loss:8.436e-02> 
+[2025-02-08 21:25:18 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      25, lr:2.000e-04, loss:9.555e-02> 
+[2025-02-08 21:25:19 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      26, lr:2.000e-04, loss:9.943e-02> 
+[2025-02-08 21:25:19 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      27, lr:2.000e-04, loss:8.926e-02> 
+[2025-02-08 21:25:19 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      28, lr:2.000e-04, loss:1.201e-01> 
+[2025-02-08 21:25:20 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      29, lr:2.000e-04, loss:7.851e-02> 
+[2025-02-08 21:25:21 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      30, lr:2.000e-04, loss:1.050e-01> 
+[2025-02-08 21:25:21 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      31, lr:2.000e-04, loss:1.037e-01> 
+[2025-02-08 21:25:21 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      32, lr:2.000e-04, loss:8.920e-02> 
+[2025-02-08 21:25:22 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      33, lr:2.000e-04, loss:1.183e-01> 
+[2025-02-08 21:25:23 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      34, lr:2.000e-04, loss:9.188e-02> 
+[2025-02-08 21:25:23 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      35, lr:2.000e-04, loss:8.733e-02> 
+[2025-02-08 21:25:23 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      36, lr:2.000e-04, loss:1.169e-01> 
+[2025-02-08 21:25:24 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      37, lr:2.000e-04, loss:1.525e-01> 
+[2025-02-08 21:25:24 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      38, lr:2.000e-04, loss:1.226e-01> 
+[2025-02-08 21:25:24 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      39, lr:2.000e-04, loss:8.043e-02> 
+[2025-02-08 21:25:24 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      40, lr:2.000e-04, loss:9.171e-02> 
+[2025-02-08 21:25:25 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      41, lr:2.000e-04, loss:1.100e-01> 
+[2025-02-08 21:25:26 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      42, lr:2.000e-04, loss:8.667e-02> 
+[2025-02-08 21:25:26 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      43, lr:2.000e-04, loss:1.064e-01> 
+[2025-02-08 21:25:26 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      44, lr:2.000e-04, loss:8.299e-02> 
+[2025-02-08 21:25:27 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      45, lr:2.000e-04, loss:9.039e-02> 
+[2025-02-08 21:25:28 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      46, lr:2.000e-04, loss:7.305e-02> 
+[2025-02-08 21:25:28 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      47, lr:2.000e-04, loss:1.176e-01> 
+[2025-02-08 21:25:29 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      48, lr:2.000e-04, loss:8.265e-02> 
+[2025-02-08 21:25:30 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      49, lr:2.000e-04, loss:8.233e-02> 
+[2025-02-08 21:25:30 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      50, lr:2.000e-04, loss:8.888e-02> 
+[2025-02-08 21:25:31 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      51, lr:2.000e-04, loss:8.190e-02> 
+[2025-02-08 21:25:31 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      52, lr:2.000e-04, loss:7.240e-02> 
+[2025-02-08 21:25:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      53, lr:2.000e-04, loss:8.575e-02> 
+[2025-02-08 21:25:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      54, lr:2.000e-04, loss:8.506e-02> 
+[2025-02-08 21:25:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      55, lr:2.000e-04, loss:9.732e-02> 
+[2025-02-08 21:25:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      56, lr:2.000e-04, loss:9.180e-02> 
+[2025-02-08 21:25:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      57, lr:2.000e-04, loss:7.926e-02> 
+[2025-02-08 21:25:34 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      58, lr:2.000e-04, loss:6.808e-02> 
+[2025-02-08 21:25:34 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      59, lr:2.000e-04, loss:8.492e-02> 
+[2025-02-08 21:25:34 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      60, lr:2.000e-04, loss:8.306e-02> 
+[2025-02-08 21:25:35 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      61, lr:2.000e-04, loss:7.294e-02> 
+[2025-02-08 21:25:35 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      62, lr:2.000e-04, loss:6.442e-02> 
+[2025-02-08 21:25:36 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      63, lr:2.000e-04, loss:7.882e-02> 
+[2025-02-08 21:25:36 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      64, lr:2.000e-04, loss:7.769e-02> 
+[2025-02-08 21:25:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      65, lr:2.000e-04, loss:7.827e-02> 
+[2025-02-08 21:25:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      66, lr:2.000e-04, loss:8.167e-02> 
+[2025-02-08 21:25:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      67, lr:2.000e-04, loss:8.416e-02> 
+[2025-02-08 21:25:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      68, lr:2.000e-04, loss:8.060e-02> 
+[2025-02-08 21:25:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      69, lr:2.000e-04, loss:6.761e-02> 
+[2025-02-08 21:25:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      70, lr:2.000e-04, loss:6.792e-02> 
+[2025-02-08 21:25:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      71, lr:2.000e-04, loss:8.577e-02> 
+[2025-02-08 21:25:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      72, lr:2.000e-04, loss:6.765e-02> 
+[2025-02-08 21:25:40 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      73, lr:2.000e-04, loss:7.943e-02> 
+[2025-02-08 21:25:40 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      74, lr:2.000e-04, loss:8.498e-02> 
+[2025-02-08 21:27:03 swinir_sr_classical_patch48_x2] (main.py 57): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json
+[2025-02-08 21:27:03 swinir_sr_classical_patch48_x2] (main_train.py 22): INFO Building model: swinir --> swinir_sr_classical_patch48_x2
+[2025-02-08 21:27:03 swinir_sr_classical_patch48_x2] (main_train.py 27): INFO Number of params: 11752487
+[2025-02-08 21:27:03 swinir_sr_classical_patch48_x2] (main_train.py 52): INFO No checkpoint found in Info\default\swinir_sr_classical_patch48_x2\checkpoints. Start training from scratch!
+[2025-02-08 21:27:03 swinir_sr_classical_patch48_x2] (main_train.py 59): INFO Start training!
+[2025-02-08 21:27:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       0, lr:2.000e-04, loss:2.630e-01> 
+[2025-02-08 21:27:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       1, lr:2.000e-04, loss:2.005e-01> 
+[2025-02-08 21:27:32 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       2, lr:2.000e-04, loss:1.437e-01> 
+[2025-02-08 21:27:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       3, lr:2.000e-04, loss:1.537e-01> 
+[2025-02-08 21:27:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       4, lr:2.000e-04, loss:1.462e-01> 
+[2025-02-08 21:27:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       5, lr:2.000e-04, loss:1.568e-01> 
+[2025-02-08 21:27:33 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       6, lr:2.000e-04, loss:1.291e-01> 
+[2025-02-08 21:27:34 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       7, lr:2.000e-04, loss:1.177e-01> 
+[2025-02-08 21:27:35 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       8, lr:2.000e-04, loss:1.415e-01> 
+[2025-02-08 21:27:35 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:       9, lr:2.000e-04, loss:1.099e-01> 
+[2025-02-08 21:27:35 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      10, lr:2.000e-04, loss:1.184e-01> 
+[2025-02-08 21:27:36 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      11, lr:2.000e-04, loss:1.325e-01> 
+[2025-02-08 21:27:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      12, lr:2.000e-04, loss:1.169e-01> 
+[2025-02-08 21:27:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      13, lr:2.000e-04, loss:1.055e-01> 
+[2025-02-08 21:27:37 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      14, lr:2.000e-04, loss:1.196e-01> 
+[2025-02-08 21:27:38 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      15, lr:2.000e-04, loss:8.528e-02> 
+[2025-02-08 21:27:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      16, lr:2.000e-04, loss:9.812e-02> 
+[2025-02-08 21:27:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      17, lr:2.000e-04, loss:6.569e-02> 
+[2025-02-08 21:27:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      18, lr:2.000e-04, loss:9.635e-02> 
+[2025-02-08 21:27:39 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      19, lr:2.000e-04, loss:8.325e-02> 
+[2025-02-08 21:27:42 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      20, lr:2.000e-04, loss:7.794e-02> 
+[2025-02-08 21:27:42 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      21, lr:2.000e-04, loss:9.165e-02> 
+[2025-02-08 21:27:42 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      22, lr:2.000e-04, loss:1.093e-01> 
+[2025-02-08 21:27:42 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      23, lr:2.000e-04, loss:9.654e-02> 
+[2025-02-08 21:27:44 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      24, lr:2.000e-04, loss:8.361e-02> 
+[2025-02-08 21:27:44 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      25, lr:2.000e-04, loss:9.453e-02> 
+[2025-02-08 21:27:44 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      26, lr:2.000e-04, loss:9.978e-02> 
+[2025-02-08 21:27:44 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      27, lr:2.000e-04, loss:9.050e-02> 
+[2025-02-08 21:27:46 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      28, lr:2.000e-04, loss:1.165e-01> 
+[2025-02-08 21:27:46 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      29, lr:2.000e-04, loss:7.422e-02> 
+[2025-02-08 21:27:46 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      30, lr:2.000e-04, loss:1.026e-01> 
+[2025-02-08 21:27:47 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      31, lr:2.000e-04, loss:1.001e-01> 
+[2025-02-08 21:27:48 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      32, lr:2.000e-04, loss:8.800e-02> 
+[2025-02-08 21:27:48 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      33, lr:2.000e-04, loss:1.122e-01> 
+[2025-02-08 21:27:49 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      34, lr:2.000e-04, loss:7.842e-02> 
+[2025-02-08 21:27:49 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      35, lr:2.000e-04, loss:7.624e-02> 
+[2025-02-08 21:27:51 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      36, lr:2.000e-04, loss:1.081e-01> 
+[2025-02-08 21:27:51 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      37, lr:2.000e-04, loss:1.280e-01> 
+[2025-02-08 21:27:51 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      38, lr:2.000e-04, loss:7.149e-02> 
+[2025-02-08 21:27:51 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      39, lr:2.000e-04, loss:8.960e-02> 
+[2025-02-08 21:27:53 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      40, lr:2.000e-04, loss:9.601e-02> 
+[2025-02-08 21:27:53 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      41, lr:2.000e-04, loss:1.113e-01> 
+[2025-02-08 21:27:54 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      42, lr:2.000e-04, loss:6.668e-02> 
+[2025-02-08 21:27:54 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      43, lr:2.000e-04, loss:8.468e-02> 
+[2025-02-08 21:27:56 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      44, lr:2.000e-04, loss:6.896e-02> 
+[2025-02-08 21:27:56 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      45, lr:2.000e-04, loss:7.123e-02> 
+[2025-02-08 21:27:57 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      46, lr:2.000e-04, loss:7.240e-02> 
+[2025-02-08 21:27:57 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      47, lr:2.000e-04, loss:9.906e-02> 
+[2025-02-08 21:27:59 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      48, lr:2.000e-04, loss:6.838e-02> 
+[2025-02-08 21:27:59 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      49, lr:2.000e-04, loss:6.984e-02> 
+[2025-02-08 21:27:59 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      50, lr:2.000e-04, loss:8.660e-02> 
+[2025-02-08 21:27:59 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      51, lr:2.000e-04, loss:7.631e-02> 
+[2025-02-08 21:28:01 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      52, lr:2.000e-04, loss:6.786e-02> 
+[2025-02-08 21:28:02 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      53, lr:2.000e-04, loss:7.456e-02> 
+[2025-02-08 21:28:02 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      54, lr:2.000e-04, loss:6.177e-02> 
+[2025-02-08 21:28:02 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      55, lr:2.000e-04, loss:8.923e-02> 
+[2025-02-08 21:28:04 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      56, lr:2.000e-04, loss:9.394e-02> 
+[2025-02-08 21:28:05 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      57, lr:2.000e-04, loss:5.489e-02> 
+[2025-02-08 21:28:05 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      58, lr:2.000e-04, loss:6.140e-02> 
+[2025-02-08 21:28:05 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      59, lr:2.000e-04, loss:6.668e-02> 
+[2025-02-08 21:28:07 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      60, lr:2.000e-04, loss:7.958e-02> 
+[2025-02-08 21:28:07 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      61, lr:2.000e-04, loss:6.744e-02> 
+[2025-02-08 21:28:08 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      62, lr:2.000e-04, loss:6.438e-02> 
+[2025-02-08 21:28:08 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      63, lr:2.000e-04, loss:7.720e-02> 
+[2025-02-08 21:28:09 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      64, lr:2.000e-04, loss:8.453e-02> 
+[2025-02-08 21:28:09 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      65, lr:2.000e-04, loss:8.868e-02> 
+[2025-02-08 21:28:09 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      66, lr:2.000e-04, loss:1.031e-01> 
+[2025-02-08 21:28:10 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      67, lr:2.000e-04, loss:8.223e-02> 
+[2025-02-08 21:28:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      68, lr:2.000e-04, loss:8.440e-02> 
+[2025-02-08 21:28:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      69, lr:2.000e-04, loss:6.794e-02> 
+[2025-02-08 21:28:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      70, lr:2.000e-04, loss:7.658e-02> 
+[2025-02-08 21:28:11 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      71, lr:2.000e-04, loss:8.142e-02> 
+[2025-02-08 21:28:12 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      72, lr:2.000e-04, loss:7.066e-02> 
+[2025-02-08 21:28:12 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      73, lr:2.000e-04, loss:7.126e-02> 
+[2025-02-08 21:28:13 swinir_sr_classical_patch48_x2] (main_train.py 77): INFO <epoch:  0, iter:      74, lr:2.000e-04, loss:8.098e-02> 
+[2025-02-27 09:57:41 swinir_sr_classical_patch48_x2] (main.py 56): INFO Full config saved to Info\default\swinir_sr_classical_patch48_x2\config.json

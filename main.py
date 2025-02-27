@@ -15,8 +15,7 @@ from train.main_train import main
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/SR/X2/train_swinir_sr_classical_x2.yaml',
-                        help='path to config file')
+    parser.add_argument('--cfg', type=str, default='configs/SR/X2/train_swinir_sr_classical_x2.yaml', help='path to config file')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
     parser.add_argument('--dist', action='store_true', help='use distributed training')

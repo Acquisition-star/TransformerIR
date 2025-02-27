@@ -1,10 +1,10 @@
 datasets:
-  dataloader_batch_size: 32
-  dataloader_num_workers: 8
+  dataloader_batch_size: 12
+  dataloader_num_workers: 4
   dataloader_shuffle: true
   dataset_type: sr
   train:
-    H_size: 96
+    H_size: 24
     dataroot_H: E:\Data\DIV2K\DIV2K_train_HR
     dataroot_L: E:\Data\DIV2K\DIV2K_train_LR_unknown\X2
   val:
@@ -51,26 +51,32 @@ scale: 2
 seed: 0
 task: swinir_sr_classical_patch48_x2
 train:
-  E_decay: 0.999
   E_param_strict: true
-  G_lossfn_type: l1
-  G_lossfn_weight: 1.0
-  G_optimizer_clipgrad: null
-  G_optimizer_lr: 0.0002
-  G_optimizer_reuse: true
-  G_optimizer_type: adam
-  G_optimizer_wd: 0
   G_param_strict: true
-  G_regularizer_clipstep: null
-  G_regularizer_orthstep: null
-  G_scheduler_gamma: 0.5
-  G_scheduler_milestones:
-  - 250000
-  - 400000
-  - 450000
-  - 475000
-  - 500000
-  G_scheduler_type: MultiStepLR
   checkpoint_print: 200
   checkpoint_save: 5000
-  checkpoint_test: 5000
+  checkpoint_val: 5000
+  criterion:
+    loss_type: l1
+    weight: 1.0
+  decay: 0.999
+  num_epochs: 1000000
+  optimizer:
+    betas:
+    - 0.9
+    - 0.999
+    clipgrad: null
+    learning_rate: 0.0002
+    reuse: true
+    type: adam
+    weight_decay: 0
+  scheduler:
+    gamma: 0.5
+    milestones:
+    - 250000
+    - 400000
+    - 450000
+    - 475000
+    - 500000
+    type: MultiStepLR
+  start_epoch: 0

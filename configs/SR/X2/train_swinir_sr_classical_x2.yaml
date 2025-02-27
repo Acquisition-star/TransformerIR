@@ -10,12 +10,12 @@ path:
 datasets:
   dataset_type: 'sr'
   dataloader_shuffle: true
-  dataloader_num_workers: 8
-  dataloader_batch_size: 32
+  dataloader_num_workers: 4
+  dataloader_batch_size: 12
   train:
     dataroot_H: 'E:\Data\DIV2K\DIV2K_train_HR'
     dataroot_L: 'E:\Data\DIV2K\DIV2K_train_LR_unknown\X2'
-    H_size: 96
+    H_size: 24
   val:
     dataroot_H: 'E:\Data\Set14\original'
     dataroot_L: 'E:\Data\Set14\LRbicx2'
@@ -34,24 +34,36 @@ net:
   resi_connection: '1conv'
   init_type: 'default'
 train:
-  G_lossfn_type: 'l1'
-  G_lossfn_weight: 1.0
-  E_decay: 0.999
-  G_optimizer_type: 'adam'
-  G_optimizer_lr: 2.0e-4
-  G_optimizer_wd: 0
-  G_optimizer_clipgrad: null
-  G_optimizer_reuse: true
-  G_scheduler_type: 'MultiStepLR'
-  G_scheduler_milestones: [ 250000, 400000, 450000, 475000, 500000 ]
-  G_scheduler_gamma: 0.5
-  G_regularizer_orthstep: null
-  G_regularizer_clipstep: null
-  G_param_strict: true
-  E_param_strict: true
-  checkpoint_test: 5000
+  start_epoch: 0
+  num_epochs: 1000000
+  checkpoint_val: 5000
   checkpoint_save: 5000
   checkpoint_print: 200
+
+  decay: 0.999
+
+
+  G_param_strict: true
+  E_param_strict: true
+
+  optimizer:
+    type: 'adam'
+    learning_rate: 2.0e-4  # 学习率
+    weight_decay: 0  # 权重衰减
+    clipgrad: null # 梯度裁剪
+    betas: [ 0.9, 0.999 ]
+    reuse: true
+  scheduler:
+    type: 'MultiStepLR'
+    milestones: [ 250000, 400000, 450000, 475000, 500000 ]
+    gamma: 0.5
+  criterion:
+    loss_type: 'l1'
+    weight: 1.0
+
+
+
+
 
 
 
