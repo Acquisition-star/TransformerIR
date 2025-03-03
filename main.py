@@ -1,5 +1,4 @@
 import os
-import json
 import torch
 import random
 import argparse
@@ -10,15 +9,14 @@ from pathlib import Path
 
 from utils.logger import create_logger
 from utils.config import get_config
-from train.main_train import main
+from train.SwinIR_train import train_swinir as main
 
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/SR/X2/train_swinir_sr_classical_x2.yaml', help='path to config file')
+    parser.add_argument('--cfg', type=str, default='configs/Denoising/swinir_denoising_color.yaml', help='path to config file')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
-    parser.add_argument('--dist', action='store_true', help='use distributed training')
 
     args, unparsed = parser.parse_known_args()
 

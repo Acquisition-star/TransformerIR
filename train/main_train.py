@@ -29,7 +29,7 @@ def main(config, logger):
     model.cuda()
 
     # 优化器设置
-    optimizer = build_optimizer(config, model, logger)
+    optimizer = build_optimizer(config.optimizer, model, logger)
 
     loss_scaler = NativeScalerWithGradNormCount()
 

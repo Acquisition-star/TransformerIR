@@ -3,13 +3,26 @@ import os
 import torch
 
 
+def load_checkpoint_model(model, pth, logger):
+    logger.info(f"==============> Resuming form {pth}....................")
+    if pth.startswith('https'):
+        checkpoint = torch.hub.load_state_dict_from_url(
+            pth, map_location='cpu', check_hash=True)
+    else:
+        checkpoint = torch.load(pth, map_location='cpu')
+    msg = model.load_state_dict(checkpoint['model'], strict=False)
+    logger.info(msg)
+    del checkpoint
+    torch.cuda.empty_cache()
+
+
 def load_checkpoint(config, model, optimizer, lr_scheduler, loss_scaler, logger):
     logger.info(f"==============> Resuming form {config.resume}....................")
-    if config.MODEL.RESUME.startswith('https'):
+    if config.resume.startswith('https'):
         checkpoint = torch.hub.load_state_dict_from_url(
-            config.MODEL.RESUME, map_location='cpu', check_hash=True)
+            config.resume, map_location='cpu', check_hash=True)
     else:
-        checkpoint = torch.load(config.MODEL.RESUME, map_location='cpu')
+        checkpoint = torch.load(config.resume, map_location='cpu')
     msg = model.load_state_dict(checkpoint['model'], strict=False)
     logger.info(msg)
     max_accuracy = 0.0

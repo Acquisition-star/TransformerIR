@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import math
 import cv2
+import random
 
 IMG_EXTENSIONS = ['.jpg', '.JPG', '.jpeg', '.JPEG', '.png', '.PNG', '.ppm', '.PPM', '.bmp', '.BMP', '.tif']
 
@@ -35,6 +36,12 @@ def _get_paths_from_images(path):
 
 
 def read_images(path, n_channels=3):
+    """
+    根据输入图片地址读入图片
+    :param path: 输入图片地址
+    :param n_channels: 输入图片的通道数
+    :return: 读取完成的图片HWN-RGB
+    """
     img = None
     if n_channels == 1:
         img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
@@ -46,6 +53,47 @@ def read_images(path, n_channels=3):
         else:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # RGB
     return img
+
+
+def random_crop_img(img, patch):
+    """
+    将图片随机裁剪为patch大小的图像块
+    :param img: 图像
+    :param patch: 图像块大小
+    :return: 裁剪完成的图像ppC-RGB
+    """
+    H, W, _ = img.shape
+    # 随机裁剪图像块
+    random_start_h = random.randint(0, max(0, H - patch))
+    random_start_w = random.randint(0, max(0, W - patch))
+    patch_H = img[random_start_h:random_start_h + patch, random_start_w:random_start_w + patch, :]
+
+    # 随机操作图像
+    patch_H = augment_img(patch_H, mode=(random.randint(0, 7)))
+    return patch_H
+
+
+def random_crop_2img(img1, img2, patch):
+    """
+    将两张图片随机裁剪为patch大小的图像块
+    :param img1: 图像1
+    :param img2: 图像2
+    :param patch: 图像块大小
+    :return: 裁剪完成的图像ppC-RGB
+    """
+    assert img1.shape == img2.shape, 'img1 and img2 have different shape'
+    H, W, _ = img1.shape
+    # 随机裁剪图像块
+    random_start_h = random.randint(0, max(0, H - patch))
+    random_start_w = random.randint(0, max(0, W - patch))
+    patch_1 = img1[random_start_h:random_start_h + patch, random_start_w:random_start_w + patch, :]
+    patch_2 = img2[random_start_h:random_start_h + patch, random_start_w:random_start_w + patch, :]
+
+    # 随机操作图像
+    mode = random.randint(0, 7)
+    patch_1 = augment_img(patch_1, mode=mode)
+    patch_2 = augment_img(patch_2, mode=mode)
+    return patch_1, patch_2
 
 
 def image_crop(img_in, scale):
@@ -149,23 +197,23 @@ def img_resize_np(img, scale, antialiasing=True):
     return out_2.numpy()
 
 
-def augment_img(img, mode=0):
+def augment_img(img, mode):
     if mode == 0:
-        return img
+        return img  # 原始图像
     elif mode == 1:
-        return np.flipud(np.rot90(img))
+        return np.flipud(img)  # 上下翻转
     elif mode == 2:
-        return np.flipud(img)
+        return np.rot90(img)  # 顺时针旋转90度
     elif mode == 3:
-        return np.rot90(img, k=3)
+        return np.flipud(np.rot90(img))  # 顺时针旋转90度，上下翻转
     elif mode == 4:
-        return np.flipud(np.rot90(img, k=2))
+        return np.rot90(img, k=3)  # 逆时针旋转90度
     elif mode == 5:
-        return np.rot90(img)
+        return np.flipud(np.rot90(img, k=3))  # 逆时针旋转90度，上下翻转
     elif mode == 6:
-        return np.rot90(img, k=2)
+        return np.rot90(img, k=2)  # 顺时针旋转180度
     elif mode == 7:
-        return np.flipud(np.rot90(img, k=3))
+        return np.flipud(np.rot90(img, k=2))  # 顺时针旋转180度，上下翻转
 
 
 def single2tensor3(img):

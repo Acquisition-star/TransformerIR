@@ -8,19 +8,22 @@ from collections import OrderedDict
 from model.nets.SwinIR import SwinIR
 from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr
 from utils.logger import create_logger
+from utils.checkpoint import load_checkpoint_model
+
 
 # 数据设置
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-noise = 50
+noise = 15
 border = 0
 window_size = 8
-root_path = f'results/color_dn/noise_{noise}'
+env = 'default'
+root_path = f'results/color_dn/{env}/noise_{noise}'
 data_paths = [r'E:\Data\Test\CBSD68', r'E:\Data\Test\Kodak24', r'E:\Data\Test\McMaster']
 os.makedirs(root_path, exist_ok=True)
 logger = create_logger(root_path, name=f'color_dn_{noise}')
 
 model_list = {
-    'SwinIR': 'model_zoo/SwinIR/005_colorDN_DFWB_s128w8_SwinIR-M_noise50.pth',
+    'SwinIR': r'F:\GraduationThesis\Project\TransformerIR\Info\default\swinir_denoising_color_15\checkpoints\ckpt_epoch_9.pth',
 }
 
 
@@ -91,10 +94,11 @@ def main():
             logger.info(f'{data_name} finish to test')
             average_psnr = np.mean(test_results[model_name][data_name]['psnr'])
             average_ssim = np.mean(test_results[model_name][data_name]['ssim'])
-            logger.info('{} -- Average PSNR/SSIM(RGB): {:.2f} dB; {:.4f}'.format(img_path, average_psnr, average_ssim))
             average_psnr_y = np.mean(test_results[model_name][data_name]['psnr_y'])
             average_ssim_y = np.mean(test_results[model_name][data_name]['ssim_y'])
-            logger.info('-- Average PSNR_Y/SSIM_Y: {:.2f} dB; {:.4f}'.format(average_psnr_y, average_ssim_y))
+            logger.info(
+                '{} -- Average PSNR/SSIM(RGB): {:.2f} dB; {:.4f}  -- Average PSNR_Y/SSIM_Y: {:.2f} dB; {:.4f}'.format(
+                    img_path, average_psnr, average_ssim, average_psnr_y, average_ssim_y))
 
 
 def define_model(model_name, pth):
@@ -102,14 +106,10 @@ def define_model(model_name, pth):
     if model_name == 'SwinIR':
         if os.path.exists(pth):
             logger.info(f'Loading model from {pth}')
-        model = SwinIR(upscale=1, in_chans=3, img_size=128, window_size=8,
+        model = SwinIR(upscale=1, in_chans=3, img_size=24, window_size=8,
                        img_range=1., depths=[6, 6, 6, 6, 6, 6], embed_dim=180, num_heads=[6, 6, 6, 6, 6, 6],
                        mlp_ratio=2, upsampler='', resi_connection='1conv')
-        param_key_g = 'params'
-        pretrained_model = torch.load(pth)
-        model.load_state_dict(
-            pretrained_model[param_key_g] if param_key_g in pretrained_model.keys() else pretrained_model,
-            strict=True)
+        load_checkpoint_model(model, pth, logger)
     return model
 
 

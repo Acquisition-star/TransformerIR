@@ -4,11 +4,11 @@ import torch
 
 def build_scheduler(config, optimizer):
     lr_scheduler = None
-    if config.train.scheduler.type == 'MultiStepLR':
+    if config.type == 'MultiStepLR':
         lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(
             optimizer,
-            config.train.scheduler.milestones,
-            config.train.scheduler.gamma
+            config.milestones,
+            config.gamma
         )
     else:
         raise NotImplementedError
