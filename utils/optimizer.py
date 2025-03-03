@@ -2,14 +2,15 @@ import torch
 
 
 def build_optimizer(config, model, logger):
-    opt_lower = config.train.optimizer.type.lower()
+    opt_lower = config.type.lower()
     optimizer = None
     optim_params = set_weight_decay(model, logger)
     if opt_lower == 'adam':
-        optimizer = torch.optim.Adam(optim_params,
-                                     lr=config.train.optimizer.learning_rate,
-                                     betas=config.train.optimizer.betas,
-                                     weight_decay=config.train.optimizer.weight_decay)
+        optimizer = torch.optim.Adam(
+            optim_params,
+            lr=config.learning_rate,
+            betas=config.betas,
+            weight_decay=config.weight_decay)
     else:
         raise NotImplementedError
     return optimizer
