@@ -3,6 +3,15 @@ import os
 import torch
 import time
 from collections import OrderedDict
+import random
+import argparse
+import numpy as np
+import torch.backends.cudnn as cudnn
+
+from pathlib import Path
+
+from utils.logger import create_logger
+from utils.config import get_config
 
 from data.build import build_loader
 from model.build import build_model
@@ -13,7 +22,21 @@ from utils.checkpoint import load_checkpoint, save_checkpoint, auto_resume_helpe
 from utils.util import calculate_psnr, tensor2uint
 
 
-def train_swinir(config, logger):
+def parse_option():
+    parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
+    parser.add_argument('--cfg', type=str, default='configs/Denoising/swinir_denoising_color.yaml',
+                        help='path to config file')
+    parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
+    parser.add_argument('--env', type=str, default='default', help='experiment name')
+
+    args, unparsed = parser.parse_known_args()
+
+    config = get_config(args)
+
+    return args, config
+
+
+def main(config, logger):
     dataset_train, dataset_val, data_loader_train, data_loader_val = build_loader(config)
 
     # 模型定义
@@ -56,8 +79,6 @@ def train_swinir(config, logger):
     for epoch in range(config.train.start_epoch, config.train.num_epochs):
         # 开始训练
         for iter, train_data in enumerate(data_loader_train):
-            # 学习率更新
-            lr_scheduler.step(epoch)
             # 参数优化
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
@@ -67,9 +88,11 @@ def train_swinir(config, logger):
             optimizer.step()
             if epoch % config.train.checkpoint_print == 0:
                 message = '<epoch:{:3d}, iter:{:8,d}, lr:{:.3e}, loss:{:.3e}> '.format(epoch, iter,
-                                                                                       lr_scheduler.get_lr()[0],
+                                                                                       lr_scheduler.get_last_lr()[0],
                                                                                        loss.item())
                 logger.info(message)
+        # 学习率更新
+        lr_scheduler.step()
         # 测试
         if epoch % config.train.checkpoint_val == 0:
             avg_psnr = validate(model, data_loader_val, logger)
@@ -77,7 +100,6 @@ def train_swinir(config, logger):
             max_psnr = max(max_psnr, avg_psnr)
             # 模型保存
             save_checkpoint(config, epoch, model, max_psnr, optimizer, lr_scheduler, criterion, logger)
-
     logger.info('Finished Training')
 
 
@@ -102,3 +124,38 @@ def validate(model, data_loader, logger):
         avg_psnr += current_psnr
     avg_psnr /= len(data_loader.dataset)
     return avg_psnr
+
+
+if __name__ == "__main__":
+    args, config = parse_option()
+
+    # 输出文件保存地址
+    root_path = Path(args.output) / args.env / config.task  # 根目录
+    checkpoint_path = root_path / "checkpoints"  # checkpoints目录
+    os.makedirs(root_path, exist_ok=True)
+    os.makedirs(checkpoint_path, exist_ok=True)
+
+    config.defrost()
+    config.path.root_path = str(root_path)
+    config.path.checkpoint_path = str(checkpoint_path)
+    config.path.config_path = str(root_path / "config.json")
+    config.freeze()
+
+    torch.manual_seed(config.seed)
+    torch.cuda.manual_seed(config.seed)
+    np.random.seed(config.seed)
+    random.seed(config.seed)
+    cudnn.benchmark = True
+
+    logger = create_logger(output_dir=config.path.root_path, name=config.task)
+
+    # 保存配置信息
+    with open(config.path.config_path, "w") as f:
+        f.write(config.dump())
+    logger.info(f"Full config saved to {config.path.config_path}")
+
+    # 显示config信息
+    # logger.info(config.dump())
+    # logger.info(json.dumps(vars(args)))
+
+    main(config, logger)

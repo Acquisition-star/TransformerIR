@@ -1,0 +1,60 @@
+task: 'swinir_denoising_color_sidd'
+model: 'swinir'
+seed: 0
+n_channels: 3  # 输入图像通道数
+sigma: 15
+path:
+  pretrained_net: null
+datasets:
+  dataset_type: 'denoising'
+  dataloader_shuffle: true
+  dataloader_num_workers: 2
+  dataloader_batch_size: 24
+  train:
+    state: 'Train'
+    H_path: [ 'E:\Data\SIDD\train\groundtruth' ]
+    L_path: [ 'E:\Data\SIDD\train\input' ]
+    image_size: 256
+  val:
+    state: 'Val'
+    H_path: [ 'E:\Data\SIDD\val\groundtruth' ]
+    L_path: [ 'E:\Data\SIDD\val\input' ]
+net:
+  type: 'swinir'
+  upscale: 1
+  in_chans: 3
+  img_size: 256
+  window_size: 8
+  img_range: 1.0
+  depths: [ 6, 6, 6, 6, 6, 6 ]
+  embed_dim: 180
+  num_heads: [ 6, 6, 6, 6, 6, 6 ]
+  mlp_ratio: 2
+  upsampler: 'null'
+  resi_connection: '1conv'
+  init_type: 'default'
+optimizer:
+  type: 'adam'
+  learning_rate: 2.0e-4  # 学习率
+  weight_decay: 0  # 权重衰减
+  clipgrad: null # 梯度裁剪
+  betas: [ 0.9, 0.999 ]
+  reuse: true
+criterion:
+  type: 'charbonnier'
+  eps: 1.0e-9
+scheduler:
+  type: 'MultiStepLR'
+  milestones: [ 10, 20, 30, 40, 50 ]
+  gamma: 0.5
+train:
+  start_epoch: 0
+  num_epochs: 70
+  checkpoint_val: 1
+  checkpoint_print: 1
+
+  lossfn_weight: 1.0
+  decay: 0.999
+
+  G_param_strict: true
+  E_param_strict: true
