@@ -5,7 +5,7 @@ import cv2
 
 
 def main():
-    root = r'E:\Data\Test\urban100'
+    root = r'E:\Data\Test\McMaster'
     H_path = f'{root}\HI'
     noises = [15, 25, 50]
 
@@ -18,7 +18,7 @@ def main():
             # 读入图片
             filename, img_lq, img_gt = get_image_pair(path, noise)  # HWC-BGR, float32
             img_lq = (img_lq * 255.0).round().astype(np.uint8)
-            cv2.imwrite(os.path.join(L_path, f'{filename}_noise{noise}.png'), img_lq)
+            cv2.imwrite(os.path.join(L_path, f'{filename}.png'), img_lq)
 
     print('数据集构建成功！')
 

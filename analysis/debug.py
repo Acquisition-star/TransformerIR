@@ -11,8 +11,6 @@ from model.nets.SwinIR import SwinIR
 from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr, tensor2uint
 from utils.logger import create_logger
 from utils.checkpoint import load_checkpoint_model
-from train.SwinIR_train import validate
-from data.load_images import read_images
 from data.dataset_denoising import Dataset_denoising
 
 # 数据设置

@@ -1,6 +1,6 @@
 from torch.utils.data import DataLoader
 from .dataset_sr import DatasetSR
-from .dataset_denoising import Dataset_denoising
+from .dataset_denoising import Dataset_denoising_train, Dataset_denoising_val
 
 
 def build_loader(config):
@@ -41,15 +41,19 @@ def build_loader_sr(config):
 
 
 def build_loader_denoising(config):
-    config.defrost()
-    config.datasets.n_channels = config.n_channels
-    config.datasets.sigma = config.sigma
-    config.datasets.train.n_channels = config.n_channels
-    config.datasets.train.sigma = config.sigma
-    config.datasets.val.n_channels = config.n_channels
-    config.datasets.val.sigma = config.sigma
-    config.freeze()
-    dataset_train, dataset_val = Dataset_denoising(config.datasets.train), Dataset_denoising(config.datasets.val)
+    dataset_train = Dataset_denoising_train(
+        patch_size=config.datasets.train.image_size,
+        sigma=config.sigma,
+        input_channels=config.n_channels,
+        H_path=config.datasets.train.H_path,
+        L_path=config.datasets.train.L_path
+    )
+    dataset_val = Dataset_denoising_val(
+        sigma=config.sigma,
+        input_channels=config.n_channels,
+        H_path=config.datasets.val.H_path,
+        L_path=config.datasets.val.L_path
+    )
     data_loader_train = DataLoader(
         dataset_train,
         batch_size=config.datasets.dataloader_batch_size,

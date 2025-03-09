@@ -13,12 +13,12 @@ datasets:
   train:
     state: 'Train'
     H_path: [ 'E:\Data\Test\Kodak24\HI' ]
-    L_path: [ 'E:\Data\Test\Kodak24\Noise15' ]
+    L_path: [ 'None' ]
     image_size: 24
   val:
     state: 'Val'
     H_path: [ 'E:\Data\Test\McMaster\HI' ]
-    L_path: [ 'E:\Data\Test\McMaster\Noise15' ]
+    L_path: [ 'None' ]
 net:
   type: 'swinir'
   upscale: 1
@@ -45,13 +45,12 @@ criterion:
   eps: 1.0e-9
 scheduler:
   type: 'MultiStepLR'
-#  milestones: [ 300, 450, 650, 800, 1000 ]
-  milestones: [ 1, 2, 3, 4, 4 ]
+  milestones: [ 275, 320, 400, 1500, 1600 ]
   gamma: 0.5
 train:
   start_epoch: 0
   num_epochs: 1000000
-  checkpoint_val: 4
+  checkpoint_val: 1
   checkpoint_print: 1
 
   lossfn_weight: 1.0
@@ -59,14 +58,3 @@ train:
 
   G_param_strict: true
   E_param_strict: true
-
-
-
-
-
-
-
-
-
-
-

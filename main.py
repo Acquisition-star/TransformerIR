@@ -9,12 +9,12 @@ from pathlib import Path
 
 from utils.logger import create_logger
 from utils.config import get_config
-from train.SwinIR_train import train_swinir as main
 
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/Denoising/swinir_denoising_color.yaml', help='path to config file')
+    parser.add_argument('--cfg', type=str, default='configs/Denoising/swinir_denoising_color.yaml',
+                        help='path to config file')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
 
@@ -57,4 +57,4 @@ if __name__ == "__main__":
     # logger.info(config.dump())
     # logger.info(json.dumps(vars(args)))
 
-    main(config, logger)
+    # main(config, logger)

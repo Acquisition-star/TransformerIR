@@ -10,20 +10,20 @@ from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr
 from utils.logger import create_logger
 from utils.checkpoint import load_checkpoint_model
 
-
 # 数据设置
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 noise = 15
 border = 0
 window_size = 8
-env = 'default'
-root_path = f'results/color_dn/{env}/noise_{noise}'
-data_paths = [r'E:\Data\Test\CBSD68', r'E:\Data\Test\Kodak24', r'E:\Data\Test\McMaster']
+task_type = 'color_dn'
+env = 'example_1'
+root_path = f'results/{task_type}/{env}'
+data_paths = [r'E:\Data\Test\CBSD68\HI', r'E:\Data\Test\Kodak24\HI', r'E:\Data\Test\McMaster\HI']
 os.makedirs(root_path, exist_ok=True)
 logger = create_logger(root_path, name=f'color_dn_{noise}')
 
 model_list = {
-    'SwinIR': r'F:\GraduationThesis\Project\TransformerIR\Info\default\swinir_denoising_color_15\checkpoints\ckpt_epoch_9.pth',
+    'SwinIR': r'F:\GraduationThesis\Project\Results\Experiment_1\ckpt_epoch_294.pth',
 }
 
 
@@ -39,7 +39,7 @@ def main():
 
         # 数据集
         for data_path in data_paths:
-            data_name = data_path.split('\\')[-1]
+            data_name = data_path.split('\\')[-2]
             logger.info(f'{data_name} start to test')
             img_path = os.path.join(root_path, model_name, data_name)
             os.makedirs(img_path, exist_ok=True)
@@ -116,7 +116,7 @@ def define_model(model_name, pth):
 def get_image_pair(path, noise):
     (filename, suffix) = os.path.splitext(os.path.basename(path))
     img_gt = cv2.imread(path, cv2.IMREAD_COLOR).astype(np.float32) / 255.
-    np.random.seed(seed=0)
+    np.random.seed(seed=10)
     img_lq = img_gt + np.random.normal(0, noise / 255., img_gt.shape)
     return filename, img_lq, img_gt
 

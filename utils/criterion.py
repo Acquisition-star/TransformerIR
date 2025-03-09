@@ -24,4 +24,4 @@ class CharbonnierLoss(nn.Module):
 
     def forward(self, pred, target):
         diff = pred - target
-        return torch.mean(torch.sqrt(diff ** 2 + self.eps))
+        return torch.mean(torch.sqrt(diff ** 2 + self.eps ** 2))
