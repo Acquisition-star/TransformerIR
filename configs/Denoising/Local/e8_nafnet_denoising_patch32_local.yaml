@@ -1,0 +1,47 @@
+task: 'uformer_denoising_color_sidd'
+model: 'NAFNet-32'
+seed: 0
+n_channels: 3  # 输入图像通道数
+sigma: 15
+path:
+  pretrained_net: null
+datasets:
+  dataset_type: 'denoising'
+  dataloader_shuffle: true
+  dataloader_num_workers: 1
+  dataloader_batch_size: 12
+  train:
+    state: 'Train'
+    H_path: [ 'E:\Data\SIDD\train\groundtruth',  'E:\Data\DIV2K\DIV2K_train_HR' ]
+    L_path: [ 'E:\Data\SIDD\train\input', 'None' ]
+    image_size: 32
+  val:
+    state: 'Val'
+    H_path: [ 'E:\Data\SIDD\val\groundtruth' ]
+    L_path: [ 'E:\Data\SIDD\val\input' ]
+net:
+  type: 'NAFNet'
+  img_size: 32
+  enc_blk_nums: [ 2, 2, 4, 8 ]
+  middle_blk_num: 12
+  dec_blk_nums: [ 2, 2, 2, 2 ]
+optimizer:
+  type: 'adamw'
+  learning_rate: 1.0e-3  # 学习率
+  weight_decay: 0.0  # 权重衰减
+  betas: [ 0.9, 0.9 ]
+  eps: 1.0e-8
+criterion:
+  type: 'psnrloss'
+  loss_weight: 1.0
+  reduction: 'mean'
+scheduler:
+  type: 'CosineAnnealingLR'
+  T_max: 100
+  eta_min: 1.0e-7
+train:
+  lossfn_weight: 1.0
+  start_epoch: 0
+  num_epochs: 100
+  checkpoint_val: 1
+  checkpoint_print: 1

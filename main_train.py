@@ -24,8 +24,10 @@ from utils.util import calculate_psnr, tensor2uint
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/Denoising/e5_e5_uformer_denoising_patch128_local.yaml',
+    parser.add_argument('--cfg', type=str, default='configs/Denoising/e0_traindemo.yaml',
                         help='path to config file')
+    parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
+    parser.add_argument("--batch_size", type=int, default=2, help='batch size')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
 
@@ -83,7 +85,11 @@ def main(config, logger):
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
             outputs = model(L_img)
-            loss = config.train.lossfn_weight * criterion(outputs, H_img)
+
+            if config.criterion.type in ['stripformer_loss']:
+                loss = criterion(outputs, H_img, L_img)
+            else:
+                loss = config.train.lossfn_weight * criterion(outputs, H_img)
             loss.backward()
             optimizer.step()
             if epoch % config.train.checkpoint_print == 0:

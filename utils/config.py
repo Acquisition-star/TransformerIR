@@ -11,6 +11,10 @@ def update_config(args, config):
     config.defrost()
     if hasattr(args, 'dist'):
         config.dist = args.dist
+    if hasattr(args, 'dataloader_workers'):
+        config.datasets.dataloader_num_workers = args.dataloader_workers
+    if hasattr(args, 'batch_size'):
+        config.datasets.dataloader_batch_size = args.batch_size
     config.freeze()
 
 

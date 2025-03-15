@@ -11,6 +11,14 @@ def build_optimizer(config, model, logger):
             lr=config.learning_rate,
             betas=config.betas,
             weight_decay=config.weight_decay)
+    elif opt_lower == 'adamw':
+        optimizer = torch.optim.AdamW(
+            optim_params,
+            lr=config.learning_rate,
+            betas=config.betas,
+            eps=config.eps,
+            weight_decay=config.weight_decay
+        )
     else:
         raise NotImplementedError
     return optimizer

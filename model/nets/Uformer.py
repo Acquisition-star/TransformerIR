@@ -1372,11 +1372,12 @@ if __name__ == "__main__":
                                 win_size=8, mlp_ratio=4., token_projection='linear', token_mlp='leff', modulator=True,
                                 shift_flag=False)
     print(model_restoration)
-    # from ptflops import get_model_complexity_info
-    # macs, params = get_model_complexity_info(model_restoration, (3, input_size, input_size), as_strings=True,
-    #                                             print_per_layer_stat=True, verbose=True)
-    # print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
-    # print('{:<30}  {:<8}'.format('Number of parameters: ', params))
+    from ptflops import get_model_complexity_info
+    macs, params = get_model_complexity_info(model_restoration, (3, input_size, input_size), as_strings=True,
+                                                print_per_layer_stat=True, verbose=True)
+    print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
+    print('{:<30}  {:<8}'.format('Number of parameters: ', params))
     print('# model_restoration parameters: %.2f M' % (
             sum(param.numel() for param in model_restoration.parameters()) / 1e6))
     print("number of GFLOPs: %.2f G" % (model_restoration.flops() / 1e9))
+

@@ -67,8 +67,8 @@ def main(config, logger):
 
     if config.resume:
         max_accuracy = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
-        psnr = validate(model, data_loader_val, logger)
-        logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {psnr:.1f}db")
+        # psnr = validate(model, data_loader_val, logger)
+        # logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {psnr:.1f}db")
 
     logger.info(f"Start training...")
     start_time = time.time()

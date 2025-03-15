@@ -9,21 +9,21 @@ datasets:
   dataset_type: 'denoising'
   dataloader_shuffle: true
   dataloader_num_workers: 2
-  dataloader_batch_size: 24
+  dataloader_batch_size: 32
   train:
     state: 'Train'
-    H_path: [ 'E:\Data\SIDD\train\groundtruth' ]
-    L_path: [ 'E:\Data\SIDD\train\input' ]
-    image_size: 256
+    H_path: [ '/root/autodl-tmp/TrainData/SIDD/train/groundtruth' ]
+    L_path: [ '/root/autodl-tmp/TrainData/SIDD/train/input' ]
+    image_size: 48
   val:
     state: 'Val'
-    H_path: [ 'E:\Data\SIDD\val\groundtruth' ]
-    L_path: [ 'E:\Data\SIDD\val\input' ]
+    H_path: [ '/root/autodl-tmp/TrainData/SIDD/val/groundtruth' ]
+    L_path: [ '/root/autodl-tmp/TrainData/SIDD/val/input' ]
 net:
   type: 'swinir'
   upscale: 1
   in_chans: 3
-  img_size: 256
+  img_size: 48
   window_size: 8
   img_range: 1.0
   depths: [ 6, 6, 6, 6, 6, 6 ]
