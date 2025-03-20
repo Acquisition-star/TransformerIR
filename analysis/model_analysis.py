@@ -12,11 +12,12 @@ from model.nets.SwinIR import SwinIR
 from model.nets.Uformer import Uformer
 from model.nets.NAFNet import NAFNet
 from model.nets.Stripformer import Stripformer
+from model.TransformerIR import TransformerIR
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
-parser.add_argument('--model_name', type=str, default='Uformer-B', help='model name')
+parser.add_argument('--model_name', type=str, default='TransformerIR', help='model name')
 
 args = parser.parse_known_args()[0]
 
@@ -88,6 +89,8 @@ def define_only_model(model_name):
         )
     elif model_name == 'Stripformer':
         model = Stripformer()
+    elif model_name == 'TransformerIR':
+        model = TransformerIR()
     else:
         raise Exception("Model error!")
     return model

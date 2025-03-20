@@ -2,6 +2,7 @@ from .nets.Stripformer import Stripformer
 from .nets.SwinIR import SwinIR
 from .nets.Uformer import Uformer
 from .nets.NAFNet import NAFNet
+from .TransformerIR import TransformerIR
 
 
 def build_model(config):
@@ -39,6 +40,17 @@ def build_model(config):
         )
     elif 'stripformer' in model_type:
         model = Stripformer()
+    elif model_type == 'baseline':
+        model = TransformerIR(
+            img_size=config.img_size,
+            channels=config.channels,
+            window_size=config.window_size,
+            embedding_dim=config.embedding_dim,
+            middle_blks=config.middle_blks,
+            encoder_blk_nums=config.encoder_blk_nums,
+            decoder_blk_nums=config.decoder_blk_nums,
+            attn_type= config.attn_type if config.attn_type != 'None' else None,
+        )
     else:
         raise NotImplementedError(f"Unknown model: {model_type}")
     return model

@@ -1,4 +1,11 @@
-# 训练命令
+# 训练命令  
+## Baseline训练
+### Identity
+``python baseline_train.py --cfg configs/Denoising/Baseline/demo.yaml --dataloader_workers 1 --batch_size 48 --env baseline_0``
+### WindowAttention
+### ChannelAttention
+  
+
 #### 实验3
 **Local**  
 ``python main_train.py --cfg configs/Denoising/Local/e3_swinir_denoising_patch96_local.yaml --dataloader_workers 1 --batch_size 2 --env experiment_3``  
