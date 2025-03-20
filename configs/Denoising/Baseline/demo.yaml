@@ -40,11 +40,11 @@ criterion:
   eps: 1.0e-9
 scheduler:
   type: 'CosineAnnealingLR'
-  T_max: 5
+  T_max: 100
   eta_min: 1.0e-7
 train:
   start_epoch: 0
-  num_epochs: 5
+  num_epochs: 100
   checkpoint_val: 1
   checkpoint_print: 1
   lossfn_weight: 1.0
