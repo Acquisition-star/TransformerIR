@@ -124,7 +124,7 @@ def define_model(model_name, pth):
 def get_image_pair(path, noise):
     (filename, suffix) = os.path.splitext(os.path.basename(path))
     img_gt = cv2.imread(path, cv2.IMREAD_COLOR).astype(np.float32) / 255.
-    np.random.seed(seed=10)
+    np.random.seed(seed=0)
     img_lq = img_gt + np.random.normal(0, noise / 255., img_gt.shape)
     return filename, img_lq, img_gt
 

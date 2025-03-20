@@ -7,8 +7,14 @@ import random
 import argparse
 import numpy as np
 import torch.backends.cudnn as cudnn
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
 from pathlib import Path
+
+from timm.utils import AverageMeter
 
 from utils.logger import create_logger
 from utils.config import get_config
@@ -24,8 +30,10 @@ from utils.util import calculate_psnr, tensor2uint
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/Denoising/e5_e5_uformer_denoising_patch128_local.yaml',
+    parser.add_argument('--cfg', type=str, default='configs/Denoising/Baseline/demo.yaml',
                         help='path to config file')
+    parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
+    parser.add_argument("--batch_size", type=int, default=24, help='batch size')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
 
@@ -68,46 +76,63 @@ def main(config, logger):
     if config.resume:
         max_accuracy = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
         # psnr = validate(model, data_loader_val, logger)
-        # logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {psnr:.1f}db")
+        logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {max_accuracy:.1f}db")
 
     logger.info(f"Start training...")
-    start_time = time.time()
-    max_accuracy = 0.0
-    max_psnr = 0.0
 
-    current_step = 0
+    record = {'epoch': [], 'lr': [], 'loss': []}
+
     for epoch in range(config.train.start_epoch, config.train.num_epochs):
+        # loss记录
+        avg_loss = AverageMeter()
         # 开始训练
         for iter, train_data in enumerate(data_loader_train):
             # 参数优化
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
             outputs = model(L_img)
-            loss = config.train.lossfn_weight * criterion(outputs, H_img)
+
+            if config.criterion.type in ['stripformer_loss']:
+                loss = criterion(outputs, H_img, L_img)
+            else:
+                loss = config.train.lossfn_weight * criterion(outputs, H_img)
             loss.backward()
             optimizer.step()
+            avg_loss.update(loss.item())
             if epoch % config.train.checkpoint_print == 0:
                 message = '<epoch:{:3d}, iter:{:8,d}, lr:{:.3e}, loss:{:.3e}> '.format(epoch, iter,
                                                                                        lr_scheduler.get_last_lr()[0],
                                                                                        loss.item())
                 logger.info(message)
+
+        # 数据记录
+        record['epoch'].append(epoch)
+        record['lr'].append(lr_scheduler.get_last_lr()[0])
+        record['loss'].append(avg_loss.avg)
+
         # 学习率更新
         lr_scheduler.step()
         # 测试
         if epoch % config.train.checkpoint_val == 0:
             avg_psnr = validate(model, data_loader_val, logger)
             logger.info('<epoch:{:3d}, Average PSNR : {:<.2f}dB\n'.format(epoch, avg_psnr))
-            max_psnr = max(max_psnr, avg_psnr)
             # 模型保存
-            save_checkpoint(config, epoch, model, max_psnr, optimizer, lr_scheduler, criterion, logger)
+            save_checkpoint(config, epoch, model, avg_psnr, optimizer, lr_scheduler, criterion, logger)
+
+    df = pd.DataFrame(record)
+
+    df_plot(df, config.path.root_path)
+    df.to_csv(f'{config.path.root_path}/training_records.csv', index=False, encoding='utf-8-sig')
+
     logger.info('Finished Training')
 
 
 @torch.no_grad()
 def validate(model, data_loader, logger):
-    avg_psnr = 0.0
     model.eval()
     logger.info('Start validation...')
+
+    avg_psnr = AverageMeter()
 
     for iter, val_data in enumerate(data_loader):
         L_img, H_img = val_data['L'].cuda(), val_data['H'].cuda()
@@ -121,9 +146,53 @@ def validate(model, data_loader, logger):
         G_img = tensor2uint(visuals['G'])
         current_psnr = calculate_psnr(G_img, H_img)
         logger.info('{:->4d}--> {:>10s} | {:<4.2f}dB'.format(iter, image_name, current_psnr))
-        avg_psnr += current_psnr
-    avg_psnr /= len(data_loader.dataset)
-    return avg_psnr
+        avg_psnr.update(current_psnr)
+    return avg_psnr.avg
+
+
+def df_plot(df, path):
+    # 创建画布和垂直排列的双子图（更适应长序列）
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+
+    # 通用样式设置
+    plot_config = {
+        "linewidth": 1.5,
+        "alpha": 0.8,
+        "marker": "",  # 移除数据点标记
+        "markersize": 0
+    }
+
+    # 上：学习率曲线（对数坐标）
+    sns.lineplot(
+        data=df, x='iter', y='lr',
+        ax=ax1, color='royalblue',
+        **plot_config
+    )
+    ax1.set_yscale('log')  # 对数坐标转换
+    ax1.grid(True, which='both', linestyle=':', alpha=0.5)
+    ax1.set_ylabel('Learning Rate', labelpad=10)
+
+    # 下：损失曲线
+    sns.lineplot(
+        data=df, x='iter', y='loss',
+        ax=ax2, color='crimson',
+        **plot_config
+    )
+    ax2.grid(True, linestyle='--', alpha=0.5)
+    ax2.set_xlabel('Iteration', labelpad=10)
+    ax2.set_ylabel('Loss', labelpad=10)
+
+    # X轴优化
+    for ax in [ax1, ax2]:
+        ax.xaxis.set_major_locator(MaxNLocator(10))  # 自动间隔
+        ax.tick_params(axis='x', rotation=45)  # 旋转标签
+
+    # 紧凑布局
+    plt.tight_layout(h_pad=3.0)  # 控制子图垂直间距
+    plt.subplots_adjust(top=0.92)  # 顶部留出标题空间
+    plt.suptitle('Training Process Monitoring', y=0.97)
+
+    plt.savefig(f'{path}/training_plot.png', dpi=300, bbox_inches='tight')  # 保存图像
 
 
 if __name__ == "__main__":
