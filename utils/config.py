@@ -7,6 +7,20 @@ def _check_args(args, name):
     return False
 
 
+def replace_path(path):
+    if path == 'None':
+        return 'None'
+    # 将路径中的反斜杠替换为正斜杠
+    path = path.replace('\\', '/')
+    # 找到 'SIDD/train/groundtruth' 的位置
+    index = path.find('SIDD')
+    if index != -1:
+        # 替换为新的路径前缀
+        new_path = '/root/autodl-tmp/TrainData/' + path[index:]
+        return new_path
+    return path
+
+
 def update_config(args, config):
     config.defrost()
     if hasattr(args, 'dist'):
@@ -15,6 +29,12 @@ def update_config(args, config):
         config.datasets.dataloader_num_workers = args.dataloader_workers
     if hasattr(args, 'batch_size'):
         config.datasets.dataloader_batch_size = args.batch_size
+    if hasattr(args, 'autodl'):
+        if args.autodl:
+            config.datasets.train.H_path = [replace_path(p) for p in config.datasets.train.H_path]
+            config.datasets.train.L_path = [replace_path(p) for p in config.datasets.train.L_path]
+            config.datasets.val.H_path = [replace_path(p) for p in config.datasets.val.H_path]
+            config.datasets.val.L_path = [replace_path(p) for p in config.datasets.val.L_path]
     config.freeze()
 
 

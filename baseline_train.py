@@ -36,6 +36,7 @@ def parse_option():
     parser.add_argument("--batch_size", type=int, default=24, help='batch size')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
+    parser.add_argument('--autodl', action='store_true', default=False, help='whether to use autodl machine to train')
 
     args, unparsed = parser.parse_known_args()
 
@@ -73,14 +74,17 @@ def main(config, logger):
     else:
         logger.info(f"No checkpoint found in {config.path.checkpoint_path}. Start training from scratch!")
 
+    record = None
+
     if config.resume:
-        max_accuracy = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
+        max_accuracy, record = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
         # psnr = validate(model, data_loader_val, logger)
         logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {max_accuracy:.1f}db")
 
     logger.info(f"Start training...")
 
-    record = {'epoch': [], 'lr': [], 'loss': []}
+    if record is None:
+        record = {'epoch': [], 'lr': [], 'loss': []}
 
     for epoch in range(config.train.start_epoch, config.train.num_epochs):
         # loss记录
@@ -106,9 +110,9 @@ def main(config, logger):
                 logger.info(message)
 
         # 数据记录
-        record['epoch'].append(epoch)
-        record['lr'].append(lr_scheduler.get_last_lr()[0])
-        record['loss'].append(avg_loss.avg)
+        record['epoch'].append(int(epoch))
+        record['lr'].append(round(lr_scheduler.get_last_lr()[0], 10))
+        record['loss'].append(round(avg_loss.avg, 6))
 
         # 学习率更新
         lr_scheduler.step()
@@ -117,7 +121,7 @@ def main(config, logger):
             avg_psnr = validate(model, data_loader_val, logger)
             logger.info('<epoch:{:3d}, Average PSNR : {:<.2f}dB\n'.format(epoch, avg_psnr))
             # 模型保存
-            save_checkpoint(config, epoch, model, avg_psnr, optimizer, lr_scheduler, criterion, logger)
+            save_checkpoint(config, epoch, model, avg_psnr, optimizer, lr_scheduler, criterion, logger, record)
 
     df = pd.DataFrame(record)
 
@@ -164,7 +168,7 @@ def df_plot(df, path):
 
     # 上：学习率曲线（对数坐标）
     sns.lineplot(
-        data=df, x='iter', y='lr',
+        data=df, x='epoch', y='lr',
         ax=ax1, color='royalblue',
         **plot_config
     )
@@ -174,12 +178,12 @@ def df_plot(df, path):
 
     # 下：损失曲线
     sns.lineplot(
-        data=df, x='iter', y='loss',
+        data=df, x='epoch', y='loss',
         ax=ax2, color='crimson',
         **plot_config
     )
     ax2.grid(True, linestyle='--', alpha=0.5)
-    ax2.set_xlabel('Iteration', labelpad=10)
+    ax2.set_xlabel('Epoch', labelpad=10)
     ax2.set_ylabel('Loss', labelpad=10)
 
     # X轴优化

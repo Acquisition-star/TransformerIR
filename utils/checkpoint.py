@@ -26,6 +26,7 @@ def load_checkpoint(config, model, optimizer, lr_scheduler, loss_scaler, logger)
     msg = model.load_state_dict(checkpoint['model'], strict=False)
     logger.info(msg)
     max_accuracy = 0.0
+    records = None
     if 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
         optimizer.load_state_dict(checkpoint['optimizer'])
         lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -37,20 +38,23 @@ def load_checkpoint(config, model, optimizer, lr_scheduler, loss_scaler, logger)
         logger.info(f"=> loaded successfully '{config.resume}' (epoch {checkpoint['epoch']})")
         if 'max_accuracy' in checkpoint:
             max_accuracy = checkpoint['max_accuracy']
+        if 'records' in checkpoint:
+            records = checkpoint['records']
 
     del checkpoint
     torch.cuda.empty_cache()
-    return max_accuracy
+    return max_accuracy, records
 
 
-def save_checkpoint(config, epoch, model, max_accuracy, optimizer, lr_scheduler, loss_scaler, logger):
+def save_checkpoint(config, epoch, model, max_accuracy, optimizer, lr_scheduler, loss_scaler, logger, records=None):
     save_state = {'model': model.state_dict(),
                   'optimizer': optimizer.state_dict(),
                   'lr_scheduler': lr_scheduler.state_dict(),
                   'max_accuracy': max_accuracy,
                   'scaler': loss_scaler.state_dict(),
                   'epoch': epoch,
-                  'config': config}
+                  'config': config,
+                  'records': records}
 
     save_path = os.path.join(config.path.checkpoint_path, f'ckpt_epoch_{epoch}.pth')
     logger.info(f"{save_path} saving......")

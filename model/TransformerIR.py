@@ -64,10 +64,9 @@ class WindowAttention(nn.Module):
         self.proj_drop = nn.Dropout(proj_drop)
         self.softmax = nn.Softmax(dim=-1)
 
-    def forward(self, x, mask=None):
+    def forward(self, x):
         """
         :param x: 输入特征 (B, C, H, W)
-        :param mask: (0/-inf) mask with shape of (num_windows, Wh*Ww, Wh*Ww) or None
         """
         N = self.window_size * self.window_size
         _, C, H, W = x.size()
@@ -86,13 +85,7 @@ class WindowAttention(nn.Module):
 
         attn = attn + relative_position_bias.unsqueeze(0)
 
-        if mask is not None:
-            maskW = mask.shape[0]
-            attn = attn.reshape(B_ // maskW, maskW, self.num_heads, N, N) + mask.unsqueeze(1).unsqueeze(0)
-            attn = attn.view(-1, self.num_heads, N, N)
-            attn = self.softmax(attn)
-        else:
-            attn = self.softmax(attn)
+        attn = self.softmax(attn)
 
         attn = self.attn_drop(attn)
 
@@ -102,6 +95,110 @@ class WindowAttention(nn.Module):
         windows.reshape(B_, self.window_size, self.window_size, C)
         x = window_reverse(windows, self.window_size, H, W)
         return x
+
+
+class ShiftedWindowAttention(nn.Module):
+    def __init__(self, channels, window_size, num_heads, qkv_bias=True, qk_scale=None, attn_drop=0., proj_drop=0.,
+                 index=0):
+        super(ShiftedWindowAttention, self).__init__()
+        self.channels = channels
+        self.window_size = window_size
+        self.num_heads = num_heads
+        head_dim = channels // num_heads
+        self.scale = qk_scale or head_dim ** -0.5
+        self.shift_size = 0 if (index % 2 == 0) else window_size // 2
+
+        # 相对位置矩阵
+        self.relative_position_bias_table = nn.Parameter(
+            torch.zeros((2 * window_size - 1) * (2 * window_size - 1), num_heads)
+        )
+
+        coords_h = torch.arange(self.window_size)
+        coords_w = torch.arange(self.window_size)
+        coords = torch.stack(torch.meshgrid([coords_h, coords_w], indexing='ij'))  # 2, Wh, Ww
+        coords_flatten = torch.flatten(coords, 1)  # 2, Wh*Ww
+        relative_coords = coords_flatten[:, :, None] - coords_flatten[:, None, :]  # 2, Wh*Ww, Wh*Ww
+        relative_coords = relative_coords.permute(1, 2, 0).contiguous()  # Wh*Ww, Wh*Ww, 2
+        relative_coords[:, :, 0] += self.window_size - 1  # shift to start from 0
+        relative_coords[:, :, 1] += self.window_size - 1
+        relative_coords[:, :, 0] *= 2 * self.window_size - 1
+        relative_position_index = relative_coords.sum(-1)  # Wh*Ww, Wh*Ww
+        self.register_buffer("relative_position_index", relative_position_index)
+        trunc_normal_(self.relative_position_bias_table, std=.02)
+
+        self.qkv = nn.Linear(channels, channels * 3, bias=qkv_bias)
+        self.attn_drop = nn.Dropout(attn_drop)
+        self.proj = nn.Linear(channels, channels)
+        self.proj_drop = nn.Dropout(proj_drop)
+        self.softmax = nn.Softmax(dim=-1)
+
+    def forward(self, x, mask=None):
+        """
+        :param x: 输入特征 (B, C, H, W)
+        :param mask: (0/-inf) mask with shape of (num_windows, Wh*Ww, Wh*Ww) or None
+        """
+        B, C, H, W = x.shape
+        N = self.window_size * self.window_size
+        x = x.reshape(B, H, W, C)
+
+        # cyclic shift
+        if self.shift_size > 0:
+            x = torch.roll(x, shifts=(-self.shift_size, -self.shift_size), dims=(1, 2))
+
+        x = x.reshape(B, C, H, W)
+
+        mask = self.calculate_mask((H, W)).to(x.device)
+
+        # 窗口划分
+        windows = window_partition(x, self.window_size).reshape(-1, N, C)
+        B_ = windows.shape[0]
+        qkv = self.qkv(windows).reshape(B_, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        q, k, v = qkv[0], qkv[1], qkv[2]
+
+        q = q * self.scale
+        attn = (q @ k.transpose(-2, -1))
+        relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
+            self.window_size * self.window_size, self.window_size * self.window_size, -1)  # Wh*Ww,Wh*Ww,nH
+        relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
+
+        attn = attn + relative_position_bias.unsqueeze(0)
+
+        maskW = mask.shape[0]
+        attn = attn.reshape(B_ // maskW, maskW, self.num_heads, N, N) + mask.unsqueeze(1).unsqueeze(0)
+        attn = attn.view(-1, self.num_heads, N, N)
+        attn = self.softmax(attn)
+
+        attn = self.attn_drop(attn)
+
+        windows = (attn @ v).transpose(1, 2).reshape(B_, N, C)
+        windows = self.proj(windows)
+        windows = self.proj_drop(windows)
+        windows.reshape(B_, self.window_size, self.window_size, C)
+        x = window_reverse(windows, self.window_size, H, W)
+        return x
+
+    def calculate_mask(self, x_size):
+        # calculate attention mask for SW-MSA
+        H, W = x_size
+        img_mask = torch.zeros((1, H, W, 1))  # 1 H W 1
+        h_slices = (slice(0, -self.window_size),
+                    slice(-self.window_size, -self.shift_size),
+                    slice(-self.shift_size, None))
+        w_slices = (slice(0, -self.window_size),
+                    slice(-self.window_size, -self.shift_size),
+                    slice(-self.shift_size, None))
+        cnt = 0
+        for h in h_slices:
+            for w in w_slices:
+                img_mask[:, h, w, :] = cnt
+                cnt += 1
+
+        mask_windows = window_partition(img_mask.permute(0, 3, 1, 2), self.window_size)  # nW, window_size, window_size, 1
+        mask_windows = mask_windows.view(-1, self.window_size * self.window_size)
+        attn_mask = mask_windows.unsqueeze(1) - mask_windows.unsqueeze(2)
+        attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-100.0)).masked_fill(attn_mask == 0, float(0.0))
+
+        return attn_mask
 
 
 class ChannelAttention(nn.Module):
@@ -181,10 +278,11 @@ class LayerNorm2d(nn.Module):
 
 
 class BaseBlock(nn.Module):
-    def __init__(self, channels=32, window_size=8, attn_type=None):
+    def __init__(self, index, channels=32, window_size=8, attn_type=None):
         super(BaseBlock, self).__init__()
         self.channels = channels
         self.window_size = window_size
+        self.index = index
 
         self.norm1 = LayerNorm2d(self.channels)
         self.norm2 = LayerNorm2d(self.channels)
@@ -193,6 +291,9 @@ class BaseBlock(nn.Module):
             self.attention = nn.Identity()
         elif attn_type == 'WindowAttention':
             self.attention = WindowAttention(channels=self.channels, window_size=self.window_size, num_heads=4)
+        elif attn_type == 'ShiftedWindowAttention':
+            self.attention = ShiftedWindowAttention(channels=self.channels, window_size=self.window_size, num_heads=4,
+                                                    index=self.index)
         elif attn_type == 'ChannelAttention':
             self.attention = ChannelAttention(channels=self.channels)
         else:
@@ -244,7 +345,8 @@ class TransformerIR(nn.Module):
             cur_channels = self.embedding_dim * (2 ** index)
             self.encoders.append(
                 nn.Sequential(
-                    *[BaseBlock(channels=cur_channels, window_size=self.window_size, attn_type=self.attn_type)
+                    *[BaseBlock(channels=cur_channels, window_size=self.window_size, attn_type=self.attn_type,
+                                index=index)
                       for _ in range(num)]
                 )
             )
@@ -255,8 +357,8 @@ class TransformerIR(nn.Module):
         # 中间件
         self.middle_blks = nn.Sequential(
             *[BaseBlock(channels=self.embedding_dim * (2 ** len(self.encoder_blk_nums)), window_size=self.window_size,
-                        attn_type=self.attn_type)
-              for _ in range(self.middle_blks)]
+                        attn_type=self.attn_type, index=index)
+              for index in range(self.middle_blks)]
         )
 
         # 解码件
@@ -267,13 +369,14 @@ class TransformerIR(nn.Module):
             )
             self.decoders.append(
                 nn.Sequential(
-                    *[BaseBlock(channels=cur_channels // 2, window_size=self.window_size, attn_type=self.attn_type)
+                    *[BaseBlock(channels=cur_channels // 2, window_size=self.window_size, attn_type=self.attn_type,
+                                index=index)
                       for _ in range(num)]
                 )
             )
 
     def forward(self, x):
-        B, C, H, W = x.size()
+        # B, C, H, W = x.size()
         shortcut = x.contiguous()
         x = self.intro(x)
 
@@ -298,7 +401,7 @@ class TransformerIR(nn.Module):
 
 
 if __name__ == '__main__':
-    model = TransformerIR()
+    model = TransformerIR(attn_type='ShiftedWindowAttention')
     x = torch.randn(1, 3, 256, 256)
     out = model(x)
     print(out.shape)
