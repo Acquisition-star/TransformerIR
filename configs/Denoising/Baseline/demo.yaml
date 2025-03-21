@@ -25,6 +25,7 @@ net:
   channels: 3
   window_size: 8
   embedding_dim: 32
+  num_heads: 8
   attn_type: 'None'
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]

@@ -69,11 +69,12 @@ class LayerNorm2d(nn.Module):
 
 
 class BaseBlock(nn.Module):
-    def __init__(self, index, channels=32, window_size=8, attn_type=None):
+    def __init__(self, index, channels=32, window_size=8, num_heads=8, attn_type=None):
         super(BaseBlock, self).__init__()
         self.channels = channels
         self.window_size = window_size
         self.index = index
+        self.num_heads = num_heads
 
         self.norm1 = LayerNorm2d(self.channels)
         self.norm2 = LayerNorm2d(self.channels)
@@ -82,14 +83,16 @@ class BaseBlock(nn.Module):
         if attn_type is None:
             self.attention = nn.Identity()
         elif attn_type == 'WindowAttention':
-            self.attention = WindowAttention(channels=self.channels, window_size=self.window_size, num_heads=4)
+            self.attention = WindowAttention(channels=self.channels, window_size=self.window_size,
+                                             num_heads=self.num_heads)
         elif attn_type == 'ShiftedWindowAttention':
-            self.attention = ShiftedWindowAttention(channels=self.channels, window_size=self.window_size, num_heads=4,
+            self.attention = ShiftedWindowAttention(channels=self.channels, window_size=self.window_size,
+                                                    num_heads=self.num_heads,
                                                     index=self.index)
         elif attn_type == 'ChannelAttention':
             self.attention = ChannelAttention(channels=self.channels)
         elif attn_type == 'Multi-Dconv Head Transposed Attention':
-            self.attention = Multi_DConvAttention(dim=self.channels, num_heads=4, bias=False)
+            self.attention = Multi_DConvAttention(dim=self.channels, num_heads=self.num_heads, bias=False)
         else:
             raise NotImplementedError('Not implemented attention type {}'.format(attn_type))
 
@@ -102,7 +105,7 @@ class BaseBlock(nn.Module):
 
 
 class TransformerIR(nn.Module):
-    def __init__(self, img_size=256, channels=3, window_size=8, embedding_dim=32,
+    def __init__(self, img_size=256, channels=3, window_size=8, embedding_dim=32, num_heads=8,
                  middle_blks=2, encoder_blk_nums=None, decoder_blk_nums=None, attn_type=None):
         super(TransformerIR, self).__init__()
         self.img_size = img_size

@@ -46,10 +46,11 @@ def build_model(config):
             channels=config.channels,
             window_size=config.window_size,
             embedding_dim=config.embedding_dim,
+            num_heads=config.num_heads,
             middle_blks=config.middle_blks,
             encoder_blk_nums=config.encoder_blk_nums,
             decoder_blk_nums=config.decoder_blk_nums,
-            attn_type= config.attn_type if config.attn_type != 'None' else None,
+            attn_type=config.attn_type if config.attn_type != 'None' else None,
         )
     else:
         raise NotImplementedError(f"Unknown model: {model_type}")
