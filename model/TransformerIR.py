@@ -3,7 +3,7 @@ import torch.nn as nn
 
 from model.components.WindowAttention import WindowAttention, ShiftedWindowAttention
 from model.components.ChannelAttention import ChannelAttention
-from model.components.Multi_DConvAttention import Multi_DConvAttention
+from model.components.MultiDConvAttention import MultiDConvAttention
 
 
 class Mlp(nn.Module):
@@ -92,7 +92,7 @@ class BaseBlock(nn.Module):
         elif attn_type == 'ChannelAttention':
             self.attention = ChannelAttention(channels=self.channels)
         elif attn_type == 'Multi-Dconv Head Transposed Attention':
-            self.attention = Multi_DConvAttention(dim=self.channels, num_heads=self.num_heads, bias=False)
+            self.attention = MultiDConvAttention(dim=self.channels, num_heads=self.num_heads, bias=False)
         else:
             raise NotImplementedError('Not implemented attention type {}'.format(attn_type))
 

@@ -4,9 +4,9 @@ from einops import rearrange
 
 
 # Multi-DConv Head Transposed Self-Attention (MDTA)
-class Multi_DConvAttention(nn.Module):
+class MultiDConvAttention(nn.Module):
     def __init__(self, dim, num_heads, bias):
-        super(Multi_DConvAttention, self).__init__()
+        super(MultiDConvAttention, self).__init__()
         self.num_heads = num_heads
         self.temperature = nn.Parameter(torch.ones(num_heads, 1, 1))
 
