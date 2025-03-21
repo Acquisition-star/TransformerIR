@@ -1,11 +1,19 @@
 # 训练命令  
 ## Baseline训练
 ### Identity
-``python baseline_train.py --cfg configs/Denoising/Baseline/demo.yaml --dataloader_workers 1 --batch_size 48 --env baseline_0``
+``python baseline_train.py --cfg configs/Denoising/Baseline/demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_0``
 ### WindowAttention
+``python baseline_train.py --cfg configs/Denoising/Baseline/b1_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_1``  
+### Shifted-WindowAttention
+``python baseline_train.py --cfg configs/Denoising/Baseline/b2_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_2``  
 ### ChannelAttention
+``python baseline_train.py --cfg configs/Denoising/Baseline/b3_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_3``  
+### Multi-Dconv Head Transposed Attention
+``python baseline_train.py --cfg configs/Denoising/Baseline/b4_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_4``  
   
 
+
+## 论文模型训练
 #### 实验3
 **Local**  
 ``python main_train.py --cfg configs/Denoising/Local/e3_swinir_denoising_patch96_local.yaml --dataloader_workers 1 --batch_size 2 --env experiment_3``  
