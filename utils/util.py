@@ -205,3 +205,26 @@ def _no_grad_trunc_normal_(tensor, mean, std, a, b):
         # Clamp to ensure it's in the proper range
         tensor.clamp_(min=a, max=b)
         return tensor
+
+
+def calculate_lpips(img1, img2, lpips, border=0):
+    """
+    Calculates the LPIPS loss between two images.
+    :param img1: [0, 255]
+    :param img2: [0, 255]
+    :param lpips: 测试类
+    :param border: 边界值
+    :return: lpips
+    """
+    if not img1.shape == img2.shape:
+        raise ValueError('Input images must have the same dimensions.')
+    h, w = img1.shape[:2]
+    img1 = img1[border:h - border, border:w - border]
+    img2 = img2[border:h - border, border:w - border]
+
+    img1 = img1.astype(np.float64)
+    img2 = img2.astype(np.float64)
+
+    img1_tensor = torch.tensor(img1).permute(2, 0, 1).unsqueeze(0).float() / 255.0
+    img2_tensor = torch.tensor(img2).permute(2, 0, 1).unsqueeze(0).float() / 255.0
+    return lpips(img1_tensor, img2_tensor).item()

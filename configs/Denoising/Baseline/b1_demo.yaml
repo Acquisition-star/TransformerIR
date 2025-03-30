@@ -26,6 +26,7 @@ net:
   window_size: 8
   embedding_dim: 32
   num_heads: 8
+  bias: True
   attn_type: 'WindowAttention'
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]

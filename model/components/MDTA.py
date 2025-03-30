@@ -1,12 +1,14 @@
+# Restormer: Efficient Transformer for High-Resolution Image Restoration
+# Multi-DConv Head Transposed Self-Attention (MDTA)
+
 import torch
 import torch.nn as nn
 from einops import rearrange
 
 
-# Multi-DConv Head Transposed Self-Attention (MDTA)
-class MultiDConvAttention(nn.Module):
+class MDTA(nn.Module):
     def __init__(self, dim, num_heads, bias):
-        super(MultiDConvAttention, self).__init__()
+        super(MDTA, self).__init__()
         self.num_heads = num_heads
         self.temperature = nn.Parameter(torch.ones(num_heads, 1, 1))
 
@@ -40,6 +42,6 @@ class MultiDConvAttention(nn.Module):
 
 if __name__ == '__main__':
     input = torch.randn(1, 32, 128, 128)
-    model = Multi_DConvAttention(32, num_heads=4, bias=True)
+    model = MDTA(32, num_heads=4, bias=True)
     out = model(input)
     print(out.shape)

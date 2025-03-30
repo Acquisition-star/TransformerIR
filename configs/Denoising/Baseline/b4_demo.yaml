@@ -26,7 +26,8 @@ net:
   window_size: 8
   embedding_dim: 32
   num_heads: 8
-  attn_type: 'Multi-Dconv Head Transposed Attention'
+  bias: True
+  attn_type: 'Multi-DConv Head Transposed Self-Attention'
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]

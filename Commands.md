@@ -8,8 +8,10 @@
 ``python baseline_train.py --cfg configs/Denoising/Baseline/b2_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_2``  
 ### ChannelAttention
 ``python baseline_train.py --cfg configs/Denoising/Baseline/b3_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_3``  
-### Multi-Dconv Head Transposed Attention
+### Multi-Dconv Head Transposed Self-Attention
 ``python baseline_train.py --cfg configs/Denoising/Baseline/b4_demo.yaml --dataloader_workers 1 --batch_size 24 --env baseline_4``  
+### Channel + Window Attention
+``python baseline_train.py --cfg configs/Denoising/Baseline/try.yaml --dataloader_workers 1 --batch_size 12 --env TRY``  
   
 
 

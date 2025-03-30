@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
 
-from model.components.WindowAttention import WindowAttention, ShiftedWindowAttention
-from model.components.ChannelAttention import ChannelAttention
-from model.components.MultiDConvAttention import MultiDConvAttention
+from model.components.Attention import build_attention
 
 
 class Mlp(nn.Module):
@@ -69,32 +67,20 @@ class LayerNorm2d(nn.Module):
 
 
 class BaseBlock(nn.Module):
-    def __init__(self, index, channels=32, window_size=8, num_heads=8, attn_type=None):
+    def __init__(self, index, channels=32, window_size=8, num_heads=8, bias=False, attn_type=None):
         super(BaseBlock, self).__init__()
         self.channels = channels
         self.window_size = window_size
         self.index = index
         self.num_heads = num_heads
+        self.bias = bias
+        self.attn_type = attn_type
 
         self.norm1 = LayerNorm2d(self.channels)
         self.norm2 = LayerNorm2d(self.channels)
 
         ############################################## Attention Methods ##############################################
-        if attn_type is None:
-            self.attention = nn.Identity()
-        elif attn_type == 'WindowAttention':
-            self.attention = WindowAttention(channels=self.channels, window_size=self.window_size,
-                                             num_heads=self.num_heads)
-        elif attn_type == 'ShiftedWindowAttention':
-            self.attention = ShiftedWindowAttention(channels=self.channels, window_size=self.window_size,
-                                                    num_heads=self.num_heads,
-                                                    index=self.index)
-        elif attn_type == 'ChannelAttention':
-            self.attention = ChannelAttention(channels=self.channels)
-        elif attn_type == 'Multi-Dconv Head Transposed Attention':
-            self.attention = MultiDConvAttention(dim=self.channels, num_heads=self.num_heads, bias=False)
-        else:
-            raise NotImplementedError('Not implemented attention type {}'.format(attn_type))
+        self.attention = build_attention(index, channels, window_size, num_heads, bias, attn_type)
 
         self.mlp = Mlp(in_features=self.channels, hidden_features=2 * self.channels, out_features=self.channels)
 
@@ -105,12 +91,13 @@ class BaseBlock(nn.Module):
 
 
 class TransformerIR(nn.Module):
-    def __init__(self, img_size=256, channels=3, window_size=8, embedding_dim=32, num_heads=8,
+    def __init__(self, img_size=256, channels=3, window_size=8, embedding_dim=32, num_heads=8, bias=False,
                  middle_blks=2, encoder_blk_nums=None, decoder_blk_nums=None, attn_type=None):
         super(TransformerIR, self).__init__()
         self.img_size = img_size
         self.channels = channels
         self.window_size = window_size
+        self.bias = bias
         self.embedding_dim = embedding_dim
         self.middle_blks = middle_blks
         self.attn_type = attn_type
@@ -141,7 +128,7 @@ class TransformerIR(nn.Module):
             self.encoders.append(
                 nn.Sequential(
                     *[BaseBlock(channels=cur_channels, window_size=self.window_size, attn_type=self.attn_type,
-                                index=iter)
+                                index=iter, bias=self.bias)
                       for iter in range(num)]
                 )
             )
@@ -152,7 +139,7 @@ class TransformerIR(nn.Module):
         # 中间件
         self.middle_blks = nn.Sequential(
             *[BaseBlock(channels=self.embedding_dim * (2 ** len(self.encoder_blk_nums)), window_size=self.window_size,
-                        attn_type=self.attn_type, index=index)
+                        attn_type=self.attn_type, index=index, bias=self.bias)
               for index in range(self.middle_blks)]
         )
 
@@ -165,7 +152,7 @@ class TransformerIR(nn.Module):
             self.decoders.append(
                 nn.Sequential(
                     *[BaseBlock(channels=cur_channels // 2, window_size=self.window_size, attn_type=self.attn_type,
-                                index=iter)
+                                index=iter, bias=self.bias)
                       for iter in range(num)]
                 )
             )

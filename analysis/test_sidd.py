@@ -9,14 +9,17 @@ import json
 import time
 from torch.utils.data import Dataset
 from ptflops import get_model_complexity_info
+from timm.utils import AverageMeter
+import lpips
 
 # 工具函数
-from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr
+from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr, calculate_lpips
 from utils.logger import create_logger
-from data.load_images import read_images, random_crop_img, random_crop_2img, augment_img
+from data.load_images import read_images
 from define_models import define_model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+lpips_fn = lpips.LPIPS(net='alex', verbose=False)
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
 parser.add_argument('--task_type', type=str, default='denoising', help='task type')
@@ -51,18 +54,18 @@ data_list = [
         'H_path': r'E:\Data\SIDD\val\groundtruth',
         'L_path': r'E:\Data\SIDD\val\input',
     },
-    {
-        'name': 'CBSD68',
-        'H_path': r'E:\Data\Test\CBSD68\HI',
-    },
-    {
-        'name': 'Kodak24',
-        'H_path': r'E:\Data\Test\Kodak24\HI',
-    },
-    {
-        'name': 'McMaster',
-        'H_path': r'E:\Data\Test\McMaster\HI',
-    },
+    # {
+    #     'name': 'CBSD68',
+    #     'H_path': r'E:\Data\Test\CBSD68\HI',
+    # },
+    # {
+    #     'name': 'Kodak24',
+    #     'H_path': r'E:\Data\Test\Kodak24\HI',
+    # },
+    # {
+    #     'name': 'McMaster',
+    #     'H_path': r'E:\Data\Test\McMaster\HI',
+    # },
 ]
 
 
@@ -150,14 +153,6 @@ def main():
     model.to(device)
     model.eval()
 
-    # 模型速度、内存、计算复杂度
-    # macs, params = get_model_complexity_info(model, (3, 128, 128), print_per_layer_stat=True)
-    #
-    # logger.info('{:<30}  {:<8}'.format('Computational complexity: ', macs))
-    # logger.info('{:<30}  {:<8}'.format('Number of parameters: ', params))
-    # test_results['计算复杂度'] = macs
-    # test_results['参数量'] = params
-
     for data_info in data_lists:
         data_set = Dataset_denoising_val(input_channels=3, H_path=data_info['H_path'],
                                          L_path=data_info['L_path'], sigma=data_info['sigma'],
@@ -167,7 +162,7 @@ def main():
         os.makedirs(img_save_path, exist_ok=True)
 
         logger.info(f"{model_info['name']} start to test on {data_info['name']}!")
-        avg_psnr, avg_ssim, avg_psnr_y, avg_ssim_y = 0.0, 0.0, 0.0, 0.0
+        avg_psnr, avg_ssim, avg_lpips, avg_psnr_y, avg_ssim_y = AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter()
         start_time = time.time()
         for index in range(0, len(data_set)):
             L_img, H_img = data_set[index]['L'], data_set[index]['H']  # CHW-RGB
@@ -185,34 +180,31 @@ def main():
 
             psnr = calculate_psnr(visual_O, visual_H)
             ssim = calculate_ssim(visual_O, visual_H)
+            lpips = calculate_lpips(visual_O, visual_H, lpips_fn)
 
-            visual_H = bgr2ycbcr(visual_H.astype(np.float32) / 255.) * 255.
-            visual_O = bgr2ycbcr(visual_O.astype(np.float32) / 255.) * 255.
-            psnr_y = calculate_psnr(visual_O, visual_H)
-            ssim_y = calculate_ssim(visual_O, visual_H)
+            # visual_H = bgr2ycbcr(visual_H.astype(np.float32) / 255.) * 255.
+            # visual_O = bgr2ycbcr(visual_O.astype(np.float32) / 255.) * 255.
+            # psnr_y = calculate_psnr(visual_O, visual_H)
+            # ssim_y = calculate_ssim(visual_O, visual_H)
 
-            avg_psnr += psnr
-            avg_ssim += ssim
-            avg_psnr_y += psnr_y
-            avg_ssim_y += ssim_y
+            avg_psnr.update(psnr)
+            avg_ssim.update(ssim)
+            avg_lpips.update(lpips)
 
-            logger.info('Testing {:d} \t {:20s} \t - PSNR: {:.2f} dB; SSIM: {:.4f}; '
-                        'PSNR_Y: {:.2f} dB; SSIM_Y: {:.4f}; '.
-                        format(index, image_name, psnr, ssim, psnr_y, ssim_y))
+            logger.info('Testing {:d} \t {:20s} \t - PSNR: {:.2f} dB; SSIM: {:.4f}; LPIPS: {:.4f};'.
+                        format(index, image_name, psnr, ssim, lpips))
         end_time = time.time()
         total_time = end_time - start_time  # 计算总时间
         avg_time = total_time / len(data_set)
-        avg_psnr /= len(data_set)
-        avg_ssim /= len(data_set)
-        avg_psnr_y /= len(data_set)
-        avg_ssim_y /= len(data_set)
 
-        test_results[data_info['name']] = round(avg_psnr, 2)
-        test_results[f"{data_info['name']}_avg_time"] = round(avg_time, 2)
+        test_results[f"{data_info['name']}_PSNR"] = round(avg_psnr.avg, 2)
+        test_results[f"{data_info['name']}_SSIM"] = round(avg_ssim.avg, 4)
+        test_results[f"{data_info['name']}_LPIPS"] = round(avg_lpips.avg, 4)
+        test_results[f"{data_info['name']}_time"] = round(avg_time, 2)
 
         logger.info(
-            '{} -- Average PSNR/SSIM(RGB): {:.2f} dB; {:.4f}  -- Average PSNR_Y/SSIM_Y: {:.2f} dB; {:.4f}  -- Average Time: {:.4f}'.format(
-                data_info['name'], avg_psnr, avg_ssim, avg_psnr_y, avg_ssim_y, avg_time))
+            '{} -- Average PSNR: {:.2f} dB  -- Average SSIM(RGB): {:.4f}  -- Average LPIPS: {:.4f}  -- Average Time: {:.4f} s'.format(
+                data_info['name'], avg_psnr.avg, avg_ssim.avg, avg_lpips.avg, avg_time))
 
         logger.info(f"{data_info['name']} finish to test!!!\n\n")
 

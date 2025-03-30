@@ -47,6 +47,7 @@ def build_model(config):
             window_size=config.window_size,
             embedding_dim=config.embedding_dim,
             num_heads=config.num_heads,
+            bias=config.bias,
             middle_blks=config.middle_blks,
             encoder_blk_nums=config.encoder_blk_nums,
             decoder_blk_nums=config.decoder_blk_nums,

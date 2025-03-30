@@ -27,7 +27,7 @@ net:
   embedding_dim: 32
   num_heads: 8
   bias: True
-  attn_type: 'ChannelAttention'
+  attn_type: 'SparseAttention'
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
