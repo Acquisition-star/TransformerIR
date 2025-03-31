@@ -7,7 +7,7 @@ from model.components.MDTA import MDTA
 from model.components.SparseGSA import SparseAttention
 from model.components.SwinAttention import ShiftedWindowAttention
 from model.components.T_MSA import Attention
-from model.components.WindowChannelAttention import WindowChannelAttention
+from model.components.WindowChannelAttention import WindowChannelAttention, MyAttention
 
 
 def build_attention(index, dim=32, window_size=8, num_heads=8, bias=True, attn_type='ShiftedWindowAttention'):
@@ -43,6 +43,8 @@ def build_attention(index, dim=32, window_size=8, num_heads=8, bias=True, attn_t
         attn = Attention(dim=dim, num_heads=num_heads, bias=bias, path=1)
     elif attn_type == 'WindowChannelAttention':
         attn = WindowChannelAttention(dim=dim, window_size=window_size, num_heads=num_heads, bias=bias)
+    elif attn_type == 'MyAttention':
+        attn = MyAttention(dim=dim, window_size=window_size, num_heads=num_heads, bias=bias)
     else:
         raise ValueError('Unknown attention type {}'.format(attn_type))
     return attn
