@@ -1,7 +1,5 @@
-import math
 import os
 import torch
-import time
 from collections import OrderedDict
 import random
 import argparse
@@ -213,6 +211,7 @@ if __name__ == "__main__":
     config.path.checkpoint_path = str(checkpoint_path)
     config.path.config_path = str(root_path / "config.json")
     config.freeze()
+
 
     torch.manual_seed(config.seed)
     torch.cuda.manual_seed(config.seed)

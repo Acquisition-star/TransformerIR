@@ -2,6 +2,7 @@ from .nets.Stripformer import Stripformer
 from .nets.SwinIR import SwinIR
 from .nets.Uformer import Uformer
 from .nets.NAFNet import NAFNet
+from .nets.MB_TaylorFormerV2 import MB_TaylorFormer
 from .TransformerIR import TransformerIR
 
 
@@ -40,6 +41,21 @@ def build_model(config):
         )
     elif 'stripformer' in model_type:
         model = Stripformer()
+    elif 'mb_taylorformer_v2' in model_type:
+        model = MB_TaylorFormer(
+            inp_channels=config.in_chans,
+            dim=config.embed_dim,
+            num_blocks=config.num_blocks,
+            num_refinement_blocks=config.num_refinement_blocks,
+            heads=config.heads,
+            ffn_expansion_factor=config.ffn_expansion_factor,
+            bias=config.bias,
+            LayerNorm_type=config.LayerNorm_type,
+            dual_pixel_task=config.dual_pixel_task,
+            num_path=config.num_path,
+            qk_norm=config.qk_norm,
+            offset_clamp=config.offset_clamp,
+        )
     elif model_type == 'baseline':
         model = TransformerIR(
             img_size=config.img_size,
