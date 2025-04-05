@@ -27,8 +27,10 @@ net:
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
-  attn_type: 'Identity'
-  attn_config: null
+  attn_type: 'Multi-DConv Head Transposed Self-Attention'
+  attn_config:
+    num_heads: 8
+    bias: True
 optimizer:
   type: 'adamw'
   learning_rate: 1.0e-3  # 学习率

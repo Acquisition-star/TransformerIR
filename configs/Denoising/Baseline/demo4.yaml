@@ -27,7 +27,7 @@ net:
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
-  attn_type: 'Identity'
+  attn_type: 'Frequency domain-based self-attention solver'
   attn_config: null
 optimizer:
   type: 'adamw'

@@ -58,16 +58,14 @@ def build_model(config):
         )
     elif model_type == 'baseline':
         model = TransformerIR(
-            img_size=config.img_size,
-            channels=config.channels,
-            window_size=config.window_size,
+            dim=config.dim,
             embedding_dim=config.embedding_dim,
-            num_heads=config.num_heads,
             bias=config.bias,
             middle_blks=config.middle_blks,
             encoder_blk_nums=config.encoder_blk_nums,
             decoder_blk_nums=config.decoder_blk_nums,
-            attn_type=config.attn_type if config.attn_type != 'None' else None,
+            attn_type=config.attn_type,
+            attn_config=config.attn_config,
         )
     else:
         raise NotImplementedError(f"Unknown model: {model_type}")

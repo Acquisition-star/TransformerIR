@@ -67,22 +67,21 @@ class LayerNorm2d(nn.Module):
 
 
 class BaseBlock(nn.Module):
-    def __init__(self, index, channels=32, window_size=8, num_heads=8, bias=False, attn_type=None):
+    def __init__(self, index, dim=32, bias=False, attn_type=None, attn_config=None):
         super(BaseBlock, self).__init__()
-        self.channels = channels
-        self.window_size = window_size
         self.index = index
-        self.num_heads = num_heads
+        self.dim = dim
         self.bias = bias
         self.attn_type = attn_type
+        self.attn_config = attn_config
 
-        self.norm1 = LayerNorm2d(self.channels)
-        self.norm2 = LayerNorm2d(self.channels)
+        self.norm1 = LayerNorm2d(self.dim)
+        self.norm2 = LayerNorm2d(self.dim)
 
         ############################################## Attention Methods ##############################################
-        self.attention = build_attention(index, channels, window_size, num_heads, bias, attn_type)
+        self.attention = build_attention(index, attn_type, dim, bias, attn_config)
 
-        self.mlp = Mlp(in_features=self.channels, hidden_features=2 * self.channels, out_features=self.channels)
+        self.mlp = Mlp(in_features=self.dim, hidden_features=2 * self.dim, out_features=self.dim)
 
     def forward(self, x):
         x = x + self.attention(self.norm1(x))
@@ -91,29 +90,40 @@ class BaseBlock(nn.Module):
 
 
 class TransformerIR(nn.Module):
-    def __init__(self, img_size=256, channels=3, window_size=8, embedding_dim=32, num_heads=8, bias=False,
-                 middle_blks=2, encoder_blk_nums=None, decoder_blk_nums=None, attn_type=None):
+    def __init__(
+            self,
+            dim=3,
+            embedding_dim=32,
+            num_heads=8,
+            bias=False,
+            middle_blks=2,
+            encoder_blk_nums=None,
+            decoder_blk_nums=None,
+            attn_type=None,
+            attn_config=None,
+    ):
         super(TransformerIR, self).__init__()
-        self.img_size = img_size
-        self.channels = channels
-        self.window_size = window_size
-        self.bias = bias
+        self.dim = dim
         self.embedding_dim = embedding_dim
+        self.bias = bias
         self.middle_blks = middle_blks
-        self.attn_type = attn_type
         self.encoder_blk_nums = encoder_blk_nums if encoder_blk_nums is not None else [2, 2]
         self.decoder_blk_nums = decoder_blk_nums if decoder_blk_nums is not None else [2, 2]
         assert len(self.encoder_blk_nums) == len(self.decoder_blk_nums), \
             f'{len(self.encoder_blk_nums)} != {len(self.decoder_blk_nums)}'
         self.blk_length = len(self.encoder_blk_nums)
 
-        self.intro = nn.Conv2d(in_channels=self.channels,
+        # 注意力模块
+        self.attn_type = attn_type
+        self.attn_config = attn_config
+
+        self.intro = nn.Conv2d(in_channels=self.dim,
                                out_channels=self.embedding_dim,
                                kernel_size=3,
                                padding=1,
                                stride=1)
         self.outro = nn.Conv2d(in_channels=self.embedding_dim,
-                               out_channels=self.channels,
+                               out_channels=self.dim,
                                kernel_size=3,
                                padding=1,
                                stride=1)
@@ -127,9 +137,14 @@ class TransformerIR(nn.Module):
             cur_channels = self.embedding_dim * (2 ** index)
             self.encoders.append(
                 nn.Sequential(
-                    *[BaseBlock(channels=cur_channels, window_size=self.window_size, attn_type=self.attn_type,
-                                index=iter, bias=self.bias)
-                      for iter in range(num)]
+                    *[BaseBlock(
+                        index=iter,
+                        dim=cur_channels,
+                        bias=self.bias,
+                        attn_type=self.attn_type,
+                        attn_config=self.attn_config
+                    )
+                        for iter in range(num)]
                 )
             )
             self.down_samples.append(
@@ -138,9 +153,14 @@ class TransformerIR(nn.Module):
 
         # 中间件
         self.middle_blks = nn.Sequential(
-            *[BaseBlock(channels=self.embedding_dim * (2 ** len(self.encoder_blk_nums)), window_size=self.window_size,
-                        attn_type=self.attn_type, index=index, bias=self.bias)
-              for index in range(self.middle_blks)]
+            *[BaseBlock(
+                index=index,
+                dim=self.embedding_dim * (2 ** len(self.encoder_blk_nums)),
+                bias=self.bias,
+                attn_type=self.attn_type,
+                attn_config=self.attn_config
+            )
+                for index in range(self.middle_blks)]
         )
 
         # 解码件
@@ -151,9 +171,14 @@ class TransformerIR(nn.Module):
             )
             self.decoders.append(
                 nn.Sequential(
-                    *[BaseBlock(channels=cur_channels // 2, window_size=self.window_size, attn_type=self.attn_type,
-                                index=iter, bias=self.bias)
-                      for iter in range(num)]
+                    *[BaseBlock(
+                        index=iter,
+                        dim=cur_channels // 2,
+                        bias=self.bias,
+                        attn_type=self.attn_type,
+                        attn_config=self.attn_config
+                    )
+                        for iter in range(num)]
                 )
             )
 

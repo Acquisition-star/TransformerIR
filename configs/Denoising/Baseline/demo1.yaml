@@ -27,8 +27,14 @@ net:
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
-  attn_type: 'Identity'
-  attn_config: null
+  attn_type: 'Window Attention'
+  attn_config:
+    window_size: 8
+    num_heads: 8
+    qkv_bias: True
+    qk_scale: null
+    attn_drop: 0.
+    proj_drop: 0.
 optimizer:
   type: 'adamw'
   learning_rate: 1.0e-3  # 学习率

@@ -15,8 +15,11 @@ import lpips
 # 工具函数
 from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr, calculate_lpips
 from utils.logger import create_logger
+from utils.config import get_config
+from utils.checkpoint import load_checkpoint_model
 from data.load_images import read_images
 from define_models import define_model
+from model.build import build_model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 lpips_fn = lpips.LPIPS(net='alex', verbose=False)
@@ -24,29 +27,24 @@ lpips_fn = lpips.LPIPS(net='alex', verbose=False)
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
 parser.add_argument('--task_type', type=str, default='denoising', help='task type')
 parser.add_argument('--output', type=str, default='results/', help='path to output folder')
-parser.add_argument('--env', type=str, default='experiment_1', help='experiment name')
-parser.add_argument('--model_name', type=str, default='Uformer-B', help='model name')
+parser.add_argument('--env', type=str, default='demo', help='experiment name')
+parser.add_argument('--cfg', type=str,
+                    default=r'F:\GraduationThesis\Project\Results\Baseline\baseline_0\baseline_denoising_color_sidd\config.yaml',
+                    help='model name')
 parser.add_argument("--pth", type=str,
-                    default=r'F:\GraduationThesis\Project\TransformerIR\analysis\model_zoo\Uformer\Uformer_B.pth',
+                    default=r'F:\GraduationThesis\Project\Results\Baseline\baseline_0\baseline_denoising_color_sidd\ckpt_epoch_99.pth',
                     help="path to pretrained model")
-parser.add_argument("--is_cpk", action='store_true', default=False, help="whether to use checkpoint")
 parser.add_argument("--crop", action='store_true', default=False, help="whether to crop images")
 parser.add_argument("--img_size", type=int, default=256, help="image size")
 
 args = parser.parse_known_args()[0]
+config = get_config(args)
 
 root_path = f'{args.output}{args.task_type}/{args.env}'
 
 os.makedirs(root_path, exist_ok=True)
 
-model_info = {
-    'name': args.model_name,
-    'pth': args.pth,
-    'is_cpk': args.is_cpk,
-    'img_size': (args.img_size, args.img_size) if args.crop else None,
-}
-
-logger = create_logger(root_path, name=f"{model_info['name']}_{args.env}")
+logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 
 data_list = [
     {
@@ -110,8 +108,8 @@ class Dataset_denoising_val(Dataset):
         img_L = torch.from_numpy(np.ascontiguousarray(img_L)).permute(2, 0, 1).float()
         img_H = torch.from_numpy(np.ascontiguousarray(img_H)).permute(2, 0, 1).float()
         if self.img_size is not None:
-            img_L = img_L[:, :self.img_size[0], :self.img_size[1]]
-            img_H = img_H[:, :self.img_size[0], :self.img_size[1]]
+            img_L = img_L[:, :self.img_size, :self.img_size]
+            img_H = img_H[:, :self.img_size, :self.img_size]
         return {'H': img_H, 'L': img_L, 'img_name': name}
 
     def __len__(self):
@@ -143,25 +141,36 @@ def deal_list():
     return data_lists
 
 
+def define_model(config, args):
+    model = build_model(config.net)
+    if os.path.exists(args.pth):
+        logger.info(f"Loading model from {args.pth}")
+    load_checkpoint_model(model, args.pth, logger)
+    return model
+
+
 def main():
-    test_results = {'模型': model_info['name'], '模型文件': model_info['pth']}
+    test_results = {'模型': config.net.type, '模型文件': args.pth, '配置文件': args.cfg}
 
     # 数据信息处理
     data_lists = deal_list()
 
-    model = define_model(model_info, logger)
+    model = define_model(config, args)
     model.to(device)
     model.eval()
 
     for data_info in data_lists:
         data_set = Dataset_denoising_val(input_channels=3, H_path=data_info['H_path'],
                                          L_path=data_info['L_path'], sigma=data_info['sigma'],
-                                         img_size=model_info['img_size'])
+                                         img_size=args.img_size)
 
         img_save_path = os.path.join(root_path, data_info['name'])
         os.makedirs(img_save_path, exist_ok=True)
 
-        logger.info(f"{model_info['name']} start to test on {data_info['name']}!")
+        if hasattr(config.net, 'attn_type'):
+            logger.info(f"{config.net.attn_type} start to test on {data_info['name']}!")
+        else:
+            logger.info(f"{config.net.type} start to test on {data_info['name']}!")
         avg_psnr, avg_ssim, avg_lpips, avg_psnr_y, avg_ssim_y = AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter()
         start_time = time.time()
         for index in range(0, len(data_set)):

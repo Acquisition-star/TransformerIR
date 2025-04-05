@@ -3,129 +3,6 @@ import torch.nn as nn
 import math
 
 
-class Embeddings(nn.Module):
-    def __init__(self):
-        super(Embeddings, self).__init__()
-
-        self.activation = nn.LeakyReLU(0.2, True)
-
-        self.en_layer1_1 = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=3, padding=1),
-            self.activation,
-        )
-        self.en_layer1_2 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(64, 64, kernel_size=3, padding=1))
-        self.en_layer1_3 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(64, 64, kernel_size=3, padding=1))
-        self.en_layer1_4 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(64, 64, kernel_size=3, padding=1))
-
-        self.en_layer2_1 = nn.Sequential(
-            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),
-            self.activation,
-        )
-        self.en_layer2_2 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(128, 128, kernel_size=3, padding=1))
-        self.en_layer2_3 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(128, 128, kernel_size=3, padding=1))
-        self.en_layer2_4 = nn.Sequential(
-            nn.Conv2d(128, 128, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(128, 128, kernel_size=3, padding=1))
-
-        self.en_layer3_1 = nn.Sequential(
-            nn.Conv2d(128, 320, kernel_size=3, stride=2, padding=1),
-            self.activation,
-        )
-
-    def forward(self, x):
-        hx = self.en_layer1_1(x)
-        hx = self.activation(self.en_layer1_2(hx) + hx)
-        hx = self.activation(self.en_layer1_3(hx) + hx)
-        hx = self.activation(self.en_layer1_4(hx) + hx)
-        residual_1 = hx
-        hx = self.en_layer2_1(hx)
-        hx = self.activation(self.en_layer2_2(hx) + hx)
-        hx = self.activation(self.en_layer2_3(hx) + hx)
-        hx = self.activation(self.en_layer2_4(hx) + hx)
-        residual_2 = hx
-        hx = self.en_layer3_1(hx)
-
-        return hx, residual_1, residual_2
-
-
-class Embeddings_output(nn.Module):
-    def __init__(self):
-        super(Embeddings_output, self).__init__()
-
-        self.activation = nn.LeakyReLU(0.2, True)
-
-        self.de_layer3_1 = nn.Sequential(
-            nn.ConvTranspose2d(320, 192, kernel_size=4, stride=2, padding=1),
-            self.activation,
-        )
-        head_num = 3
-        dim = 192
-
-        self.de_layer2_2 = nn.Sequential(
-            nn.Conv2d(192 + 128, 192, kernel_size=1, padding=0),
-            self.activation,
-        )
-
-        self.de_block_1 = Intra_SA(dim, head_num)
-        self.de_block_2 = Inter_SA(dim, head_num)
-        self.de_block_3 = Intra_SA(dim, head_num)
-        self.de_block_4 = Inter_SA(dim, head_num)
-        self.de_block_5 = Intra_SA(dim, head_num)
-        self.de_block_6 = Inter_SA(dim, head_num)
-
-        self.de_layer2_1 = nn.Sequential(
-            nn.ConvTranspose2d(192, 64, kernel_size=4, stride=2, padding=1),
-            self.activation,
-        )
-
-        self.de_layer1_3 = nn.Sequential(
-            nn.Conv2d(128, 64, kernel_size=1, padding=0),
-            self.activation,
-            nn.Conv2d(64, 64, kernel_size=3, padding=1))
-        self.de_layer1_2 = nn.Sequential(
-            nn.Conv2d(64, 64, kernel_size=3, padding=1),
-            self.activation,
-            nn.Conv2d(64, 64, kernel_size=3, padding=1))
-        self.de_layer1_1 = nn.Sequential(
-            nn.Conv2d(64, 3, kernel_size=3, padding=1),
-            self.activation
-        )
-
-    def forward(self, x, residual_1, residual_2):
-        hx = self.de_layer3_1(x)
-
-        hx = self.de_layer2_2(torch.cat((hx, residual_2), dim=1))
-        hx = self.de_block_1(hx)
-        hx = self.de_block_2(hx)
-        hx = self.de_block_3(hx)
-        hx = self.de_block_4(hx)
-        hx = self.de_block_5(hx)
-        hx = self.de_block_6(hx)
-        hx = self.de_layer2_1(hx)
-
-        hx = self.activation(self.de_layer1_3(torch.cat((hx, residual_1), dim=1)) + hx)
-        hx = self.activation(self.de_layer1_2(hx) + hx)
-        hx = self.de_layer1_1(hx)
-
-        return hx
-
-
 class Attention(nn.Module):
     def __init__(self, head_num):
         super(Attention, self).__init__()
@@ -326,48 +203,20 @@ class Inter_SA(nn.Module):
         return x
 
 
-class Stripformer(nn.Module):
-    def __init__(self):
-        super(Stripformer, self).__init__()
-
-        self.encoder = Embeddings()
-        head_num = 5
-        dim = 320
-        self.Trans_block_1 = Intra_SA(dim, head_num)
-        self.Trans_block_2 = Inter_SA(dim, head_num)
-        self.Trans_block_3 = Intra_SA(dim, head_num)
-        self.Trans_block_4 = Inter_SA(dim, head_num)
-        self.Trans_block_5 = Intra_SA(dim, head_num)
-        self.Trans_block_6 = Inter_SA(dim, head_num)
-        self.Trans_block_7 = Intra_SA(dim, head_num)
-        self.Trans_block_8 = Inter_SA(dim, head_num)
-        self.Trans_block_9 = Intra_SA(dim, head_num)
-        self.Trans_block_10 = Inter_SA(dim, head_num)
-        self.Trans_block_11 = Intra_SA(dim, head_num)
-        self.Trans_block_12 = Inter_SA(dim, head_num)
-        self.decoder = Embeddings_output()
+class StripAttention(nn.Module):
+    def __init__(self, dim, num_heads=4):
+        super(StripAttention, self).__init__()
+        self.block1 = Intra_SA(dim, num_heads)
+        self.block2 = Inter_SA(dim, num_heads)
 
     def forward(self, x):
-        hx, residual_1, residual_2 = self.encoder(x)
-        hx = self.Trans_block_1(hx)
-        hx = self.Trans_block_2(hx)
-        hx = self.Trans_block_3(hx)
-        hx = self.Trans_block_4(hx)
-        hx = self.Trans_block_5(hx)
-        hx = self.Trans_block_6(hx)
-        hx = self.Trans_block_7(hx)
-        hx = self.Trans_block_8(hx)
-        hx = self.Trans_block_9(hx)
-        hx = self.Trans_block_10(hx)
-        hx = self.Trans_block_11(hx)
-        hx = self.Trans_block_12(hx)
-        hx = self.decoder(hx, residual_1, residual_2)
-
-        return hx + x
+        x = self.block1(x)
+        x = self.block2(x)
+        return x
 
 
 if __name__ == '__main__':
-    model = Stripformer()
-    x = torch.randn(1, 3, 128, 128)
-    out = model(x)
-    print(out.shape)
+    model = StripAttention(dim=32, num_heads=8)
+    x = torch.randn(1, 32, 128, 128)
+    y = model(x)
+    print(y.shape)

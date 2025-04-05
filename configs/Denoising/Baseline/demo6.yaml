@@ -21,16 +21,16 @@ datasets:
     L_path: [ 'E:\Data\SIDD\val\input' ]
 net:
   type: 'baseline'
-  img_size: 128
-  channels: 3
-  window_size: 8
+  dim: 3
   embedding_dim: 32
-  num_heads: 8
   bias: True
-  attn_type: 'WindowChannelAttention'
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
+  attn_type: 'Sparse Attention'
+  attn_config:
+    num_heads: 8
+    bias: True
 optimizer:
   type: 'adamw'
   learning_rate: 1.0e-3  # 学习率

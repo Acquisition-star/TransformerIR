@@ -993,7 +993,7 @@ def count_param(model):
 
 
 if __name__ == "__main__":
-    from thop import profile
+    # from thop import profile
 
     # model = MB_TaylorFormer().cuda()
     # model.eval()
@@ -1020,6 +1020,6 @@ if __name__ == "__main__":
     #     print('-------------', end - start)
 
     model = MB_TaylorFormer()
-    input = torch.randn(2, 3, 256, 256)
+    input = torch.randn(1, 3, 256, 256)
     output = model(input)
     print(output.size())

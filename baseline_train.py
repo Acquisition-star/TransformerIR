@@ -32,6 +32,7 @@ def parse_option():
                         help='path to config file')
     parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
     parser.add_argument("--batch_size", type=int, default=24, help='batch size')
+    parser.add_argument("--epochs", type=int, default=10, help='number of epochs')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
     parser.add_argument('--autodl', action='store_true', default=False, help='whether to use autodl machine to train')
@@ -209,9 +210,8 @@ if __name__ == "__main__":
     config.defrost()
     config.path.root_path = str(root_path)
     config.path.checkpoint_path = str(checkpoint_path)
-    config.path.config_path = str(root_path / "config.json")
+    config.path.config_path = str(root_path / "config.yaml")
     config.freeze()
-
 
     torch.manual_seed(config.seed)
     torch.cuda.manual_seed(config.seed)

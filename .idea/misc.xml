@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="TransformerIR" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="TransformerIR" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="IR" project-jdk-type="Python SDK" />
 </project>

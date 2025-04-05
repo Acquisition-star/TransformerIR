@@ -27,8 +27,13 @@ net:
   middle_blks: 2
   encoder_blk_nums: [ 2,2 ]
   decoder_blk_nums: [ 2,2 ]
-  attn_type: 'Identity'
-  attn_config: null
+  attn_type: 'Taylor Expanded Multi-head Self-Attention'
+  attn_config:
+    num_heads: 8
+    bias: True
+    qk_norm: 0.5
+    path: 1
+    focusing_factor: 4
 optimizer:
   type: 'adamw'
   learning_rate: 1.0e-3  # 学习率

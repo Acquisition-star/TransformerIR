@@ -9,7 +9,7 @@ def load_checkpoint_model(model, pth, logger):
         checkpoint = torch.hub.load_state_dict_from_url(
             pth, map_location='cpu', check_hash=True)
     else:
-        checkpoint = torch.load(pth, map_location='cpu')
+        checkpoint = torch.load(pth, map_location='cpu', weights_only=False)
     msg = model.load_state_dict(checkpoint['model'], strict=False)
     logger.info(msg)
     del checkpoint
@@ -22,7 +22,7 @@ def load_checkpoint(config, model, optimizer, lr_scheduler, loss_scaler, logger)
         checkpoint = torch.hub.load_state_dict_from_url(
             config.resume, map_location='cpu', check_hash=True)
     else:
-        checkpoint = torch.load(config.resume, map_location='cpu')
+        checkpoint = torch.load(config.resume, map_location='cpu', weights_only=False)
     msg = model.load_state_dict(checkpoint['model'], strict=False)
     logger.info(msg)
     max_accuracy = 0.0

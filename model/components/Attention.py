@@ -7,44 +7,72 @@ from model.components.MDTA import MDTA
 from model.components.SparseGSA import SparseAttention
 from model.components.SwinAttention import ShiftedWindowAttention
 from model.components.T_MSA import Attention
-from model.components.WindowChannelAttention import WindowChannelAttention, MyAttention
+from model.components.StripAttention import StripAttention
 
 
-def build_attention(index, dim=32, window_size=8, num_heads=8, bias=True, attn_type='ShiftedWindowAttention'):
+def build_attention(index, attn_type, dim, bias, attn_config):
+    """
+    构造注意力模块
+    :param index: 模块编号
+    :param dim: 输入通道数
+    :param bias: True or False
+    :param attn_config: 注意力参数
+    :param attn_type: 注意力类型
+        --Identity
+        --WindowAttention
+        --ShiftedWindowAttention
+        --ChannelAttention
+        --Frequency domain-based self-attention solver
+        --Multi-DConv Head Transposed Self-Attention
+        --SparseAttention
+        --Taylor Expanded Multi-head Self-Attention
+    """
     attn = None
     if attn_type == 'Identity':
         attn = nn.Identity()
-    elif attn_type == 'WindowAttention':
+    elif attn_type == 'Window Attention':
         attn = ShiftedWindowAttention(
             channels=dim,
-            window_size=window_size,
-            num_heads=num_heads,
-            qkv_bias=bias,
-            qk_scale=None,
+            window_size=attn_config.window_size,
+            num_heads=attn_config.num_heads,
+            qkv_bias=attn_config.qkv_bias,
+            qk_scale=attn_config.qk_scale,
+            attn_drop=attn_config.attn_drop,
+            proj_drop=attn_config.proj_drop,
         )
-    elif attn_type == 'ShiftedWindowAttention':
+    elif attn_type == 'Shifted Window Attention':
         attn = ShiftedWindowAttention(
             channels=dim,
-            window_size=window_size,
-            num_heads=num_heads,
+            window_size=attn_config.window_size,
+            num_heads=attn_config.num_heads,
             shifted=False if index % 2 == 0 else True,
-            qkv_bias=bias,
-            qk_scale=None,
+            qkv_bias=attn_config.qkv_bias,
+            qk_scale=attn_config.qk_scale,
+            attn_drop=attn_config.attn_drop,
+            proj_drop=attn_config.proj_drop,
         )
-    elif attn_type == 'ChannelAttention':
+    elif attn_type == 'Channel Attention':
         attn = ChannelAttention(channels=dim)
     elif attn_type == 'Frequency domain-based self-attention solver':
         attn = FSAS(dim=dim, bias=bias)
     elif attn_type == 'Multi-DConv Head Transposed Self-Attention':
-        attn = MDTA(dim=dim, num_heads=num_heads, bias=bias)
-    elif attn_type == 'SparseAttention':
-        attn = SparseAttention(dim=dim, num_heads=num_heads, bias=bias)
+        attn = MDTA(dim=dim, num_heads=attn_config.num_heads, bias=attn_config.bias)
+    elif attn_type == 'Sparse Attention':
+        attn = SparseAttention(dim=dim, num_heads=attn_config.num_heads, bias=attn_config.bias)
     elif attn_type == 'Taylor Expanded Multi-head Self-Attention':
-        attn = Attention(dim=dim, num_heads=num_heads, bias=bias, path=1)
-    elif attn_type == 'WindowChannelAttention':
-        attn = WindowChannelAttention(dim=dim, window_size=window_size, num_heads=num_heads, bias=bias)
-    elif attn_type == 'MyAttention':
-        attn = MyAttention(dim=dim, window_size=window_size, num_heads=num_heads, bias=bias)
+        attn = Attention(
+            dim=dim,
+            num_heads=attn_config.num_heads,
+            bias=attn_config.bias,
+            qk_norm=attn_config.qk_norm,
+            path=attn_config.path,
+            focusing_factor=attn_config.focusing_factor,
+        )
+    elif attn_type == 'Strip Attention':
+        attn = StripAttention(
+            dim=dim,
+            num_heads=attn_config.num_heads,
+        )
     else:
         raise ValueError('Unknown attention type {}'.format(attn_type))
     return attn
