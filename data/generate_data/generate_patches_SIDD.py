@@ -9,12 +9,12 @@ import multiprocessing
 import argparse
 
 parser = argparse.ArgumentParser(description='Generate patches from Full Resolution images')
-parser.add_argument('--src_dir', default=r'E:\Data\SIDD_Medium_Srgb\mnt\d\SIDD_Medium_Srgb\Data', type=str,
+parser.add_argument('--src_dir', default=r'E:\Data\SIDD_Medium_Srgb\Data', type=str,
                     help='Directory for full resolution images')
-parser.add_argument('--tar_dir', default=r'E:\Data\SIDD\train', type=str,
+parser.add_argument('--tar_dir', default=r'D:\Data\SIDD\train', type=str,
                     help='Directory for image patches')
-parser.add_argument('--ps', default=256, type=int, help='Image Patch Size')
-parser.add_argument('--num_patches', default=300, type=int, help='Number of patches per image')
+parser.add_argument('--ps', default=512, type=int, help='Image Patch Size')
+parser.add_argument('--num_patches', default=40, type=int, help='Number of patches per image')
 parser.add_argument('--num_cores', default=10, type=int, help='Number of CPU Cores')
 
 args = parser.parse_args()
@@ -27,9 +27,6 @@ NUM_CORES = args.num_cores
 
 noisy_patchDir = os.path.join(tar, 'input')
 clean_patchDir = os.path.join(tar, 'groundtruth')
-
-if os.path.exists(tar):
-    os.system("rm -r {}".format(tar))
 
 os.makedirs(noisy_patchDir)
 os.makedirs(clean_patchDir)

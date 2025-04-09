@@ -3,7 +3,9 @@ from .nets.SwinIR import SwinIR
 from .nets.Uformer import Uformer
 from .nets.NAFNet import NAFNet
 from .nets.MB_TaylorFormerV2 import MB_TaylorFormer
+from .nets.Restormer import Restormer
 from .TransformerIR import TransformerIR
+from .restormer_baseline import Restormer_Baseline
 
 
 def build_model(config):
@@ -56,6 +58,19 @@ def build_model(config):
             qk_norm=config.qk_norm,
             offset_clamp=config.offset_clamp,
         )
+    elif model_type == 'restormer':
+        model = Restormer(
+            inp_channels=config.in_chans,
+            out_channels=config.out_chans,
+            dim=config.embed_dim,
+            num_blocks=config.num_blocks,
+            num_refinement_blocks=config.num_refinement_blocks,
+            heads=config.heads,
+            ffn_expansion_factor=config.ffn_expansion_factor,
+            bias=config.bias,
+            LayerNorm_type=config.LayerNorm_type,
+            dual_pixel_task=config.dual_pixel_task,
+        )
     elif model_type == 'baseline':
         model = TransformerIR(
             dim=config.dim,
@@ -64,6 +79,18 @@ def build_model(config):
             middle_blks=config.middle_blks,
             encoder_blk_nums=config.encoder_blk_nums,
             decoder_blk_nums=config.decoder_blk_nums,
+            attn_type=config.attn_type,
+            attn_config=config.attn_config,
+        )
+    elif model_type == 'restormer_baseline':
+        model = Restormer_Baseline(
+            inp_channels=config.in_chans,
+            dim=config.dim,
+            bias=config.bias,
+            num_blocks=config.num_blocks,
+            num_refinement_blocks=config.num_refinement_blocks,
+            ffn_expansion_factor=config.ffn_expansion_factor,
+            LayerNorm_type=config.LayerNorm_type,
             attn_type=config.attn_type,
             attn_config=config.attn_config,
         )

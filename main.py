@@ -1,7 +1,5 @@
-import math
 import os
 import torch
-import time
 from collections import OrderedDict
 import random
 import argparse
@@ -34,6 +32,7 @@ def parse_option():
                         help='path to config file')
     parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
     parser.add_argument("--batch_size", type=int, default=24, help='batch size')
+    parser.add_argument("--epochs", type=int, default=300000, help='number of epochs')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
     parser.add_argument('--autodl', action='store_true', default=False, help='whether to use autodl machine to train')
@@ -84,13 +83,12 @@ def main(config, logger):
     logger.info(f"Start training...")
 
     if record is None:
-        record = {'epoch': [], 'lr': [], 'loss': []}
+        record = {'iter': [], 'psnr': [], 'lr': [], 'loss': []}
 
-    for epoch in range(config.train.start_epoch, config.train.num_epochs):
-        # loss记录
-        avg_loss = AverageMeter()
+    iter = config.train.start_epoch
+    while iter <= config.train.num_epochs:
         # 开始训练
-        for iter, train_data in enumerate(data_loader_train):
+        for _, train_data in enumerate(data_loader_train):
             # 参数优化
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
@@ -102,31 +100,30 @@ def main(config, logger):
                 loss = config.train.lossfn_weight * criterion(outputs, H_img)
             loss.backward()
             optimizer.step()
-            avg_loss.update(loss.item())
-            if epoch % config.train.checkpoint_print == 0:
-                message = '<epoch:{:3d}, iter:{:8,d}, lr:{:.3e}, loss:{:.3e}> '.format(epoch, iter,
-                                                                                       lr_scheduler.get_last_lr()[0],
-                                                                                       loss.item())
+            if iter % config.train.checkpoint_print == 0:
+                message = ('<iter:{:8,d}, lr:{:.3e}, loss:{:.3e}> '
+                           .format(iter, lr_scheduler.get_last_lr()[0], loss.item()))
                 logger.info(message)
+            # 测试
+            if iter % config.train.checkpoint_val == 0:
+                avg_psnr = validate(model, data_loader_val, logger)
+                # 数据记录
+                record['iter'].append(int(iter))
+                record['psnr'].append(avg_psnr)
+                record['lr'].append(round(lr_scheduler.get_last_lr()[0], 10))
+                record['loss'].append(round(loss.item(), 6))
+                logger.info('\n')
+                logger.info('<iter:{:3d}, Average PSNR : {:<.2f}dB \n'.format(iter, avg_psnr))
+                # 模型保存
+                save_checkpoint(config, iter, model, avg_psnr, optimizer, lr_scheduler, criterion, logger, record)
+                # 记录保存
+                save_record(record, config.path.root_path)
 
-        # 数据记录
-        record['epoch'].append(int(epoch))
-        record['lr'].append(round(lr_scheduler.get_last_lr()[0], 10))
-        record['loss'].append(round(avg_loss.avg, 6))
+            # 学习率更新
+            lr_scheduler.step()
+            iter += 1
 
-        # 学习率更新
-        lr_scheduler.step()
-        # 测试
-        if epoch % config.train.checkpoint_val == 0:
-            avg_psnr = validate(model, data_loader_val, logger)
-            logger.info('<epoch:{:3d}, Average PSNR : {:<.2f}dB\n'.format(epoch, avg_psnr))
-            # 模型保存
-            save_checkpoint(config, epoch, model, avg_psnr, optimizer, lr_scheduler, criterion, logger, record)
-
-    df = pd.DataFrame(record)
-
-    df_plot(df, config.path.root_path)
-    df.to_csv(f'{config.path.root_path}/training_records.csv', index=False, encoding='utf-8-sig')
+    save_record(record, config.path.root_path)
 
     logger.info('Finished Training')
 
@@ -151,12 +148,19 @@ def validate(model, data_loader, logger):
         current_psnr = calculate_psnr(G_img, H_img)
         logger.info('{:->4d}--> {:>10s} | {:<4.2f}dB'.format(iter, image_name, current_psnr))
         avg_psnr.update(current_psnr)
+    model.train()
     return avg_psnr.avg
+
+
+def save_record(record, path):
+    df = pd.DataFrame(record)
+    df_plot(df, path)
+    df.to_csv(f'{path}/training_records.csv', index=False, encoding='utf-8-sig')
 
 
 def df_plot(df, path):
     # 创建画布和垂直排列的双子图（更适应长序列）
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(15, 8), sharex=True)
 
     # 通用样式设置
     plot_config = {
@@ -168,7 +172,7 @@ def df_plot(df, path):
 
     # 上：学习率曲线（对数坐标）
     sns.lineplot(
-        data=df, x='epoch', y='lr',
+        data=df, x='iter', y='lr',
         ax=ax1, color='royalblue',
         **plot_config
     )
@@ -176,15 +180,26 @@ def df_plot(df, path):
     ax1.grid(True, which='both', linestyle=':', alpha=0.5)
     ax1.set_ylabel('Learning Rate', labelpad=10)
 
-    # 下：损失曲线
+    # 中：损失曲线
     sns.lineplot(
-        data=df, x='epoch', y='loss',
+        data=df, x='iter', y='loss',
         ax=ax2, color='crimson',
         **plot_config
     )
     ax2.grid(True, linestyle='--', alpha=0.5)
-    ax2.set_xlabel('Epoch', labelpad=10)
+    ax2.set_xlabel('Iter', labelpad=10)
     ax2.set_ylabel('Loss', labelpad=10)
+
+    # 下：PSNR曲线
+    sns.lineplot(
+        data=df, x='iter', y='psnr',
+        ax=ax3, color='teal',
+        **plot_config
+    )
+    ax3.set_ylabel('PSNR (dB)', labelpad=10)  # 修复标签错误
+    ax3.grid(True, linestyle='--', alpha=0.5)  # 调整网格样式
+    ax3.set_yscale('linear')  # PSNR通常不需要对数坐标
+    ax3.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, pos: f"{x:.1f}"))  # 格式化Y轴标签
 
     # X轴优化
     for ax in [ax1, ax2]:
@@ -211,7 +226,7 @@ if __name__ == "__main__":
     config.defrost()
     config.path.root_path = str(root_path)
     config.path.checkpoint_path = str(checkpoint_path)
-    config.path.config_path = str(root_path / "config.json")
+    config.path.config_path = str(root_path / "config.yaml")
     config.freeze()
 
     torch.manual_seed(config.seed)
