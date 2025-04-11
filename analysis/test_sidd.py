@@ -49,13 +49,13 @@ logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 data_list = [
     {
         'name': 'SIDD',
-        'H_path': r'E:\Data\SIDD\val\groundtruth',
-        'L_path': r'E:\Data\SIDD\val\input',
+        'H_path': r'D:\Data\SIDD\val\groundtruth',
+        'L_path': r'D:\Data\SIDD\val\input',
     },
-    # {
-    #     'name': 'CBSD68',
-    #     'H_path': r'E:\Data\Test\CBSD68\HI',
-    # },
+    {
+        'name': 'CBSD68',
+        'H_path': r'E:\Data\Test\CBSD68\HI',
+    },
     # {
     #     'name': 'Kodak24',
     #     'H_path': r'E:\Data\Test\Kodak24\HI',

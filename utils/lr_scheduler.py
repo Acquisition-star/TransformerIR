@@ -1,6 +1,10 @@
 import math
 import torch
-from torch.optim.lr_scheduler import _LRScheduler
+
+if torch.__version__ == '2.6.0+cu124':
+    from torch.optim.lr_scheduler import LRScheduler as LRScheduler
+else:
+    from torch.optim.lr_scheduler import _LRScheduler as LRScheduler
 
 
 def build_scheduler(config, optimizer):
@@ -56,7 +60,7 @@ def get_position_from_periods(iteration, cumulative_period):
             return i
 
 
-class CosineAnnealingRestartCyclicLR(_LRScheduler):
+class CosineAnnealingRestartCyclicLR(LRScheduler):
     """ Cosine annealing with restarts learning rate scheme.
     An example of config:
     periods = [10, 10, 10, 10]

@@ -31,7 +31,7 @@ def parse_option():
     parser.add_argument('--cfg', type=str, default='configs/Denoising/Baseline/demo.yaml',
                         help='path to config file')
     parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
-    parser.add_argument("--batch_size", type=int, default=24, help='batch size')
+    parser.add_argument("--batch_size", type=int, default=6, help='batch size')
     parser.add_argument("--epochs", type=int, default=300000, help='number of epochs')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
@@ -89,6 +89,8 @@ def main(config, logger):
     while iter <= config.train.num_epochs:
         # 开始训练
         for _, train_data in enumerate(data_loader_train):
+            if iter > config.train.num_epochs:
+                break
             # 参数优化
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
