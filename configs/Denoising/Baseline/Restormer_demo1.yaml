@@ -44,7 +44,8 @@ optimizer:
   betas: [ 0.9, 0.999 ]
   eps: 1.0e-8
 criterion:
-  type: l1
+  type: 'charbonnier'
+  eps: 1.0e-9
 scheduler:
   type: CosineAnnealingRestartCyclicLR
   periods: [ 92000, 208000 ]

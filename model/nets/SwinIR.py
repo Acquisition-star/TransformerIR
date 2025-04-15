@@ -5,7 +5,10 @@ import torch.nn.functional as F
 import torch.utils.checkpoint as checkpoint
 # from timm.layers import DropPath, to_2tuple, trunc_normal_
 
-from timm.models.layers import DropPath, to_2tuple, trunc_normal_
+try:
+    from timm.layers import DropPath, to_2tuple, trunc_normal_
+except ImportError:
+    from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 
 
 class Mlp(nn.Module):

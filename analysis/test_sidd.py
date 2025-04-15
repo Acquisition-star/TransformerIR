@@ -18,7 +18,6 @@ from utils.logger import create_logger
 from utils.config import get_config
 from utils.checkpoint import load_checkpoint_model
 from data.load_images import read_images
-from define_models import define_model
 from model.build import build_model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -52,10 +51,10 @@ data_list = [
         'H_path': r'D:\Data\SIDD\val\groundtruth',
         'L_path': r'D:\Data\SIDD\val\input',
     },
-    {
-        'name': 'CBSD68',
-        'H_path': r'E:\Data\Test\CBSD68\HI',
-    },
+    # {
+    #     'name': 'CBSD68',
+    #     'H_path': r'E:\Data\Test\CBSD68\HI',
+    # },
     # {
     #     'name': 'Kodak24',
     #     'H_path': r'E:\Data\Test\Kodak24\HI',

@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint as checkpoint
-from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
@@ -9,6 +8,11 @@ import math
 import numpy as np
 import time
 from torch import einsum
+
+try:
+    from timm.layers import DropPath, to_2tuple, trunc_normal_
+except ImportError:
+    from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 
 
 class FastLeFF(nn.Module):
@@ -1373,11 +1377,11 @@ if __name__ == "__main__":
                                 shift_flag=False)
     print(model_restoration)
     from ptflops import get_model_complexity_info
+
     macs, params = get_model_complexity_info(model_restoration, (3, input_size, input_size), as_strings=True,
-                                                print_per_layer_stat=True, verbose=True)
+                                             print_per_layer_stat=True, verbose=True)
     print('{:<30}  {:<8}'.format('Computational complexity: ', macs))
     print('{:<30}  {:<8}'.format('Number of parameters: ', params))
     print('# model_restoration parameters: %.2f M' % (
             sum(param.numel() for param in model_restoration.parameters()) / 1e6))
     print("number of GFLOPs: %.2f G" % (model_restoration.flops() / 1e9))
-

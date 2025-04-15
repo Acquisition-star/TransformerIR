@@ -1,9 +1,9 @@
 import math
 import torch
 
-if torch.__version__ == '2.6.0+cu124':
+try:
     from torch.optim.lr_scheduler import LRScheduler as LRScheduler
-else:
+except ImportError:
     from torch.optim.lr_scheduler import _LRScheduler as LRScheduler
 
 

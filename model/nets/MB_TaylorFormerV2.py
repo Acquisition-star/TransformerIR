@@ -305,9 +305,8 @@ class Attention(nn.Module):
         #    self.N=h*w
         # print(torch.sum(k, dim=-1).unsqueeze(3).shape)
         scale = self.sigmoid(self.scale)
-        out_numerator = torch.sum(v, dim=-2).unsqueeze(2) + (q_1 @ attn_1) + scale.repeat_interleave(b // self.num_path,
-                                                                                                     0) * (
-                                q_2 @ attn_2)  # self.one_M \
+        out_numerator = (torch.sum(v, dim=-2).unsqueeze(2) + (q_1 @ attn_1) +
+                         scale.repeat_interleave(b // self.num_path, 0) * (q_2 @ attn_2))  # self.one_M \
 
         N = h * w
         # print(q@torch.sum(k, dim=-1).unsqueeze(3).repeat(1,1,1,c//self.num_heads).shape)

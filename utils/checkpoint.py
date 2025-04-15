@@ -3,15 +3,17 @@ import os
 import torch
 
 
-def load_checkpoint_model(model, pth, logger):
-    logger.info(f"==============> Resuming form {pth}....................")
+def load_checkpoint_model(model, pth, logger=None):
+    if logger is not None:
+        logger.info(f"==============> Resuming form {pth}....................")
     if pth.startswith('https'):
         checkpoint = torch.hub.load_state_dict_from_url(
             pth, map_location='cpu', check_hash=True)
     else:
         checkpoint = torch.load(pth, map_location='cpu', weights_only=False)
     msg = model.load_state_dict(checkpoint['model'], strict=False)
-    logger.info(msg)
+    if logger is not None:
+        logger.info(msg)
     del checkpoint
     torch.cuda.empty_cache()
 

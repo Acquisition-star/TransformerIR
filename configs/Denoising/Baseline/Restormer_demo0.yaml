@@ -41,12 +41,12 @@ criterion:
   type: l1
 scheduler:
   type: CosineAnnealingRestartCyclicLR
-  periods: [ 92000, 208000 ]
+  periods: [ 1, 2 ]
   restart_weights: [ 1,1 ]
   eta_mins: [ 0.0003,0.000001 ]
 train:
   lossfn_weight: 1.0
   start_epoch: 1
-  num_epochs: 300000
-  checkpoint_val: 3000
-  checkpoint_print: 50
+  num_epochs: 3
+  checkpoint_val: 1
+  checkpoint_print: 1

@@ -22,17 +22,16 @@ from model.build import build_model
 from utils.optimizer import build_optimizer
 from utils.criterion import build_criterion
 from utils.lr_scheduler import build_scheduler
-from utils.checkpoint import load_checkpoint, save_checkpoint, auto_resume_helper
+from utils.checkpoint import load_checkpoint, save_checkpoint, auto_resume_helper, load_checkpoint_model
 from utils.util import calculate_psnr, tensor2uint
 
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/Denoising/Baseline/demo.yaml',
-                        help='path to config file')
+    parser.add_argument('--cfg', type=str, default=None, help='path to config file')
     parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
     parser.add_argument("--batch_size", type=int, default=6, help='batch size')
-    parser.add_argument("--epochs", type=int, default=300000, help='number of epochs')
+    # parser.add_argument("--epochs", type=int, default=None, help='number of epochs')
     parser.add_argument('--output', type=str, default='Info/', help='path to output folder')
     parser.add_argument('--env', type=str, default='default', help='experiment name')
     parser.add_argument('--autodl', action='store_true', default=False, help='whether to use autodl machine to train')
@@ -50,6 +49,7 @@ def main(config, logger):
     # 模型定义
     logger.info(f"Building model: {config.net.type} --> {config.task}")
     model = build_model(config.net)
+    logger.info(model)
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
     logger.info(f"Number of params: {n_parameters}")
     model.cuda()
@@ -76,9 +76,13 @@ def main(config, logger):
     record = None
 
     if config.resume:
-        max_accuracy, record = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
-        # psnr = validate(model, data_loader_val, logger)
-        logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {max_accuracy:.1f}db")
+        if os.path.basename(config.resume) == 'ckpt_epoch_0.pth':
+            load_checkpoint_model(model, config.resume, logger)
+            logger.info(f"Pretrained model loaded from {config.resume}")
+        else:
+            max_accuracy, record = load_checkpoint(config, model, optimizer, lr_scheduler, criterion, logger)
+            # psnr = validate(model, data_loader_val, logger)
+            logger.info(f"Accuracy of the network on the {len(dataset_val)} test images: {max_accuracy:.1f}db")
 
     logger.info(f"Start training...")
 
@@ -89,8 +93,6 @@ def main(config, logger):
     while iter <= config.train.num_epochs:
         # 开始训练
         for _, train_data in enumerate(data_loader_train):
-            if iter > config.train.num_epochs:
-                break
             # 参数优化
             optimizer.zero_grad()
             L_img, H_img = train_data['L'].cuda(), train_data['H'].cuda()
@@ -124,6 +126,8 @@ def main(config, logger):
             # 学习率更新
             lr_scheduler.step()
             iter += 1
+            if iter > config.train.num_epochs:
+                break
 
     save_record(record, config.path.root_path)
 

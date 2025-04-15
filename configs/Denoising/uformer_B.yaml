@@ -1,5 +1,5 @@
-task: 'baseline_denoising_color_sidd'
-model: 'Baseline'
+task: 'uformer_denoising_color_sidd'
+model: 'Uformer-T'
 seed: 0
 n_channels: 3  # 输入图像通道数
 sigma: 15
@@ -9,7 +9,7 @@ datasets:
   dataset_type: 'denoising'
   dataloader_shuffle: true
   dataloader_num_workers: 1
-  dataloader_batch_size: 48
+  dataloader_batch_size: 12
   train:
     state: 'Train'
     H_path: [ 'E:\Data\SIDD\train\groundtruth' ]
@@ -20,33 +20,32 @@ datasets:
     H_path: [ 'E:\Data\SIDD\val\groundtruth' ]
     L_path: [ 'E:\Data\SIDD\val\input' ]
 net:
-  type: 'baseline'
-  dim: 3
-  embedding_dim: 32
-  bias: True
-  middle_blks: 2
-  encoder_blk_nums: [ 2,2 ]
-  decoder_blk_nums: [ 2,2 ]
-  attn_type: 'Sparse Attention'
-  attn_config:
-    num_heads: 8
-    bias: True
+  type: 'Uformer'
+  img_size: 128
+  embed_dim: 32
+  window_size: 8
+  token_projection: 'linear'
+  token_mlp: 'leff'
+  depths: [ 1, 2, 8, 8, 2, 8, 8, 2, 1 ]
+  modulator: True
 optimizer:
   type: 'adamw'
-  learning_rate: 1.0e-3  # 学习率
-  weight_decay: 0.0  # 权重衰减
+  learning_rate: 2.0e-4  # 学习率
+  weight_decay: 0.02  # 权重衰减
   betas: [ 0.9, 0.999 ]
   eps: 1.0e-8
 criterion:
   type: 'charbonnier'
   eps: 1.0e-9
 scheduler:
-  type: 'CosineAnnealingLR'
-  T_max: 100
-  eta_min: 1.0e-7
+  type: 'StepLR'
+  step: 15
+  gamma: 0.5
 train:
   start_epoch: 0
-  num_epochs: 100
+  num_epochs: 70
   checkpoint_val: 1
   checkpoint_print: 1
+
   lossfn_weight: 1.0
+  decay: 0.999

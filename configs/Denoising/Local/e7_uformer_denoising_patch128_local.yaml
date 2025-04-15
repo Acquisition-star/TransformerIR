@@ -20,7 +20,7 @@ datasets:
     H_path: [ 'E:\Data\SIDD\val\groundtruth' ]
     L_path: [ 'E:\Data\SIDD\val\input' ]
 net:
-  type: 'Uformer-T'
+  type: 'Uformer-B'
   img_size: 128
   embed_dim: 32
   window_size: 8

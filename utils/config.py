@@ -29,10 +29,10 @@ def update_config(args, config):
         config.datasets.dataloader_num_workers = args.dataloader_workers
     if hasattr(args, 'batch_size'):
         config.datasets.dataloader_batch_size = args.batch_size
-    if hasattr(args, 'epochs'):
-        config.train.num_epochs = args.epochs
-        if hasattr(config.scheduler, 'T_max'):
-            config.scheduler.T_max = args.epochs
+    # if hasattr(args, 'epochs'):
+    #     config.train.num_epochs = args.epochs
+    #     if hasattr(config.scheduler, 'T_max'):
+    #         config.scheduler.T_max = args.epochs
     if hasattr(args, 'autodl'):
         if args.autodl:
             config.datasets.train.H_path = [replace_path(p) for p in config.datasets.train.H_path]

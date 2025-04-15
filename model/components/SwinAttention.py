@@ -3,7 +3,11 @@
 
 import torch
 import torch.nn as nn
-from timm.models.layers import trunc_normal_
+
+try:
+    from timm.layers import trunc_normal_
+except ImportError:
+    from timm.models.layers import trunc_normal_
 
 
 def window_partition(x, window_size):
@@ -144,7 +148,7 @@ class ShiftedWindowAttention(nn.Module):
 
 
 if __name__ == '__main__':
-    model = ShiftedAttention(channels=32, window_size=8, num_heads=8, shifted=True)
+    model = ShiftedWindowAttention(channels=32, window_size=8, num_heads=8, shifted=True)
     input = torch.randn((1, 32, 128, 128))
     output = model(input)
     print(output.shape)

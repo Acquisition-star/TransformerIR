@@ -28,8 +28,7 @@ from utils.util import calculate_psnr, tensor2uint
 
 def parse_option():
     parser = argparse.ArgumentParser('TransformerIR training and evaluation script', add_help=False)
-    parser.add_argument('--cfg', type=str, default='configs/Denoising/Baseline/demo.yaml',
-                        help='path to config file')
+    parser.add_argument('--cfg', type=str, default=None, help='path to config file')
     parser.add_argument("--dataloader_workers", type=int, default=1, help="number of dataloader workers")
     parser.add_argument("--batch_size", type=int, default=24, help='batch size')
     parser.add_argument("--epochs", type=int, default=10, help='number of epochs')

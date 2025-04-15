@@ -1,10 +1,14 @@
 import torch
 import torch.nn as nn
-from timm.layers import trunc_normal_
 from einops import rearrange
 
 from model.components.MDTA import MDTA
 from model.components.SwinAttention import ShiftedWindowAttention
+
+try:
+    from timm.layers import trunc_normal_
+except ImportError:
+    from timm.models.layers import trunc_normal_
 
 
 class WindowChannelAttention(nn.Module):
