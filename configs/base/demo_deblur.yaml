@@ -3,23 +3,22 @@
 task: Restormer_Baseline
 seed: 0
 n_channels: 3  # 输入图像通道数
-sigma: 15
 path:
   pretrained_net: null
 datasets:
-  dataset_type: denoising
+  dataset_type: deblur
   dataloader_shuffle: true
   dataloader_num_workers: 1
   dataloader_batch_size: 8
   train:
     state: Train
-    H_path: [ 'D:\Data\SIDD\train\groundtruth' ]
-    L_path: [ 'D:\Data\SIDD\train\input' ]
+    H_path: [ 'D:\Data\Deblur\GoPro\train\target' ]
+    L_path: [ 'D:\Data\Deblur\GoPro\train\input' ]
     image_size: 128
   val:
     state: Val
-    H_path: [ 'D:\Data\SIDD\val\groundtruth' ]
-    L_path: [ 'D:\Data\SIDD\val\input' ]
+    H_path: [ 'D:\Data\Deblur\GoPro\val\target' ]
+    L_path: [ 'D:\Data\Deblur\GoPro\val\input' ]
 net:
   type: restormer_baseline
   in_chans: 3
@@ -29,14 +28,8 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Shifted Window Attention
-  attn_config:
-    window_size: [ 8, 8, 8, 8 ]
-    num_heads: [ 4, 4, 4, 4 ]
-    qkv_bias: True
-    qk_scale: null
-    attn_drop: 0.
-    proj_drop: 0.
+  attn_type: Identity
+  attn_config: null
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率
@@ -47,12 +40,12 @@ criterion:
   type: l1
 scheduler:
   type: CosineAnnealingRestartCyclicLR
-  periods: [ 92000, 208000 ]
+  periods: [ 40, 60 ]
   restart_weights: [ 1,1 ]
   eta_mins: [ 0.0003,0.000001 ]
 train:
   lossfn_weight: 1.0
   start_epoch: 1
-  num_epochs: 300000
-  checkpoint_val: 3000
-  checkpoint_print: 50
+  num_epochs: 100
+  checkpoint_val: 20
+  checkpoint_print: 1

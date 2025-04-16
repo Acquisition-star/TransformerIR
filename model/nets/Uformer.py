@@ -969,6 +969,7 @@ class LeWinTransformerBlock(nn.Module):
             shift_mask_windows = shift_mask_windows.view(-1, self.win_size * self.win_size)  # nW, win_size*win_size
             shift_attn_mask = shift_mask_windows.unsqueeze(1) - shift_mask_windows.unsqueeze(
                 2)  # nW, win_size*win_size, win_size*win_size
+            # noinspection PyTypeChecker
             shift_attn_mask = shift_attn_mask.masked_fill(shift_attn_mask != 0, float(-100.0)).masked_fill(
                 shift_attn_mask == 0, float(0.0))
             attn_mask = attn_mask + shift_attn_mask if attn_mask is not None else shift_attn_mask

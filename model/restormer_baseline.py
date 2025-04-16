@@ -290,3 +290,10 @@ class Restormer_Baseline(nn.Module):
             iter in range(num_refinement_blocks)])
 
         self.output = nn.Conv2d(int(dim * 2 ** 1), out_channels, kernel_size=3, stride=1, padding=1, bias=bias)
+
+
+if __name__ == '__main__':
+    model = Restormer_Baseline()
+    input = torch.randn(1, 3, 128, 256)
+    output = model(input)
+    print(output.shape)

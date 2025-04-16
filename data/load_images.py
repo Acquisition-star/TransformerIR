@@ -40,7 +40,7 @@ def read_images(path, n_channels=3):
     根据输入图片地址读入图片
     :param path: 输入图片地址
     :param n_channels: 输入图片的通道数
-    :return: 读取完成的图片HWN-RGB
+    :return: 读取完成的图片WHN-RGB
     """
     img = None
     if n_channels == 1:
@@ -93,6 +93,24 @@ def random_crop_2img(img1, img2, patch):
     mode = random.randint(0, 7)
     patch_1 = augment_img(patch_1, mode=mode)
     patch_2 = augment_img(patch_2, mode=mode)
+    return patch_1, patch_2
+
+
+def crop_2img(img1, img2, patch):
+    """
+    将两张图片裁剪为patch大小的图像块
+    :param img1: 图像1
+    :param img2: 图像2
+    :param patch: 图像块大小
+    :return: 裁剪完成的图像HWC-RGB
+    """
+    assert img1.shape == img2.shape, 'img1 and img2 have different shape'
+    H, W, _ = img1.shape
+    # 随机裁剪图像
+    random_start_h = random.randint(0, max(0, H - patch[1]))
+    random_start_w = random.randint(0, max(0, W - patch[0]))
+    patch_1 = img1[random_start_h:random_start_h + patch[1], random_start_w:random_start_w + patch[0], :]
+    patch_2 = img2[random_start_h:random_start_h + patch[1], random_start_w:random_start_w + patch[0], :]
     return patch_1, patch_2
 
 

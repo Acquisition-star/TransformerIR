@@ -29,9 +29,8 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Strip Attention
-  attn_config:
-    num_heads: [ 4, 4, 4, 8 ]
+  attn_type: Identity
+  attn_config: null
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率
@@ -42,12 +41,12 @@ criterion:
   type: l1
 scheduler:
   type: CosineAnnealingRestartCyclicLR
-  periods: [ 92000, 208000 ]
+  periods: [ 40, 60 ]
   restart_weights: [ 1,1 ]
   eta_mins: [ 0.0003,0.000001 ]
 train:
   lossfn_weight: 1.0
   start_epoch: 1
-  num_epochs: 300000
-  checkpoint_val: 3000
-  checkpoint_print: 50
+  num_epochs: 100
+  checkpoint_val: 20
+  checkpoint_print: 1

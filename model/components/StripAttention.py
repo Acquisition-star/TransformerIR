@@ -204,7 +204,7 @@ class Inter_SA(nn.Module):
 
 
 class StripAttention(nn.Module):
-    def __init__(self, dim, num_heads=4):
+    def __init__(self, dim, num_heads=5):
         super(StripAttention, self).__init__()
         self.block1 = Intra_SA(dim, num_heads)
         self.block2 = Inter_SA(dim, num_heads)

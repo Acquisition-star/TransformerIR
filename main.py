@@ -9,6 +9,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
+from tqdm import tqdm
 
 from pathlib import Path
 
@@ -141,20 +142,41 @@ def validate(model, data_loader, logger):
 
     avg_psnr = AverageMeter()
 
-    for iter, val_data in enumerate(data_loader):
-        L_img, H_img = val_data['L'].cuda(), val_data['H'].cuda()
-        image_name = os.path.basename(val_data['H_path'][0])
+    # for iter, val_data in enumerate(data_loader):
+    #     L_img, H_img = val_data['L'].cuda(), val_data['H'].cuda()
+    #     image_name = os.path.basename(val_data['H_path'][0])
+    #
+    #     outputs = model(L_img)
+    #     visuals = OrderedDict()
+    #     visuals['H'] = val_data['H'].detach()[0].float().cpu()  # 原始图像
+    #     visuals['G'] = outputs.detach()[0].float().cpu()  # 生成图像
+    #     H_img = tensor2uint(visuals['H'])
+    #     G_img = tensor2uint(visuals['G'])
+    #     current_psnr = calculate_psnr(G_img, H_img)
+    #     # logger.info('{:->4d}--> {:>10s} | {:<4.2f}dB'.format(iter, image_name, current_psnr))
+    #     avg_psnr.update(current_psnr)
 
-        outputs = model(L_img)
-        visuals = OrderedDict()
-        visuals['H'] = val_data['H'].detach()[0].float().cpu()  # 原始图像
-        visuals['G'] = outputs.detach()[0].float().cpu()  # 生成图像
-        H_img = tensor2uint(visuals['H'])
-        G_img = tensor2uint(visuals['G'])
-        current_psnr = calculate_psnr(G_img, H_img)
-        logger.info('{:->4d}--> {:>10s} | {:<4.2f}dB'.format(iter, image_name, current_psnr))
-        avg_psnr.update(current_psnr)
+    with tqdm(total=len(data_loader), desc="Validation Progress") as pbar:
+        for iter, val_data in enumerate(data_loader):
+            L_img, H_img = val_data['L'].cuda(), val_data['H'].cuda()
+            image_name = os.path.basename(val_data['H_path'][0])
+
+            outputs = model(L_img)
+            visuals = OrderedDict()
+            visuals['H'] = val_data['H'].detach()[0].float().cpu()  # 原始图像
+            visuals['G'] = outputs.detach()[0].float().cpu()  # 生成图像
+            H_img = tensor2uint(visuals['H'])
+            G_img = tensor2uint(visuals['G'])
+            current_psnr = calculate_psnr(G_img, H_img)
+            avg_psnr.update(current_psnr)
+
+            # 更新进度条
+            pbar.update(1)
+            # 在进度条后显示当前 PSNR 和图像名称
+            pbar.set_postfix({"Image": image_name, "PSNR": f"{current_psnr:.2f}dB"})
+
     model.train()
+    logger.info('Average PSNR: {:<4.2f}dB'.format(avg_psnr.avg))
     return avg_psnr.avg
 
 

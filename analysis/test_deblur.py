@@ -19,14 +19,15 @@ from utils.config import get_config
 from utils.checkpoint import load_checkpoint_model
 from data.load_images import read_images
 from model.build import build_model
+from data.dataset_deblur import Dataset_deblur_val
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 lpips_fn = lpips.LPIPS(net='alex', verbose=False)
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
-parser.add_argument('--task', type=str, default='denoising', help='task type')
+parser.add_argument('--task', type=str, default='deblur', help='task type')
 parser.add_argument('--output', type=str, default='results/', help='path to output folder')
-parser.add_argument('--env', type=str, default='test', help='experiment name')
+parser.add_argument('--env', type=str, default='demo', help='experiment name')
 parser.add_argument('--cfg', type=str, default=None, help='model name')
 parser.add_argument("--pth", type=str, default=None, help="path to pretrained model")
 parser.add_argument("--imgH", type=int, default=None, help="image size")
@@ -43,51 +44,26 @@ logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 
 data_list = [
     {
-        'name': 'SIDD',
-        'H_path': r'D:\Data\SIDD\val\groundtruth',
-        'L_path': r'D:\Data\SIDD\val\input',
+        'name': 'GoPro',
+        'H_path': r'D:\Data\Deblur\GoPro\test\target',
+        'L_path': r'D:\Data\Deblur\GoPro\test\input',
     },
+    {
+        'name': 'HIDE',
+        'H_path': r'D:\Data\Deblur\HIDE\target',
+        'L_path': r'D:\Data\Deblur\HIDE\input',
+    },
+    # {
+    #     'name': 'RealBlur_J',
+    #     'H_path': r'D:\Data\Deblur\RealBlur_J\target',
+    #     'L_path': r'D:\Data\Deblur\RealBlur_J\input',
+    # },
+    # {
+    #     'name': 'RealBlur_R',
+    #     'H_path': r'D:\Data\Deblur\RealBlur_R\target',
+    #     'L_path': r'D:\Data\Deblur\RealBlur_R\input',
+    # },
 ]
-
-
-class Dataset_denoising_val(Dataset):
-    def __init__(self, input_channels, H_path, L_path=None, img_size=None):
-        super(Dataset_denoising_val, self).__init__()
-        self.n_channels = input_channels
-        self.H_path = H_path
-        self.L_path = L_path
-        self.img_size = img_size
-
-        self.images = []
-
-        h_ps = sorted(glob.glob(os.path.join(self.H_path, '*')))
-        if self.L_path is not None:
-            l_ps = sorted(glob.glob(os.path.join(self.L_path, '*')))
-            for h_p, l_p in zip(h_ps, l_ps):
-                self.images.append({'H': h_p, 'L': l_p})
-        else:
-            for h_p in h_ps:
-                self.images.append({'H': h_p, 'L': 'None'})
-
-    def __getitem__(self, index):
-        H_path, L_path = self.images[index]['H'], self.images[index]['L']
-        name = os.path.basename(H_path)
-
-        img_H = read_images(H_path)  # HWC-RGB
-        img_H = np.float32(img_H / 255.0)
-        img_L = read_images(L_path)  # HWC-RGB
-        img_L = np.float32(img_L / 255.0)
-
-        # HWC to CHW
-        img_L = torch.from_numpy(np.ascontiguousarray(img_L)).permute(2, 0, 1).float()
-        img_H = torch.from_numpy(np.ascontiguousarray(img_H)).permute(2, 0, 1).float()
-        if self.img_size is not None:
-            img_L = img_L[:, :self.img_size[0], :self.img_size[1]]
-            img_H = img_H[:, :self.img_size[0], :self.img_size[1]]
-        return {'H': img_H, 'L': img_L, 'img_name': name}
-
-    def __len__(self):
-        return len(self.images)
 
 
 def trans_img(img):
@@ -132,8 +108,8 @@ def main():
         img_size = (args.imgH, args.imgW)
 
     for data_info in data_lists:
-        data_set = Dataset_denoising_val(input_channels=3, H_path=data_info['H_path'],
-                                         L_path=data_info['L_path'], img_size=img_size)
+        data_set = Dataset_deblur_val(input_channels=3, H_path=[data_info['H_path']], L_path=[data_info['L_path']],
+                                      patch_size=img_size)
 
         img_save_path = os.path.join(root_path, data_info['name'])
         os.makedirs(img_save_path, exist_ok=True)
@@ -145,8 +121,11 @@ def main():
         avg_psnr, avg_ssim, avg_lpips, avg_psnr_y, avg_ssim_y = AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter(), AverageMeter()
         start_time = time.time()
         for index in range(0, len(data_set)):
-            L_img, H_img = data_set[index]['L'], data_set[index]['H']  # CHW-RGB
-            image_name = data_set[index]['img_name']
+            data_loader = data_set[index]
+            L_img, H_img, L_path, H_path = data_loader['L'], data_loader['H'], data_loader['L_path'], data_loader[
+                'H_path']  # CHW-RGB
+            image_name = os.path.basename(L_path)
+            # image_name = data_set[index]['img_name']
 
             L_img = L_img.unsqueeze(0).to(device)  # CHW-RGB --> NCHW-RGB
 

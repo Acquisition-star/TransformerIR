@@ -24,9 +24,9 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 lpips_fn = lpips.LPIPS(net='alex', verbose=False)
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
-parser.add_argument('--task', type=str, default='denoising', help='task type')
+parser.add_argument('--task_type', type=str, default='denoising', help='task type')
 parser.add_argument('--output', type=str, default='results/', help='path to output folder')
-parser.add_argument('--env', type=str, default='test', help='experiment name')
+parser.add_argument('--env', type=str, default='demo', help='experiment name')
 parser.add_argument('--cfg', type=str, default=None, help='model name')
 parser.add_argument("--pth", type=str, default=None, help="path to pretrained model")
 parser.add_argument("--imgH", type=int, default=None, help="image size")
@@ -35,7 +35,7 @@ parser.add_argument("--imgW", type=int, default=None, help="image size")
 args = parser.parse_known_args()[0]
 config = get_config(args)
 
-root_path = f'{args.output}{args.task}/{args.env}'
+root_path = f'{args.output}{args.task_type}/{args.env}'
 
 os.makedirs(root_path, exist_ok=True)
 
@@ -43,17 +43,25 @@ logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 
 data_list = [
     {
-        'name': 'SIDD',
-        'H_path': r'D:\Data\SIDD\val\groundtruth',
-        'L_path': r'D:\Data\SIDD\val\input',
+        'name': 'CBSD68',
+        'H_path': r'E:\Data\Test\CBSD68\HI',
+    },
+    {
+        'name': 'Kodak24',
+        'H_path': r'E:\Data\Test\Kodak24\HI',
+    },
+    {
+        'name': 'McMaster',
+        'H_path': r'E:\Data\Test\McMaster\HI',
     },
 ]
 
 
 class Dataset_denoising_val(Dataset):
-    def __init__(self, input_channels, H_path, L_path=None, img_size=None):
+    def __init__(self, input_channels, H_path, L_path=None, sigma=None, img_size=None):
         super(Dataset_denoising_val, self).__init__()
         self.n_channels = input_channels
+        self.sigma = sigma
         self.H_path = H_path
         self.L_path = L_path
         self.img_size = img_size
@@ -75,9 +83,17 @@ class Dataset_denoising_val(Dataset):
 
         img_H = read_images(H_path)  # HWC-RGB
         img_H = np.float32(img_H / 255.0)
-        img_L = read_images(L_path)  # HWC-RGB
-        img_L = np.float32(img_L / 255.0)
 
+        img_L = None
+
+        if L_path != 'None':
+            img_L = read_images(L_path)  # HWC-RGB
+            img_L = np.float32(img_L / 255.0)
+        else:
+            img_L = np.copy(img_H)
+            # 添加噪声
+            np.random.seed(seed=0)
+            img_L += np.random.normal(0, self.sigma / 255.0, img_L.shape)
         # HWC to CHW
         img_L = torch.from_numpy(np.ascontiguousarray(img_L)).permute(2, 0, 1).float()
         img_H = torch.from_numpy(np.ascontiguousarray(img_H)).permute(2, 0, 1).float()
@@ -105,7 +121,9 @@ def trans_img(img):
 def deal_list():
     data_lists = []
     for data_info in data_list:
-        data_lists.append(data_info)
+        for n in [15, 25, 50]:
+            l = {'name': f'{data_info["name"]}_n{n}', 'H_path': data_info["H_path"], 'L_path': None, 'sigma': n}
+            data_lists.append(l)
     return data_lists
 
 
@@ -133,7 +151,8 @@ def main():
 
     for data_info in data_lists:
         data_set = Dataset_denoising_val(input_channels=3, H_path=data_info['H_path'],
-                                         L_path=data_info['L_path'], img_size=img_size)
+                                         L_path=data_info['L_path'], sigma=data_info['sigma'],
+                                         img_size=args.img_size)
 
         img_save_path = os.path.join(root_path, data_info['name'])
         os.makedirs(img_save_path, exist_ok=True)

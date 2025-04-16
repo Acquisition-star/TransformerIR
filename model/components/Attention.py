@@ -8,6 +8,8 @@ from model.components.SparseGSA import SparseAttention
 from model.components.SwinAttention import ShiftedWindowAttention
 from model.components.T_MSA import Attention
 from model.components.StripAttention import StripAttention
+from model.components.EA import EfficientAttention
+from model.components.HA import HAB
 
 
 def build_attention(index, iter, dim, bias, attn_type, attn_config):
@@ -73,6 +75,28 @@ def build_attention(index, iter, dim, bias, attn_type, attn_config):
         attn = StripAttention(
             dim=dim,
             num_heads=attn_config.num_heads[index],
+        )
+    elif attn_type == 'Efficient Attention':
+        attn = EfficientAttention(
+            in_channels=dim,
+            key_channels=dim,
+            head_count=attn_config.num_heads[index],
+            value_channels=dim,
+        )
+    elif attn_type == 'Hybrid Attention':
+        attn = HAB(
+            dim=dim,
+            num_heads=attn_config.num_heads[index],
+            window_size=attn_config.window_size[index],
+            shift_size=attn_config.shift_size[index][iter],
+            compress_ratio=attn_config.compress_ratio,
+            squeeze_factor=attn_config.squeeze_factor,
+            conv_scale=attn_config.conv_scale,
+            qkv_bias=attn_config.qkv_bias,
+            qk_scale=attn_config.qk_scale,
+            drop=attn_config.drop,
+            attn_drop=attn_config.attn_drop,
+            drop_path=attn_config.drop_path,
         )
     else:
         raise ValueError('Unknown attention type {}'.format(attn_type))
