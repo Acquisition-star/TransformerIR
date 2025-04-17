@@ -117,7 +117,6 @@ def main(config, logger):
                 record['psnr'].append(avg_psnr)
                 record['lr'].append(round(lr_scheduler.get_last_lr()[0], 10))
                 record['loss'].append(round(loss.item(), 6))
-                logger.info('\n')
                 logger.info('<iter:{:3d}, Average PSNR : {:<.2f}dB \n'.format(iter, avg_psnr))
                 # 模型保存
                 save_checkpoint(config, iter, model, avg_psnr, optimizer, lr_scheduler, criterion, logger, record)
@@ -176,7 +175,7 @@ def validate(model, data_loader, logger):
             pbar.set_postfix({"Image": image_name, "PSNR": f"{current_psnr:.2f}dB"})
 
     model.train()
-    logger.info('Average PSNR: {:<4.2f}dB'.format(avg_psnr.avg))
+    # logger.info('Average PSNR: {:<4.2f}dB'.format(avg_psnr.avg))
     return avg_psnr.avg
 
 
@@ -246,7 +245,7 @@ if __name__ == "__main__":
     args, config = parse_option()
 
     # 输出文件保存地址
-    root_path = Path(args.output) / args.env / config.task  # 根目录
+    root_path = Path(args.output) / config.task / args.env  # 根目录
     checkpoint_path = root_path / "checkpoints"  # checkpoints目录
     os.makedirs(root_path, exist_ok=True)
     os.makedirs(checkpoint_path, exist_ok=True)

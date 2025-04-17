@@ -6,7 +6,7 @@
 
 
 import os
-# import gdown
+import gdown
 import shutil
 
 import argparse
@@ -39,16 +39,16 @@ for data in args.data.split('-'):
     if noise == 'real':
         if data == 'train':
             print('SIDD Training Data!')
-            # gdown.download(id=SIDD_train, output='Datasets/Downloads/train.zip', quiet=False)
-            os.system(f'gdrive download {SIDD_train} --path {path}/')
+            gdown.download(id=SIDD_train, output=f'{path}/train.zip', quiet=False)
+            # os.system(f'gdrive download {SIDD_train} --path {path}/')
             print('Extracting SIDD Data...')
             shutil.unpack_archive(f'{path}/train.zip', f'{path}')
             os.rename(os.path.join(path, 'train'), os.path.join(path, 'SIDD'))
             os.remove(f'{path}/train.zip')
 
             print('SIDD Validation Data!')
-            # gdown.download(id=SIDD_val, output='Datasets/val.zip', quiet=False)
-            os.system(f'gdrive download {SIDD_val} --path {path}/')
+            gdown.download(id=SIDD_val, output=f'{path}/val.zip', quiet=False)
+            # os.system(f'gdrive download {SIDD_val} --path {path}/')
             print('Extracting SIDD Data...')
             shutil.unpack_archive(f'{path}/val.zip', f'{path}')
             os.rename(os.path.join(path, 'val'), os.path.join(path, 'SIDD_val'))
@@ -57,8 +57,8 @@ for data in args.data.split('-'):
         if data == 'test':
             if args.dataset == 'all' or args.dataset == 'SIDD':
                 print('SIDD Testing Data!')
-                # gdown.download(id=SIDD_test, output='Datasets/test.zip', quiet=False)
-                os.system(f'gdrive download {SIDD_test} --path {path}/')
+                gdown.download(id=SIDD_test, output=f'{path}/test.zip', quiet=False)
+                # os.system(f'gdrive download {SIDD_test} --path {path}/')
                 print('Extracting SIDD Data...')
                 shutil.unpack_archive(f'{path}/test.zip', f'{path}')
                 os.rename(os.path.join(path, 'test'), os.path.join(path, 'SIDD_test'))
@@ -66,8 +66,8 @@ for data in args.data.split('-'):
 
             if args.dataset == 'all' or args.dataset == 'DND':
                 print('DND Testing Data!')
-                # gdown.download(id=DND_test, output='Datasets/test.zip', quiet=False)
-                os.system(f'gdrive download {DND_test} --path {path}/')
+                gdown.download(id=DND_test, output=f'{path}/test.zip', quiet=False)
+                # os.system(f'gdrive download {DND_test} --path {path}/')
                 print('Extracting DND data...')
                 shutil.unpack_archive(f'{path}/test.zip', f'{path}')
                 os.rename(os.path.join(path, 'test'), os.path.join(path, 'DND'))
@@ -76,37 +76,37 @@ for data in args.data.split('-'):
     if noise == 'gaussian':
         if data == 'train':
             print('WaterlooED Training Data!')
-            # gdown.download(id=WaterlooED, output='Datasets/Downloads/WaterlooED.zip', quiet=False)
-            os.system(f'gdrive download {WaterlooED} --path {path}/')
+            gdown.download(id=WaterlooED, output=f'{path}/WaterlooED.zip', quiet=False)
+            # os.system(f'gdrive download {WaterlooED} --path {path}/')
             print('Extracting WaterlooED Data...')
             shutil.unpack_archive(f'{path}/WaterlooED.zip', f'{path}')
             os.remove(f'{path}/WaterlooED.zip')
 
             print('DIV2K Training Data!')
-            # gdown.download(id=DIV2K, output='Datasets/Downloads/DIV2K.zip', quiet=False)
-            os.system(f'gdrive download {DIV2K} --path {path}/')
+            gdown.download(id=DIV2K, output=f'{path}/DIV2K.zip', quiet=False)
+            # os.system(f'gdrive download {DIV2K} --path {path}/')
             print('Extracting DIV2K Data...')
             shutil.unpack_archive(f'{path}/DIV2K.zip', f'{path}')
             os.remove(f'{path}/DIV2K.zip')
 
             print('BSD400 Training Data!')
-            # gdown.download(id=BSD400, output='Datasets/Downloads/BSD400.zip', quiet=False)
-            os.system(f'gdrive download {BSD400} --path {path}/')
+            gdown.download(id=BSD400, output=f'{path}/BSD400.zip', quiet=False)
+            # os.system(f'gdrive download {BSD400} --path {path}/')
             print('Extracting BSD400 data...')
             shutil.unpack_archive(f'{path}/BSD400.zip', f'{path}')
             os.remove(f'{path}/BSD400.zip')
 
             print('Flickr2K Training Data!')
-            # gdown.download(id=Flickr2K, output='Datasets/Downloads/Flickr2K.zip', quiet=False)
-            os.system(f'gdrive download {Flickr2K} --path {path}/')
+            gdown.download(id=Flickr2K, output=f'{path}/Flickr2K.zip', quiet=False)
+            # os.system(f'gdrive download {Flickr2K} --path {path}/')
             print('Extracting Flickr2K data...')
             shutil.unpack_archive(f'{path}/Flickr2K.zip', f'{path}/Downloads')
             os.remove(f'{path}/Flickr2K.zip')
 
         if data == 'test':
             print('Gaussian Denoising Testing Data!')
-            # gdown.download(id=gaussian_test, output='Datasets/test.zip', quiet=False)
-            os.system(f'gdrive download {gaussian_test} --path {path}/')
+            gdown.download(id=gaussian_test, output=f'{path}/test.zip', quiet=False)
+            # os.system(f'gdrive download {gaussian_test} --path {path}/')
             print('Extracting Data...')
             shutil.unpack_archive(f'{path}/test.zip', f'{path}')
             os.rename(os.path.join(path, 'test'), os.path.join(path, 'Gaussian_test'))

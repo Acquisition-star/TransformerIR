@@ -11,6 +11,9 @@ from torch.utils.data import Dataset
 from ptflops import get_model_complexity_info
 from timm.utils import AverageMeter
 import lpips
+from skimage.util import img_as_ubyte
+import h5py
+import scipy.io as sio
 
 # 工具函数
 from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr, calculate_lpips
@@ -42,11 +45,15 @@ os.makedirs(root_path, exist_ok=True)
 logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 
 data_list = [
-    {
-        'name': 'SIDD',
-        'H_path': r'D:\Data\SIDD\val\groundtruth',
-        'L_path': r'D:\Data\SIDD\val\input',
-    },
+    # {
+    #     'name': 'SIDD',
+    #     'H_path': r'D:\Data\Denoising\SIDD\val\groundtruth',
+    #     'L_path': r'D:\Data\Denoising\SIDD\val\input',
+    # },
+    # {
+    #     'name': 'DND',
+    #     'path': r'D:\Data\Denoising\DND',
+    # },
 ]
 
 

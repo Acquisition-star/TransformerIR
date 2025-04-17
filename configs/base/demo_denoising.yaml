@@ -13,13 +13,13 @@ datasets:
   dataloader_batch_size: 8
   train:
     state: Train
-    H_path: [ 'D:\Data\SIDD\train\groundtruth' ]
-    L_path: [ 'D:\Data\SIDD\train\input' ]
+    H_path: [ 'D:\Data\Denoising\SIDD\train\groundtruth' ]
+    L_path: [ 'D:\Data\Denoising\SIDD\train\input' ]
     image_size: 128
   val:
     state: Val
-    H_path: [ 'D:\Data\SIDD\val\groundtruth' ]
-    L_path: [ 'D:\Data\SIDD\val\input' ]
+    H_path: [ 'D:\Data\Denoising\SIDD\val\groundtruth' ]
+    L_path: [ 'D:\Data\Denoising\SIDD\val\input' ]
 net:
   type: restormer_baseline
   in_chans: 3

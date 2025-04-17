@@ -6,6 +6,7 @@ from .nets.MB_TaylorFormerV2 import MB_TaylorFormer
 from .nets.Restormer import Restormer
 from .TransformerIR import TransformerIR
 from .restormer_baseline import Restormer_Baseline
+from .restormer_conv import Restormer_Baseline as Restormer_Conv
 
 
 def build_model(config):
@@ -84,6 +85,18 @@ def build_model(config):
         )
     elif model_type == 'restormer_baseline':
         model = Restormer_Baseline(
+            inp_channels=config.in_chans,
+            dim=config.dim,
+            bias=config.bias,
+            num_blocks=config.num_blocks,
+            num_refinement_blocks=config.num_refinement_blocks,
+            ffn_expansion_factor=config.ffn_expansion_factor,
+            LayerNorm_type=config.LayerNorm_type,
+            attn_type=config.attn_type,
+            attn_config=config.attn_config,
+        )
+    elif model_type == 'restormer_conv':
+        model = Restormer_Conv(
             inp_channels=config.in_chans,
             dim=config.dim,
             bias=config.bias,
