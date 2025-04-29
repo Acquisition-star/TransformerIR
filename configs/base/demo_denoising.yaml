@@ -29,9 +29,17 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Strip Attention
+  attn_type: Bi-Level Routing Attention
   attn_config:
-    num_heads: [ 4, 4, 4, 4 ]
+    num_heads: [ 2, 2, 2, 2 ]
+    n_win: 8
+    qk_dim: [ 48, 96, 192, 384 ]
+    kv_per_win: [ -1, -1, -1, -1 ]
+    kv_downsample_ratio: [ 4, 2, 1, 1 ]
+    kv_downsample_kernel: [ 4, 2, 1, 1 ]
+    kv_downsample_mode: identity
+    topk: [ 1, 4, 16, 32 ]
+    side_dwconv: 5
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率
@@ -42,12 +50,12 @@ criterion:
   type: l1
 scheduler:
   type: CosineAnnealingRestartCyclicLR
-  periods: [ 40, 60 ]
+  periods: [ 4000, 6000 ]
   restart_weights: [ 1,1 ]
   eta_mins: [ 0.0003,0.000001 ]
 train:
   lossfn_weight: 1.0
   start_epoch: 1
-  num_epochs: 100
-  checkpoint_val: 20
+  num_epochs: 10000
+  checkpoint_val: 2000
   checkpoint_print: 1

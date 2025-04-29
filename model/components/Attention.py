@@ -10,6 +10,7 @@ from model.components.T_MSA import Attention
 from model.components.StripAttention import Intra_SA_, Inter_SA_
 from model.components.EA import EfficientAttention
 from model.components.HA import HAB
+from model.components.BiLevelRoutingAttention import BiLevelRoutingAttention
 
 
 def build_attention(index, iter, dim, bias, attn_type, attn_config):
@@ -107,6 +108,19 @@ def build_attention(index, iter, dim, bias, attn_type, attn_config):
             drop=attn_config.drop,
             attn_drop=attn_config.attn_drop,
             drop_path=attn_config.drop_path,
+        )
+    elif attn_type == 'Bi-Level Routing Attention':
+        attn = BiLevelRoutingAttention(
+            dim=dim,
+            num_heads=attn_config.num_heads[index],  # [2, 2, 2, 2]
+            n_win=attn_config.n_win,  # 8
+            qk_dim=attn_config.qk_dim[index],  # [64, 128, 256, 512]
+            kv_per_win=attn_config.kv_per_win[index],  # [-1, -1, -1, -1]
+            kv_downsample_ratio=attn_config.kv_downsample_ratio[index],  # [4, 2, 1, 1]
+            kv_downsample_kernel=attn_config.kv_downsample_kernel[index],  # [4, 2, 1, 1]
+            kv_downsample_mode=attn_config.kv_downsample_mode,  # identity
+            topk=attn_config.topk[index],  # [1, 4, 16, -2]
+            side_dwconv=attn_config.side_dwconv,  # 5
         )
     else:
         raise ValueError('Unknown attention type {}'.format(attn_type))

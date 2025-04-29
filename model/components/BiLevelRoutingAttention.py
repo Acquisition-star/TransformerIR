@@ -282,17 +282,18 @@ class BiLevelRoutingAttention(nn.Module):
 
         out = out + lepe
         # output linear
-        out = self.wo(out)
+        out = self.wo(out).permute(0, 3, 1, 2).contiguous()
+        return out
 
         # NOTE: use padding for semantic segmentation
         # crop padded region
-        if self.auto_pad and (pad_r > 0 or pad_b > 0):
-            out = out[:, :H_in, :W_in, :].contiguous()
-
-        if ret_attn_mask:
-            return out, r_weight, r_idx, attn_weight
-        else:
-            return out
+        # if self.auto_pad and (pad_r > 0 or pad_b > 0):
+        #     out = out[:, :H_in, :W_in, :].contiguous()
+        #
+        # if ret_attn_mask:
+        #     return out, r_weight, r_idx, attn_weight
+        # else:
+        #     return out
 
 
 if __name__ == '__main__':
