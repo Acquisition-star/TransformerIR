@@ -7,7 +7,7 @@ from model.components.MDTA import MDTA
 from model.components.SparseGSA import SparseAttention
 from model.components.SwinAttention import ShiftedWindowAttention
 from model.components.T_MSA import Attention
-from model.components.StripAttention import StripAttention
+from model.components.StripAttention import Intra_SA_, Inter_SA_
 from model.components.EA import EfficientAttention
 from model.components.HA import HAB
 
@@ -72,10 +72,20 @@ def build_attention(index, iter, dim, bias, attn_type, attn_config):
             focusing_factor=attn_config.focusing_factor,
         )
     elif attn_type == 'Strip Attention':
-        attn = StripAttention(
-            dim=dim,
-            num_heads=attn_config.num_heads[index],
-        )
+        if iter % 2 == 0:
+            attn = Intra_SA_(
+                dim=dim,
+                head_num=attn_config.num_heads[index],
+            )
+        else:
+            attn = Inter_SA_(
+                dim=dim,
+                head_num=attn_config.num_heads[index],
+            )
+        # attn = StripAttention(
+        #     dim=dim,
+        #     num_heads=attn_config.num_heads[index],
+        # )
     elif attn_type == 'Efficient Attention':
         attn = EfficientAttention(
             in_channels=dim,

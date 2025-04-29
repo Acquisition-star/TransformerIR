@@ -28,8 +28,10 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Identity
-  attn_config: null
+  attn_type: Multi-DConv Head Transposed Self-Attention
+  attn_config:
+    num_heads: [ 1,2,4,8 ]
+    bias: False
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率

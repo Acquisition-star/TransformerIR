@@ -15,6 +15,10 @@ from skimage.util import img_as_ubyte
 import h5py
 import scipy.io as sio
 
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 # 工具函数
 from utils.util import calculate_psnr, calculate_ssim, bgr2ycbcr, calculate_lpips
 from utils.logger import create_logger
@@ -27,29 +31,30 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 lpips_fn = lpips.LPIPS(net='alex', verbose=False)
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
-parser.add_argument('--task', type=str, default='denoising', help='task type')
+# parser.add_argument('--task', type=str, default='denoising', help='task type')
 parser.add_argument('--output', type=str, default='results/', help='path to output folder')
 parser.add_argument('--env', type=str, default='test', help='experiment name')
-parser.add_argument('--cfg', type=str, default=None, help='model name')
+# parser.add_argument('--cfg', type=str, default=None, help='model name')
 parser.add_argument("--pth", type=str, default=None, help="path to pretrained model")
 parser.add_argument("--imgH", type=int, default=None, help="image size")
 parser.add_argument("--imgW", type=int, default=None, help="image size")
 
 args = parser.parse_known_args()[0]
-config = get_config(args)
+# config = get_config(args)
+config = torch.load(args.pth, map_location='cpu', weights_only=False)['config']
 
-root_path = f'{args.output}{args.task}/{args.env}'
+root_path = f'{args.output}/{args.env}'
 
 os.makedirs(root_path, exist_ok=True)
 
 logger = create_logger(root_path, name=f"{config.net.type}_{args.env}")
 
 data_list = [
-    # {
-    #     'name': 'SIDD',
-    #     'H_path': r'D:\Data\Denoising\SIDD\val\groundtruth',
-    #     'L_path': r'D:\Data\Denoising\SIDD\val\input',
-    # },
+    {
+        'name': 'SIDD',
+        'H_path': r'D:\Data\Denoising\SIDD\val\groundtruth',
+        'L_path': r'D:\Data\Denoising\SIDD\val\input',
+    },
     # {
     #     'name': 'DND',
     #     'path': r'D:\Data\Denoising\DND',
@@ -125,7 +130,8 @@ def define_model(config, args):
 
 
 def main():
-    test_results = {'模型': config.net.type, '模型文件': args.pth, '配置文件': args.cfg}
+    # test_results = {'模型': config.net.type, '模型文件': args.pth, '配置文件': args.cfg}
+    test_results = {'模型': config.net.type, '模型文件': args.pth}
 
     # 数据信息处理
     data_lists = deal_list()

@@ -1,20 +1,9 @@
 # 测试命令
-``python test_sidd.py --env demo --cfg config.yaml --pth ckpt.pth --crop --imgH 256 --imgW 256``  
+``python analysis/test_sidd.py --output path --env test --pth ckpt.pth``  
   
-``python test_sidd.py --env demo --cfg 'F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\config.yaml' --pth 'F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\ckpt_epoch_100000.pth' --imgH 256 --imgW 256``  
+``python analysis/test_deblur.py --output path --env test --pth ckpt.pth``
   
-``python test_deblur.py --env demo --cfg F:\GraduationThesis\Project\Results\Restormer\denoising\baseline_0\Experiment_1\config.yaml --pth F:\GraduationThesis\Project\Results\Restormer\denoising\baseline_0\Experiment_1\ckpt_epoch_294000.pth``
-  
-``python model_analysis.py --cfg "F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\config.yaml" --pth "F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\ckpt_epoch_100000.pth"``
-
-
-
-## TRY
-1. 尝试将空间注意力与通道注意力结合  
-`python test_sidd.py --task_type denoising --env demo --cfg F:\GraduationThesis\Project\Results\Baseline\TRY\baseline_denoising_color_sidd\config.yaml --pth F:\GraduationThesis\Project\Results\Baseline\TRY\baseline_denoising_color_sidd\checkpoints\ckpt_epoch_99.pth --crop --img_size 128`  
-2. MB-TaylorFormer V2  
-`python test_sidd.py --env MBTaylor --cfg F:\GraduationThesis\Project\Results\Baseline\MBTaylor\MB-TaylorFormer_V2\config.yaml --pth F:\GraduationThesis\Project\Results\Baseline\MBTaylor\MB-TaylorFormer_V2\checkpoints\ckpt_epoch_21.pth --crop --img_size 256`  
-
+``python analysis/model_analysis.py --pth ckpt.pth``
   
 # 模型测试
 ## Denoising

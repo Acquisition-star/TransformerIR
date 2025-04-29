@@ -1,3 +1,9 @@
+import os
+
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import torch
 import argparse
 from ptflops import get_model_complexity_info
@@ -9,11 +15,12 @@ from model.build import build_model
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser('TransformerIR evaluation script', add_help=False)
-parser.add_argument('--cfg', type=str, default=r'F:\GraduationThesis\Project\TransformerIR\configs\Denoising\MB-TaylorFormerV2-B.yaml', help='model name')
+# parser.add_argument('--cfg', type=str, default=r'F:\GraduationThesis\Project\TransformerIR\configs\Denoising\MB-TaylorFormerV2-B.yaml', help='model name')
 parser.add_argument("--pth", type=str, default=None, help="path to pretrained model")
 
 args = parser.parse_known_args()[0]
-config = get_config(args)
+# config = get_config(args)
+config = torch.load(args.pth, map_location='cpu', weights_only=False)['config']
 
 
 def define_model(config, args):

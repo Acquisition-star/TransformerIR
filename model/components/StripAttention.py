@@ -33,6 +33,104 @@ class Attention(nn.Module):
         return attention_out
 
 
+class Intra_SA_(nn.Module):
+    def __init__(self, dim, head_num):
+        super(Intra_SA_, self).__init__()
+        self.hidden_size = dim // 2
+        self.head_num = head_num
+        self.conv_input = nn.Conv2d(dim, dim, kernel_size=1, padding=0)
+        self.qkv_local_h = nn.Linear(self.hidden_size, self.hidden_size * 3)  # qkv_h
+        self.qkv_local_v = nn.Linear(self.hidden_size, self.hidden_size * 3)  # qkv_v
+        self.fuse_out = nn.Conv2d(dim, dim, kernel_size=1, padding=0)
+        self.attn = Attention(head_num=self.head_num)
+
+    def forward(self, x):
+        B, C, H, W = x.size()
+
+        x_input = torch.chunk(self.conv_input(x), 2, dim=1)
+        feature_h = (x_input[0]).permute(0, 2, 3, 1).contiguous()
+        feature_h = feature_h.view(B * H, W, C // 2)
+        feature_v = (x_input[1]).permute(0, 3, 2, 1).contiguous()
+        feature_v = feature_v.view(B * W, H, C // 2)
+        qkv_h = torch.chunk(self.qkv_local_h(feature_h), 3, dim=2)
+        qkv_v = torch.chunk(self.qkv_local_v(feature_v), 3, dim=2)
+        q_h, k_h, v_h = qkv_h[0], qkv_h[1], qkv_h[2]
+        q_v, k_v, v_v = qkv_v[0], qkv_v[1], qkv_v[2]
+
+        if H == W:
+            query = torch.cat((q_h, q_v), dim=0)
+            key = torch.cat((k_h, k_v), dim=0)
+            value = torch.cat((v_h, v_v), dim=0)
+            attention_output = self.attn(query, key, value)
+            attention_output = torch.chunk(attention_output, 2, dim=0)
+            attention_output_h = attention_output[0]
+            attention_output_v = attention_output[1]
+            attention_output_h = attention_output_h.view(B, H, W, C // 2).permute(0, 3, 1, 2).contiguous()
+            attention_output_v = attention_output_v.view(B, W, H, C // 2).permute(0, 3, 2, 1).contiguous()
+            attn_out = self.fuse_out(torch.cat((attention_output_h, attention_output_v), dim=1))
+        else:
+            attention_output_h = self.attn(q_h, k_h, v_h)
+            attention_output_v = self.attn(q_v, k_v, v_v)
+            attention_output_h = attention_output_h.view(B, H, W, C // 2).permute(0, 3, 1, 2).contiguous()
+            attention_output_v = attention_output_v.view(B, W, H, C // 2).permute(0, 3, 2, 1).contiguous()
+            attn_out = self.fuse_out(torch.cat((attention_output_h, attention_output_v), dim=1))
+
+        return attn_out
+
+
+class Inter_SA_(nn.Module):
+    def __init__(self, dim, head_num):
+        super(Inter_SA_, self).__init__()
+        self.hidden_size = dim
+        self.head_num = head_num
+        self.conv_input = nn.Conv2d(self.hidden_size, self.hidden_size, kernel_size=1, padding=0)
+        self.conv_h = nn.Conv2d(self.hidden_size // 2, 3 * (self.hidden_size // 2), kernel_size=1, padding=0)  # qkv_h
+        self.conv_v = nn.Conv2d(self.hidden_size // 2, 3 * (self.hidden_size // 2), kernel_size=1, padding=0)  # qkv_v
+        self.fuse_out = nn.Conv2d(self.hidden_size, self.hidden_size, kernel_size=1, padding=0)
+        self.attn = Attention(head_num=self.head_num)
+
+    def forward(self, x):
+        B, C, H, W = x.size()
+
+        x_input = torch.chunk(self.conv_input(x), 2, dim=1)
+        feature_h = torch.chunk(self.conv_h(x_input[0]), 3, dim=1)
+        feature_v = torch.chunk(self.conv_v(x_input[1]), 3, dim=1)
+        query_h, key_h, value_h = feature_h[0], feature_h[1], feature_h[2]
+        query_v, key_v, value_v = feature_v[0], feature_v[1], feature_v[2]
+
+        horizontal_groups = torch.cat((query_h, key_h, value_h), dim=0)
+        horizontal_groups = horizontal_groups.permute(0, 2, 1, 3).contiguous()
+        horizontal_groups = horizontal_groups.view(3 * B, H, -1)
+        horizontal_groups = torch.chunk(horizontal_groups, 3, dim=0)
+        query_h, key_h, value_h = horizontal_groups[0], horizontal_groups[1], horizontal_groups[2]
+
+        vertical_groups = torch.cat((query_v, key_v, value_v), dim=0)
+        vertical_groups = vertical_groups.permute(0, 3, 1, 2).contiguous()
+        vertical_groups = vertical_groups.view(3 * B, W, -1)
+        vertical_groups = torch.chunk(vertical_groups, 3, dim=0)
+        query_v, key_v, value_v = vertical_groups[0], vertical_groups[1], vertical_groups[2]
+
+        if H == W:
+            query = torch.cat((query_h, query_v), dim=0)
+            key = torch.cat((key_h, key_v), dim=0)
+            value = torch.cat((value_h, value_v), dim=0)
+            attention_output = self.attn(query, key, value)
+            attention_output = torch.chunk(attention_output, 2, dim=0)
+            attention_output_h = attention_output[0]
+            attention_output_v = attention_output[1]
+            attention_output_h = attention_output_h.view(B, H, C // 2, W).permute(0, 2, 1, 3).contiguous()
+            attention_output_v = attention_output_v.view(B, W, C // 2, H).permute(0, 2, 3, 1).contiguous()
+            attn_out = self.fuse_out(torch.cat((attention_output_h, attention_output_v), dim=1))
+        else:
+            attention_output_h = self.attn(query_h, key_h, value_h)
+            attention_output_v = self.attn(query_v, key_v, value_v)
+            attention_output_h = attention_output_h.view(B, H, C // 2, W).permute(0, 2, 1, 3).contiguous()
+            attention_output_v = attention_output_v.view(B, W, C // 2, H).permute(0, 2, 3, 1).contiguous()
+            attn_out = self.fuse_out(torch.cat((attention_output_h, attention_output_v), dim=1))
+
+        return attn_out
+
+
 class Mlp(nn.Module):
     def __init__(self, hidden_size):
         super(Mlp, self).__init__()
@@ -84,9 +182,9 @@ class Intra_SA(nn.Module):
         h = x
         B, C, H, W = x.size()
 
-        x = x.view(B, C, H * W).permute(0, 2, 1).contiguous()
-        x = self.attention_norm(x).permute(0, 2, 1).contiguous()
-        x = x.view(B, C, H, W)
+        # x = x.view(B, C, H * W).permute(0, 2, 1).contiguous()
+        # x = self.attention_norm(x).permute(0, 2, 1).contiguous()
+        # x = x.view(B, C, H, W)
 
         x_input = torch.chunk(self.conv_input(x), 2, dim=1)
         feature_h = (x_input[0]).permute(0, 2, 3, 1).contiguous()
@@ -216,7 +314,10 @@ class StripAttention(nn.Module):
 
 
 if __name__ == '__main__':
-    model = StripAttention(dim=32, num_heads=8)
-    x = torch.randn(1, 32, 128, 128)
-    y = model(x)
-    print(y.shape)
+    model1 = Intra_SA(dim=32, head_num=4)
+    model2 = Inter_SA(dim=32, head_num=4)
+    input = torch.randn(1, 32, 128, 128)
+    output = model1(input)
+    print(output.shape)
+    output = model2(input)
+    print(output.shape)

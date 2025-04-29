@@ -1,6 +1,6 @@
 # Restormer_baseline
 
-task: Restormer_Baseline
+task: Restormer_Baseline_denoising
 seed: 0
 n_channels: 3  # 输入图像通道数
 sigma: 15
@@ -21,7 +21,7 @@ datasets:
     H_path: [ 'D:\Data\Denoising\SIDD\val\groundtruth' ]
     L_path: [ 'D:\Data\Denoising\SIDD\val\input' ]
 net:
-  type: restormer_baseline
+  type: restormer_conv
   in_chans: 3
   dim: 48
   bias: False
@@ -29,9 +29,8 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Strip Attention
-  attn_config:
-    num_heads: [ 4, 4, 4, 4 ]
+  attn_type: Identity
+  attn_config: null
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率
