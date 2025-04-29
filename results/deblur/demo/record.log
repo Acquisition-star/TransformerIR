@@ -1,0 +1,5 @@
+[2025-04-29 09:46:46 restormer_conv_demo] (test_deblur.py 96): INFO Loading model from F:\GraduationThesis\Project\Results\Restormer\deblur\Conv\Experiment_1\ckpt_epoch_90000.pth
+[2025-04-29 09:46:46 restormer_conv_demo] (checkpoint.py 8): INFO ==============> Resuming form F:\GraduationThesis\Project\Results\Restormer\deblur\Conv\Experiment_1\ckpt_epoch_90000.pth....................
+[2025-04-29 09:46:46 restormer_conv_demo] (checkpoint.py 16): INFO <All keys matched successfully>
+[2025-04-29 09:46:46 restormer_conv_demo] (test_deblur.py 124): INFO Multi-DConv Head Transposed Self-Attention start to test on GoPro!
+[2025-04-29 09:46:58 restormer_conv_demo] (test_deblur.py 159): INFO Testing 0 	 GOPR0384_11_00-000001.png 	 - PSNR: 30.93 dB; SSIM: 0.9032; LPIPS: 0.0748;
