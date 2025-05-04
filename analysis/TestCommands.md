@@ -3,7 +3,9 @@
   
 ``python analysis/test_deblur.py --output path --env test --pth ckpt.pth``
   
-``python analysis/model_analysis.py --pth ckpt.pth``
+``python analysis/model_analysis.py --pth ckpt.pth``  
+  
+``python analysis/test_deblur.py --env test --pth "F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\ckpt_epoch_100000.pth"``
   
 # 模型测试
 ## Denoising

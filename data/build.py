@@ -84,6 +84,7 @@ def build_loader_deblur(config):
         L_path=config.datasets.train.L_path
     )
     dataset_val = Dataset_deblur_val(
+        patch_size=config.datasets.val.image_size if hasattr(config.datasets.val, 'image_size') else None,
         input_channels=config.n_channels,
         H_path=config.datasets.val.H_path,
         L_path=config.datasets.val.L_path
