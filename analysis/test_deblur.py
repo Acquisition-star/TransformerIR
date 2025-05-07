@@ -52,22 +52,26 @@ data_list = [
         'name': 'GoPro',
         'H_path': r'D:\Data\Deblur\GoPro\test\target',
         'L_path': r'D:\Data\Deblur\GoPro\test\input',
+        'patch': [1280, 704]
     },
     {
         'name': 'HIDE',
         'H_path': r'D:\Data\Deblur\HIDE\target',
         'L_path': r'D:\Data\Deblur\HIDE\input',
+        'patch': [1280, 704]
     },
-    # {
-    #     'name': 'RealBlur_J',
-    #     'H_path': r'D:\Data\Deblur\RealBlur_J\target',
-    #     'L_path': r'D:\Data\Deblur\RealBlur_J\input',
-    # },
-    # {
-    #     'name': 'RealBlur_R',
-    #     'H_path': r'D:\Data\Deblur\RealBlur_R\target',
-    #     'L_path': r'D:\Data\Deblur\RealBlur_R\input',
-    # },
+    {
+        'name': 'RealBlur_J',
+        'H_path': r'D:\Data\Deblur\RealBlur_J\target',
+        'L_path': r'D:\Data\Deblur\RealBlur_J\input',
+        'patch': [576, 704]
+    },
+    {
+        'name': 'RealBlur_R',
+        'H_path': r'D:\Data\Deblur\RealBlur_R\target',
+        'L_path': r'D:\Data\Deblur\RealBlur_R\input',
+        'patch': [576, 704]
+    },
 ]
 
 
@@ -114,8 +118,11 @@ def main():
         img_size = (args.imgH, args.imgW)
 
     for data_info in data_lists:
+        # data_set = Dataset_deblur_val(input_channels=3, H_path=[data_info['H_path']], L_path=[data_info['L_path']],
+        #                               patch_size=img_size)
+
         data_set = Dataset_deblur_val(input_channels=3, H_path=[data_info['H_path']], L_path=[data_info['L_path']],
-                                      patch_size=img_size)
+                                      patch_size=data_info['patch'])
 
         img_save_path = os.path.join(root_path, data_info['name'])
         os.makedirs(img_save_path, exist_ok=True)

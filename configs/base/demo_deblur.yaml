@@ -19,7 +19,7 @@ datasets:
     state: Val
     H_path: [ 'D:\Data\Deblur\GoPro\val\target' ]
     L_path: [ 'D:\Data\Deblur\GoPro\val\input' ]
-    image_size: [ 1280, 704 ]
+#    image_size: [ 1280, 704 ]
 net:
   type: restormer_baseline
   in_chans: 3
@@ -29,14 +29,9 @@ net:
   num_refinement_blocks: 4
   ffn_expansion_factor: 2.66
   LayerNorm_type: BiasFree
-  attn_type: Window Attention
+  attn_type: Strip Attention
   attn_config:
-    window_size: [ 8,8,8,8 ]
-    num_heads: [ 4,8,8,4 ]
-    qkv_bias: True
-    qk_scale: null
-    attn_drop: 0.
-    proj_drop: 0.
+    num_heads: [ 4, 4, 4, 4 ]
 optimizer:
   type: adamw
   learning_rate: 3.0e-4  # 学习率

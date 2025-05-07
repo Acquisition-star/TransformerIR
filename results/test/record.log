@@ -1,4 +1,0 @@
-[2025-05-03 15:09:58 restormer_baseline_test] (test_deblur.py 96): INFO Loading model from F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\ckpt_epoch_100000.pth
-[2025-05-03 15:09:58 restormer_baseline_test] (checkpoint.py 8): INFO ==============> Resuming form F:\GraduationThesis\Project\Results\Restormer\denoising\Window Attention\Experiment_3\ckpt_epoch_100000.pth....................
-[2025-05-03 15:09:58 restormer_baseline_test] (checkpoint.py 16): INFO <All keys matched successfully>
-[2025-05-03 15:09:58 restormer_baseline_test] (test_deblur.py 124): INFO Window Attention start to test on GoPro!
